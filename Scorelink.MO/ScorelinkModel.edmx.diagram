@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="8760ab23beea46d8931806c9cbc925de" Name="Diagram1">
+        <EntityTypeShape EntityType="ScorelinkModel.AccTitleDict" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ScorelinkModel.DocumentArea" Width="1.5" PointX="5.25" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ScorelinkModel.DocumentDetail" Width="1.5" PointX="3" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="ScorelinkModel.DocumentInfo" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ScorelinkModel.OCRResult" Width="1.5" PointX="5.25" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ScorelinkModel.User" Width="1.5" PointX="0.75" PointY="7.75" IsExpanded="true" />
+        <AssociationConnector Association="ScorelinkModel.FK_DocumentArea_DocumentDetail" ManuallyRouted="false" />
+        <AssociationConnector Association="ScorelinkModel.FK_DocumentDetail_DocumentInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="ScorelinkModel.FK_OCRResult_DocumentDetail" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

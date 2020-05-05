@@ -1,0 +1,451 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ScorelinkModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AccTitleDict">
+          <Key>
+            <PropertyRef Name="AccNo" />
+          </Key>
+          <Property Name="AccNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AccountTitle" Type="varchar" MaxLength="500" />
+          <Property Name="CreateBy" Type="varchar" MaxLength="50" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="UpdateBy" Type="varchar" MaxLength="50" />
+          <Property Name="UpdateDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="DocumentArea">
+          <Key>
+            <PropertyRef Name="DocId" />
+            <PropertyRef Name="DocPageNo" />
+            <PropertyRef Name="AreaNo" />
+          </Key>
+          <Property Name="DocId" Type="int" Nullable="false" />
+          <Property Name="DocPageNo" Type="int" Nullable="false" />
+          <Property Name="AreaNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AreaX" Type="varchar" MaxLength="50" />
+          <Property Name="AreaY" Type="varchar" MaxLength="50" />
+          <Property Name="AreaH" Type="varchar" MaxLength="50" />
+          <Property Name="AreaW" Type="varchar" MaxLength="50" />
+          <Property Name="AreaPath" Type="varchar" MaxLength="500" />
+          <Property Name="CreateBy" Type="varchar" MaxLength="50" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="UpdateDate" Type="timestamp" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="DocumentDetail">
+          <Key>
+            <PropertyRef Name="DocId" />
+            <PropertyRef Name="DocPageNo" />
+          </Key>
+          <Property Name="DocId" Type="int" Nullable="false" />
+          <Property Name="DocPageNo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FootnoteNo" Type="varchar" MaxLength="50" />
+          <Property Name="PageType" Type="varchar" MaxLength="2" />
+          <Property Name="ScanStatus" Type="varchar" MaxLength="1" />
+          <Property Name="PageFileName" Type="varchar" MaxLength="250" />
+          <Property Name="PagePath" Type="varchar" MaxLength="500" />
+          <Property Name="Selected" Type="varchar" MaxLength="1" />
+          <Property Name="PatternNo" Type="varchar" MaxLength="2" />
+          <Property Name="CreateBy" Type="varchar" MaxLength="50" />
+          <Property Name="CreateDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="DocumentInfo">
+          <Key>
+            <PropertyRef Name="DocId" />
+          </Key>
+          <Property Name="DocId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FileUID" Type="varchar" MaxLength="50" />
+          <Property Name="FileName" Type="varchar" MaxLength="250" />
+          <Property Name="FilePath" Type="varchar" MaxLength="250" />
+          <Property Name="CreateBy" Type="varchar" MaxLength="50" />
+          <Property Name="CreateDate" Type="timestamp" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="OCRResult">
+          <Key>
+            <PropertyRef Name="DocId" />
+            <PropertyRef Name="DocPageNo" />
+            <PropertyRef Name="OCRId" />
+          </Key>
+          <Property Name="DocId" Type="int" Nullable="false" />
+          <Property Name="DocPageNo" Type="int" Nullable="false" />
+          <Property Name="OCRId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RowNo" Type="varchar" MaxLength="50" />
+          <Property Name="Footnote" Type="varchar" MaxLength="50" />
+          <Property Name="AccountTitle" Type="varchar" MaxLength="500" />
+          <Property Name="Amount" Type="varchar" MaxLength="50" />
+          <Property Name="Modified" Type="varchar" MaxLength="1" />
+          <Property Name="CreateBy" Type="varchar" MaxLength="50" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="UpdateDate" Type="timestamp" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="50" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="Surname" Type="varchar" MaxLength="50" />
+          <Property Name="Password" Type="varchar" MaxLength="50" />
+          <Property Name="Email" Type="varchar" MaxLength="50" />
+          <Property Name="Company" Type="varchar" MaxLength="50" />
+          <Property Name="Telephone" Type="varchar" MaxLength="50" />
+          <Property Name="Status" Type="varchar" MaxLength="50" />
+          <Property Name="Admin" Type="varchar" MaxLength="50" />
+          <Property Name="RegisterDate" Type="datetime" />
+          <Property Name="ExpireDate" Type="datetime" />
+          <Property Name="UpdateBy" Type="varchar" MaxLength="50" />
+          <Property Name="UpdateDate" Type="timestamp" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <Association Name="FK_DocumentArea_DocumentDetail">
+          <End Role="DocumentDetail" Type="Self.DocumentDetail" Multiplicity="1" />
+          <End Role="DocumentArea" Type="Self.DocumentArea" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DocumentDetail">
+              <PropertyRef Name="DocId" />
+              <PropertyRef Name="DocPageNo" />
+            </Principal>
+            <Dependent Role="DocumentArea">
+              <PropertyRef Name="DocId" />
+              <PropertyRef Name="DocPageNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DocumentDetail_DocumentInfo">
+          <End Role="DocumentInfo" Type="Self.DocumentInfo" Multiplicity="1" />
+          <End Role="DocumentDetail" Type="Self.DocumentDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DocumentInfo">
+              <PropertyRef Name="DocId" />
+            </Principal>
+            <Dependent Role="DocumentDetail">
+              <PropertyRef Name="DocId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OCRResult_DocumentDetail">
+          <End Role="DocumentDetail" Type="Self.DocumentDetail" Multiplicity="1" />
+          <End Role="OCRResult" Type="Self.OCRResult" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DocumentDetail">
+              <PropertyRef Name="DocId" />
+              <PropertyRef Name="DocPageNo" />
+            </Principal>
+            <Dependent Role="OCRResult">
+              <PropertyRef Name="DocId" />
+              <PropertyRef Name="DocPageNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ScorelinkModelStoreContainer">
+          <EntitySet Name="AccTitleDict" EntityType="Self.AccTitleDict" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DocumentArea" EntityType="Self.DocumentArea" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DocumentDetail" EntityType="Self.DocumentDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DocumentInfo" EntityType="Self.DocumentInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OCRResult" EntityType="Self.OCRResult" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_DocumentArea_DocumentDetail" Association="Self.FK_DocumentArea_DocumentDetail">
+            <End Role="DocumentDetail" EntitySet="DocumentDetail" />
+            <End Role="DocumentArea" EntitySet="DocumentArea" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DocumentDetail_DocumentInfo" Association="Self.FK_DocumentDetail_DocumentInfo">
+            <End Role="DocumentInfo" EntitySet="DocumentInfo" />
+            <End Role="DocumentDetail" EntitySet="DocumentDetail" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OCRResult_DocumentDetail" Association="Self.FK_OCRResult_DocumentDetail">
+            <End Role="DocumentDetail" EntitySet="DocumentDetail" />
+            <End Role="OCRResult" EntitySet="OCRResult" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ScorelinkModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AccTitleDict">
+          <Key>
+            <PropertyRef Name="AccNo" />
+          </Key>
+          <Property Name="AccNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AccountTitle" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CreateBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdateBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="DocumentArea">
+          <Key>
+            <PropertyRef Name="DocId" />
+            <PropertyRef Name="DocPageNo" />
+            <PropertyRef Name="AreaNo" />
+          </Key>
+          <Property Name="DocId" Type="Int32" Nullable="false" />
+          <Property Name="DocPageNo" Type="Int32" Nullable="false" />
+          <Property Name="AreaNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AreaX" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AreaY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AreaH" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AreaW" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AreaPath" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CreateBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdateDate" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="DocumentDetail" Relationship="Self.FK_DocumentArea_DocumentDetail" FromRole="DocumentArea" ToRole="DocumentDetail" />
+        </EntityType>
+        <EntityType Name="DocumentDetail">
+          <Key>
+            <PropertyRef Name="DocId" />
+            <PropertyRef Name="DocPageNo" />
+          </Key>
+          <Property Name="DocId" Type="Int32" Nullable="false" />
+          <Property Name="DocPageNo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FootnoteNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PageType" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="ScanStatus" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="PageFileName" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="PagePath" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Selected" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="PatternNo" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="CreateBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="DocumentAreas" Relationship="Self.FK_DocumentArea_DocumentDetail" FromRole="DocumentDetail" ToRole="DocumentArea" />
+          <NavigationProperty Name="DocumentInfo" Relationship="Self.FK_DocumentDetail_DocumentInfo" FromRole="DocumentDetail" ToRole="DocumentInfo" />
+          <NavigationProperty Name="OCRResults" Relationship="Self.FK_OCRResult_DocumentDetail" FromRole="DocumentDetail" ToRole="OCRResult" />
+        </EntityType>
+        <EntityType Name="DocumentInfo">
+          <Key>
+            <PropertyRef Name="DocId" />
+          </Key>
+          <Property Name="DocId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FileUID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FileName" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="FilePath" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="CreateBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreateDate" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="DocumentDetails" Relationship="Self.FK_DocumentDetail_DocumentInfo" FromRole="DocumentInfo" ToRole="DocumentDetail" />
+        </EntityType>
+        <EntityType Name="OCRResult">
+          <Key>
+            <PropertyRef Name="DocId" />
+            <PropertyRef Name="DocPageNo" />
+            <PropertyRef Name="OCRId" />
+          </Key>
+          <Property Name="DocId" Type="Int32" Nullable="false" />
+          <Property Name="DocPageNo" Type="Int32" Nullable="false" />
+          <Property Name="OCRId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RowNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Footnote" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AccountTitle" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Amount" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Modified" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="CreateBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdateDate" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="DocumentDetail" Relationship="Self.FK_OCRResult_DocumentDetail" FromRole="OCRResult" ToRole="DocumentDetail" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Surname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Company" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Telephone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Admin" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RegisterDate" Type="DateTime" Precision="3" />
+          <Property Name="ExpireDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdateBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UpdateDate" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <Association Name="FK_DocumentArea_DocumentDetail">
+          <End Role="DocumentDetail" Type="Self.DocumentDetail" Multiplicity="1" />
+          <End Role="DocumentArea" Type="Self.DocumentArea" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DocumentDetail">
+              <PropertyRef Name="DocId" />
+              <PropertyRef Name="DocPageNo" />
+            </Principal>
+            <Dependent Role="DocumentArea">
+              <PropertyRef Name="DocId" />
+              <PropertyRef Name="DocPageNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DocumentDetail_DocumentInfo">
+          <End Role="DocumentInfo" Type="Self.DocumentInfo" Multiplicity="1" />
+          <End Role="DocumentDetail" Type="Self.DocumentDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DocumentInfo">
+              <PropertyRef Name="DocId" />
+            </Principal>
+            <Dependent Role="DocumentDetail">
+              <PropertyRef Name="DocId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OCRResult_DocumentDetail">
+          <End Role="DocumentDetail" Type="Self.DocumentDetail" Multiplicity="1" />
+          <End Role="OCRResult" Type="Self.OCRResult" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DocumentDetail">
+              <PropertyRef Name="DocId" />
+              <PropertyRef Name="DocPageNo" />
+            </Principal>
+            <Dependent Role="OCRResult">
+              <PropertyRef Name="DocId" />
+              <PropertyRef Name="DocPageNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ScorelinkEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AccTitleDicts" EntityType="Self.AccTitleDict" />
+          <EntitySet Name="DocumentAreas" EntityType="Self.DocumentArea" />
+          <EntitySet Name="DocumentDetails" EntityType="Self.DocumentDetail" />
+          <EntitySet Name="DocumentInfoes" EntityType="Self.DocumentInfo" />
+          <EntitySet Name="OCRResults" EntityType="Self.OCRResult" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="FK_DocumentArea_DocumentDetail" Association="Self.FK_DocumentArea_DocumentDetail">
+            <End Role="DocumentDetail" EntitySet="DocumentDetails" />
+            <End Role="DocumentArea" EntitySet="DocumentAreas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DocumentDetail_DocumentInfo" Association="Self.FK_DocumentDetail_DocumentInfo">
+            <End Role="DocumentInfo" EntitySet="DocumentInfoes" />
+            <End Role="DocumentDetail" EntitySet="DocumentDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OCRResult_DocumentDetail" Association="Self.FK_OCRResult_DocumentDetail">
+            <End Role="DocumentDetail" EntitySet="DocumentDetails" />
+            <End Role="OCRResult" EntitySet="OCRResults" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ScorelinkModelStoreContainer" CdmEntityContainer="ScorelinkEntities">
+          <EntitySetMapping Name="AccTitleDicts">
+            <EntityTypeMapping TypeName="ScorelinkModel.AccTitleDict">
+              <MappingFragment StoreEntitySet="AccTitleDict">
+                <ScalarProperty Name="AccNo" ColumnName="AccNo" />
+                <ScalarProperty Name="AccountTitle" ColumnName="AccountTitle" />
+                <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateBy" ColumnName="UpdateBy" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DocumentAreas">
+            <EntityTypeMapping TypeName="ScorelinkModel.DocumentArea">
+              <MappingFragment StoreEntitySet="DocumentArea">
+                <ScalarProperty Name="DocId" ColumnName="DocId" />
+                <ScalarProperty Name="DocPageNo" ColumnName="DocPageNo" />
+                <ScalarProperty Name="AreaNo" ColumnName="AreaNo" />
+                <ScalarProperty Name="AreaX" ColumnName="AreaX" />
+                <ScalarProperty Name="AreaY" ColumnName="AreaY" />
+                <ScalarProperty Name="AreaH" ColumnName="AreaH" />
+                <ScalarProperty Name="AreaW" ColumnName="AreaW" />
+                <ScalarProperty Name="AreaPath" ColumnName="AreaPath" />
+                <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DocumentDetails">
+            <EntityTypeMapping TypeName="ScorelinkModel.DocumentDetail">
+              <MappingFragment StoreEntitySet="DocumentDetail">
+                <ScalarProperty Name="DocId" ColumnName="DocId" />
+                <ScalarProperty Name="DocPageNo" ColumnName="DocPageNo" />
+                <ScalarProperty Name="FootnoteNo" ColumnName="FootnoteNo" />
+                <ScalarProperty Name="PageType" ColumnName="PageType" />
+                <ScalarProperty Name="ScanStatus" ColumnName="ScanStatus" />
+                <ScalarProperty Name="PageFileName" ColumnName="PageFileName" />
+                <ScalarProperty Name="PagePath" ColumnName="PagePath" />
+                <ScalarProperty Name="Selected" ColumnName="Selected" />
+                <ScalarProperty Name="PatternNo" ColumnName="PatternNo" />
+                <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DocumentInfoes">
+            <EntityTypeMapping TypeName="ScorelinkModel.DocumentInfo">
+              <MappingFragment StoreEntitySet="DocumentInfo">
+                <ScalarProperty Name="DocId" ColumnName="DocId" />
+                <ScalarProperty Name="FileUID" ColumnName="FileUID" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="FilePath" ColumnName="FilePath" />
+                <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OCRResults">
+            <EntityTypeMapping TypeName="ScorelinkModel.OCRResult">
+              <MappingFragment StoreEntitySet="OCRResult">
+                <ScalarProperty Name="DocId" ColumnName="DocId" />
+                <ScalarProperty Name="DocPageNo" ColumnName="DocPageNo" />
+                <ScalarProperty Name="OCRId" ColumnName="OCRId" />
+                <ScalarProperty Name="RowNo" ColumnName="RowNo" />
+                <ScalarProperty Name="Footnote" ColumnName="Footnote" />
+                <ScalarProperty Name="AccountTitle" ColumnName="AccountTitle" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Modified" ColumnName="Modified" />
+                <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="ScorelinkModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Company" ColumnName="Company" />
+                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Admin" ColumnName="Admin" />
+                <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
+                <ScalarProperty Name="ExpireDate" ColumnName="ExpireDate" />
+                <ScalarProperty Name="UpdateBy" ColumnName="UpdateBy" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,136 @@
+﻿
+@{
+    ViewBag.Title = "Subscription Plan";
+}
+
+<style>
+    .callout:hover {
+        background-color: #808B96;
+        color: white;
+    }
+</style>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3>365</h3>
+
+                        <p>Remaining Days</p>
+                    </div>
+                    <div class="icon">
+                        <i class="far fa-calendar"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6 connectedSortable">
+                <div class="card">
+                    <div class="card-header bg-gradient-info">
+                        <h3 class="card-title">
+                            <b>Choose Subscription Plan</b>
+                        </h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body bg-gray-light">
+                        <div class="callout callout-success" data-toggle="modal" data-target="#modal-default">
+                            <h6><i class="far fa-calendar-alt"></i><b> Daily Plan</b></h6>
+                            <p>9$ / Day </p>
+                        </div>
+                        <div class="callout callout-success hover" data-toggle="modal" data-target="#modal-default">
+                            <h6><i class="far fa-calendar-alt"></i><b> Weekly Plan</b></h6>
+                            <p>59$ / 7 Day </p>
+                        </div>
+                        <div class="callout callout-success hover" data-toggle="modal" data-target="#modal-default">
+                            <h6><i class="far fa-calendar-alt"></i><b> Monthly Plan</b></h6>
+                            <p>399$ / 30 Day </p>
+                        </div>
+                        <div class="callout callout-success hover swalDefaultSuccess">
+                            <h6><i class="far fa-calendar-alt"></i><b> Yearly Plan</b></h6>
+                            <p>1699$ / 365 Day </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 connectedSortable">
+                <div class="card">
+                    <div class="card-header bg-gradient-success">
+                        <h3 class="card-title"><b>Profile</b></h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <strong><i class="fas fa-address-card mr-1"></i>Full Name</strong>
+
+                        <p class="text-muted">
+                            Tanasit Jarutnuntipat
+                        </p>
+
+                        <hr>
+
+                        <strong><i class="fas fa-envelope mr-1"></i> E-mail</strong>
+
+                        <p class="text-muted">tanasit@mfec.co.th</p>
+
+                        <hr>
+
+                        <strong><i class="fas fa-building mr-1"></i> Company</strong>
+
+                        <p class="text-muted">MFEC</p>
+
+                        <hr>
+
+                        <strong><i class="fas fa-registered mr-1"></i> Register Date</strong>
+
+                        <p class="text-muted">01/01/2020</p>
+
+                        <hr>
+
+                        <strong><i class="fas fa-calendar-times mr-1"></i> Expire Date</strong>
+
+                        <p class="text-muted">01/01/2021</p>
+
+                    </div>
+                </div>
+                <!-- /.card -->
+            </div>
+        </div>
+    </div>
+</section>
+@Html.Partial("_ConfirmSave")
+@section scripts{
+    <script src="~/Scripts/Pages/Subscription.List.js"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="~/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>
+        $.widget.bridge('uibutton', $.ui.button)
+    </script>
+
+    <script>
+        //$(".connectedSortable").sortable({
+        //    connectWith: "div"
+        //});
+        //Make the dashboard widgets sortable Using jquery UI
+        $(".connectedSortable").sortable({
+            placeholder: "sort-highlight",
+            connectWith: ".connectedSortable",
+            forcePlaceholderSize: true,
+            zIndex: 999999
+        });
+        $(".connectedSortable .box-header, .connectedSortable .nav-tabs-custom").css("cursor", "move");
+        $(".connectedSortable").sortable({
+            cursor: "move"
+        });
+
+        $('.swalDefaultSuccess').click(function() {
+          Toast.fire({
+            type: 'success',
+            title: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+          })
+        });
+    </script>
+}

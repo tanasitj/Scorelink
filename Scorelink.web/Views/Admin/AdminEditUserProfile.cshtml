@@ -1,0 +1,55 @@
+﻿
+<div class="card">
+    <div class="card-header bg-gradient-info">
+        <h3 class="card-title"><b>Edit User Profile</b></h3>
+    </div>
+    <!-- /.card-header -->
+    <!-- form start -->
+    <div class="card-body">
+        <div class="form-group">
+            <label>Name</label>
+            <input type="text" class="form-control" placeholder="Name">
+        </div>
+        <div class="form-group">
+            <label>Email address</label>
+            <input type="email" class="form-control" placeholder="Email">
+        </div>
+        <div class="form-group">
+            <label>Company</label>
+            <input type="text" class="form-control" placeholder="Company">
+        </div>
+        <div class="form-group">
+            <label>Address</label>
+            <textarea class="form-control" rows="3" placeholder="Address"></textarea>
+        </div>
+        <div class="form-group">
+            <label>Telephone</label>
+            <input type="text" class="form-control" placeholder="Telephone">
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" class="form-control" placeholder="Password">
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="customSwitch1" checked>
+                <label class="custom-control-label" for="customSwitch1">Status Active</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
+                <input type="checkbox" class="custom-control-input" id="customSwitch3">
+                <label class="custom-control-label" for="customSwitch3">System Admin</label>
+            </div>
+        </div>
+    </div>
+    <!-- /.card-body -->
+    <div class="card-footer text-center">
+        <button type="submit" class="btn bg-gradient-secondary" data-bind="click: ClickBack">Back</button>
+        <button type="submit" class="btn bg-gradient-success" data-bind="click: ClickSave">Save</button>
+    </div>
+</div>
+@section scripts{
+    <script src="~/plugins/jquery/jquery.min.js"></script>
+    <script src="~/Scripts/Pages/Admin.EditUserProfile.js"></script>
+}

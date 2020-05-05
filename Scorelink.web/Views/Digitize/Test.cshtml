@@ -1,0 +1,66 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="A simple jQuery image cropping plugin.">
+    <meta name="author" content="Chen Fengyuan">
+    <title>Cropper</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="icon" href="favicon.ico">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/plugins/jquery-cropper/css/cropper.css">
+    <link rel="stylesheet" href="~/plugins/jquery-cropper/css/main.css">
+    <style>
+        .container {
+            max-width: 640px;
+            margin: 20px auto;
+        }
+
+        img {
+            max-width: 100%;
+        }
+    </style>
+</head>
+
+<!-- Content -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-9">
+            <h3>Cropper</h3>
+            <div>
+                <img src="~/Temp/Copy_002.jpg" alt="Picture">
+            </div>
+            <h3>Another</h3>
+            <div>
+                <img src="~/Temp/Copy_003.jpg" alt="Picture">
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="https://fengyuanchen.github.io/shared/google-analytics.js" crossorigin="anonymous"></script>
+    <script src="~/plugins/jquery-cropper/js/cropper.js"></script>
+    <script src="~/plugins/jquery-cropper/js/main.js"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', function () {
+            var images = document.querySelectorAll('img');
+            var length = images.length;
+            var croppers = [];
+            var i;
+
+            for (i = 0; i < length; i++) {
+                croppers.push(new Cropper(images[i]));
+            }
+        });
+    </script>
+}
