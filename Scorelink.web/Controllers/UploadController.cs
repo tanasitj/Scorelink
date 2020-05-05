@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Scorelink.BO.Repositories;
+using Scorelink.MO;
+using Scorelink.MO.DataModel;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -54,7 +57,15 @@ namespace Scorelink.web.Controllers
                         fname = Path.Combine(folder + "/", fname);
                         file.SaveAs(fname);
 
-                        
+                        DocumentInfoModel doc = new DocumentInfoModel();
+                        doc.FileUID = Guid.NewGuid().ToString();
+                        doc.FileName = allKeys[0];
+                        doc.FilePath = folder +"\\"+ allKeys[0];
+                        doc.CreateBy = "Tanasitj";
+
+                        DocumentInfoRepo documentInfoRepo = new DocumentInfoRepo();
+                        documentInfoRepo.Add(doc);
+
                     }
                     // Returns message that successfully uploaded  
                     return Json("OK");
