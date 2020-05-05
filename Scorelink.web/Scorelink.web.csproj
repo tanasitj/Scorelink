@@ -2310,6 +2310,16 @@
     <TypeScriptCompile Include="plugins\fullcalendar-timegrid\main.d.ts" />
     <TypeScriptCompile Include="plugins\fullcalendar\main.d.ts" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Scorelink.BO\Scorelink.BO.csproj">
+      <Project>{c2655c85-79d7-4d37-b787-319bfc3cdbea}</Project>
+      <Name>Scorelink.BO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Scorelink.MO\Scorelink.MO.csproj">
+      <Project>{de0361fe-1dbe-4350-8bda-d7bfb6a949e3}</Project>
+      <Name>Scorelink.MO</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

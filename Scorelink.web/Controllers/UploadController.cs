@@ -53,6 +53,8 @@ namespace Scorelink.web.Controllers
 
                         fname = Path.Combine(folder + "/", fname);
                         file.SaveAs(fname);
+
+                        
                     }
                     // Returns message that successfully uploaded  
                     return Json("OK");
