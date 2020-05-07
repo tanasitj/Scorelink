@@ -10,5 +10,6 @@ namespace Scorelink.BO.Interface
     {
         IEnumerable<T> GetList(string id);
         string Add(T item);
+        string Delete(string id);
     }
 }

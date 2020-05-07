@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Tanasit\MFEC\Score Link\SRC\Scorelink-4\Scorelink.MO\ScorelinkModel.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Tanasit\MFEC\Score Link\SRC\Scorelink\Scorelink.MO\ScorelinkModel.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

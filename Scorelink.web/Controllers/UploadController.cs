@@ -12,6 +12,7 @@ namespace Scorelink.web.Controllers
 {
     public class UploadController : Controller
     {
+        DocumentInfoRepo docInfoRepo = new DocumentInfoRepo();
         // GET: Upload
         public ActionResult Index()
         {
@@ -57,11 +58,14 @@ namespace Scorelink.web.Controllers
                         fname = Path.Combine(folder + "/", fname);
                         file.SaveAs(fname);
 
+                        String sCreateDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+
                         DocumentInfoModel doc = new DocumentInfoModel();
                         doc.FileUID = Guid.NewGuid().ToString();
                         doc.FileName = allKeys[0];
                         doc.FilePath = folder +"\\"+ allKeys[0];
                         doc.CreateBy = "Tanasitj";
+                        doc.CreateDate = sCreateDate;
 
                         DocumentInfoRepo documentInfoRepo = new DocumentInfoRepo();
                         documentInfoRepo.Add(doc);
@@ -79,6 +83,18 @@ namespace Scorelink.web.Controllers
             {
                 return Json("No files selected.");
             }
+        }
+
+        public JsonResult GetDocumentList(string filterId)
+        {
+            var users = docInfoRepo.GetList(filterId).ToList();
+            return Json(users, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult DeleteDocumentInfo(string id)
+        {
+            var result = docInfoRepo.Delete(id);
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         private void CreateDocFolder(string path)

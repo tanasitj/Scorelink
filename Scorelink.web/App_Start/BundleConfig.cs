@@ -35,6 +35,8 @@ namespace Scorelink.web.App_Start
                 .Include("~/Content/js/plugins/datepicker/bootstrap-datepicker.js")
                 .Include("~/Content/js/plugins/jquery.blockUI/jquery.blockUI.js")
                 .Include("~/Content/js/plugins/knockout/knockout-3.4.2.js")
+                .Include("~/Content/js/plugins/jquery/jquery.redirect.js")
+                .Include("~/Scripts/Support.js")
                 );
 
 #if DEBUG

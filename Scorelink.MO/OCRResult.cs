@@ -24,7 +24,7 @@ namespace Scorelink.MO
         public string Modified { get; set; }
         public string CreateBy { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
-        public byte[] UpdateDate { get; set; }
+        public Nullable<System.DateTime> UpdateDate { get; set; }
     
         public virtual DocumentDetail DocumentDetail { get; set; }
     }

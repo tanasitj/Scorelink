@@ -23,7 +23,8 @@ namespace Scorelink.BO.Repositories
                                  FileUID = doc.FileUID,
                                  FileName = doc.FileName,
                                  FilePath = doc.FilePath,
-                                 CreateBy = doc.CreateBy
+                                 CreateBy = doc.CreateBy,
+                                 CreateDate = doc.CreateDate.ToString()
                              });
                 return query;
             }
@@ -46,7 +47,8 @@ namespace Scorelink.BO.Repositories
                             FileUID = item.FileUID,
                             FileName = item.FileName,
                             FilePath = item.FilePath,
-                            CreateBy = item.CreateBy
+                            CreateBy = item.CreateBy,
+                            CreateDate = DateTime.Parse(item.CreateDate)
                         };
 
                         db.DocumentInfoes.Add(docInfo);
@@ -67,5 +69,29 @@ namespace Scorelink.BO.Repositories
             }
         }
 
+        public string Delete(string id)
+        {
+            using (ScorelinkEntities db = new ScorelinkEntities())
+            {
+                using (System.Data.Entity.DbContextTransaction dbTran = db.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var user = db.DocumentInfoes.Where(x => x.CreateBy == id).First();
+                        db.DocumentInfoes.Remove(user);
+
+                        db.SaveChanges();
+                        dbTran.Commit();
+
+                        return "OK";
+                    }
+                    catch (Exception ex)
+                    {
+                        dbTran.Rollback();
+                        return ex.ToString();
+                    }
+                }
+            }
+        }
     }
 }
