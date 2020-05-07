@@ -27,6 +27,6 @@ namespace Scorelink.MO
         public Nullable<System.DateTime> RegisterDate { get; set; }
         public Nullable<System.DateTime> ExpireDate { get; set; }
         public string UpdateBy { get; set; }
-        public byte[] UpdateDate { get; set; }
+        public Nullable<System.DateTime> UpdateDate { get; set; }
     }
 }

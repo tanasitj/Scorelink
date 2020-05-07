@@ -32,7 +32,7 @@
           <Property Name="AreaPath" Type="varchar" MaxLength="500" />
           <Property Name="CreateBy" Type="varchar" MaxLength="50" />
           <Property Name="CreateDate" Type="datetime" />
-          <Property Name="UpdateDate" Type="timestamp" StoreGeneratedPattern="Computed" />
+          <Property Name="UpdateDate" Type="datetime" />
         </EntityType>
         <EntityType Name="DocumentDetail">
           <Key>
@@ -60,7 +60,7 @@
           <Property Name="FileName" Type="varchar" MaxLength="250" />
           <Property Name="FilePath" Type="varchar" MaxLength="250" />
           <Property Name="CreateBy" Type="varchar" MaxLength="50" />
-          <Property Name="CreateDate" Type="timestamp" StoreGeneratedPattern="Computed" />
+          <Property Name="CreateDate" Type="datetime" />
         </EntityType>
         <EntityType Name="OCRResult">
           <Key>
@@ -78,7 +78,7 @@
           <Property Name="Modified" Type="varchar" MaxLength="1" />
           <Property Name="CreateBy" Type="varchar" MaxLength="50" />
           <Property Name="CreateDate" Type="datetime" />
-          <Property Name="UpdateDate" Type="timestamp" StoreGeneratedPattern="Computed" />
+          <Property Name="UpdateDate" Type="datetime" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -97,7 +97,7 @@
           <Property Name="RegisterDate" Type="datetime" />
           <Property Name="ExpireDate" Type="datetime" />
           <Property Name="UpdateBy" Type="varchar" MaxLength="50" />
-          <Property Name="UpdateDate" Type="timestamp" StoreGeneratedPattern="Computed" />
+          <Property Name="UpdateDate" Type="datetime" />
         </EntityType>
         <Association Name="FK_DocumentArea_DocumentDetail">
           <End Role="DocumentDetail" Type="Self.DocumentDetail" Multiplicity="1" />
@@ -191,7 +191,7 @@
           <Property Name="AreaPath" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="CreateBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CreateDate" Type="DateTime" Precision="3" />
-          <Property Name="UpdateDate" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="DocumentDetail" Relationship="Self.FK_DocumentArea_DocumentDetail" FromRole="DocumentArea" ToRole="DocumentDetail" />
         </EntityType>
         <EntityType Name="DocumentDetail">
@@ -223,7 +223,7 @@
           <Property Name="FileName" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="FilePath" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="CreateBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="CreateDate" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="DocumentDetails" Relationship="Self.FK_DocumentDetail_DocumentInfo" FromRole="DocumentInfo" ToRole="DocumentDetail" />
         </EntityType>
         <EntityType Name="OCRResult">
@@ -242,7 +242,7 @@
           <Property Name="Modified" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Name="CreateBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CreateDate" Type="DateTime" Precision="3" />
-          <Property Name="UpdateDate" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="DocumentDetail" Relationship="Self.FK_OCRResult_DocumentDetail" FromRole="OCRResult" ToRole="DocumentDetail" />
         </EntityType>
         <EntityType Name="User">
@@ -262,7 +262,7 @@
           <Property Name="RegisterDate" Type="DateTime" Precision="3" />
           <Property Name="ExpireDate" Type="DateTime" Precision="3" />
           <Property Name="UpdateBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="UpdateDate" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="3" />
         </EntityType>
         <Association Name="FK_DocumentArea_DocumentDetail">
           <End Role="DocumentDetail" Type="Self.DocumentDetail" Multiplicity="1" />

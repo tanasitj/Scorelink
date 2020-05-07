@@ -9,5 +9,7 @@ namespace Scorelink.BO.Interface
     public interface IDocumentInfo<T>
     {
         IEnumerable<T> GetList(string id);
+        string Add(T item);
+        string Delete(string id);
     }
 }
