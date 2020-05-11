@@ -15,7 +15,7 @@ namespace Scorelink.BO.Repositories
             ScorelinkEntities db = new ScorelinkEntities();
             try
             {
-                var query = (from doc in db.DocumentInfoes
+                var query = (from doc in db.DocumentInfo
                              where doc.CreateBy.Contains(id)
                              select new DocumentInfoModel
                              {
@@ -51,7 +51,7 @@ namespace Scorelink.BO.Repositories
                             CreateDate = DateTime.Parse(item.CreateDate)
                         };
 
-                        db.DocumentInfoes.Add(docInfo);
+                        db.DocumentInfo.Add(docInfo);
                         db.SaveChanges();
 
                         //var lastuser = db.Users.Select(x => x.UserId).Max();
@@ -77,8 +77,8 @@ namespace Scorelink.BO.Repositories
                 {
                     try
                     {
-                        var user = db.DocumentInfoes.Where(x => x.DocId.ToString() == id).First();
-                        db.DocumentInfoes.Remove(user);
+                        var user = db.DocumentInfo.Where(x => x.DocId.ToString() == id).First();
+                        db.DocumentInfo.Remove(user);
 
                         db.SaveChanges();
                         dbTran.Commit();
