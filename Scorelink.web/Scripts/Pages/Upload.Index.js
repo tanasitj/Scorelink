@@ -1,7 +1,8 @@
-﻿function DocInfoModel(id, fileName, date) {
+﻿function DocInfoModel(id, fileName, filePath, date) {
     var self = this;
     self.DocId = ko.observable(id);
     self.FileName = ko.observable(fileName);
+    self.FilePath = ko.observable(filePath);
     self.CreateDate = ko.observable(date);
 }
 
@@ -10,34 +11,47 @@ var ViewModel = function () {
     self.AttachFile1 = ko.observable(null);
     self.DocumentInfo = ko.observableArray();
     self.DocId = ko.observable();
+    self.FilePath = ko.observable();
 
     GetDoclist();
 
     self.Upload = function () {
         readURL(document.getElementById("fileUpload1"));
         GetDoclist();
+        PNotification("Successful", "Upload completed", "success");
     }
 
     self.ClickDelete = function (data, event) {
         self.DocId(data.DocId());
-        $("#confirmDeletedModal").modal('show');
+        self.FilePath(data.FilePath());
+        //alert(data.FilePath());
+        $("#modal-default").modal('show');
     }
 
     self.SubmitDeleteData = function () {
-        $.ajax({
-            url: '/Upload/DeleteDocumentInfo' + self.DocId(),
-            cache: false,
-            type: 'GET',
-            contentType: 'application/json; charset=utf-8',
-            //data: ko.toJSON(filter),
-            success: function (data) {
-                if (!data) return PNotification("Failed", "Deleted failed", "error");
+        //alert(self.FilePath());
 
-                PNotification("Successful", "Deleted completed", "success");
-                GetDatalist();
-                $("#confirmDeletedModal").modal('hide');
+        var filter = {
+            //filterId: self.FilterUserId,
+            'id': self.DocId(),
+            'filePath': self.FilePath()
+        }
+
+        $.ajax({
+            url: '/Upload/DeleteDocumentInfo',
+            cache: false,
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            data: ko.toJSON(filter),
+            success: function (data) {
+                //if (!data) return PNotification("Failed", "Deleted failed", "error");
+
+                //PNotification("Successful", "Deleted completed", "success");
+                $("#modal-default").modal('hide');
+                GetDoclist();
+                //window.location.href = '/Upload/Index';
             }
-        })
+        });
     }
 
     function GetDoclist() {
@@ -49,7 +63,7 @@ var ViewModel = function () {
         //---- Object for search ----
         var filter = {
             //filterId: self.FilterUserId,
-            filterId: "Tanasitj",
+            filterId: "Tanasitj"
         }
 
         $.ajax({
@@ -65,11 +79,14 @@ var ViewModel = function () {
                         new DocInfoModel(
                             data.DocId,
                             data.FileName,
+                            data.FilePath,
                             data.CreateDate
                         )
                     );
                 });
+                
                 unblockUI();
+                //PNotification("Successful", "Upload completed", "success");
             }
         })
         .done(function () {
@@ -87,7 +104,7 @@ var ViewModel = function () {
         })
         .fail(
             function (xhr, textStatus, err) {
-                PNotification("Error", err, "error");
+                //PNotification("Error", err, "error");
                 unblockUI();
         });
 

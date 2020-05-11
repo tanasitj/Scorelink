@@ -49,13 +49,15 @@ namespace Scorelink.web.Controllers
                         }
                         else
                         {
-                            fname = file.FileName;
+                            fname = Guid.NewGuid().ToString();
                         }
 
                         // Get the complete folder path and store the file inside it. 
                         CreateDocFolder(folder);
 
-                        fname = Path.Combine(folder + "/", fname);
+                        FileInfo fi = new FileInfo(folder + "\\" + allKeys[0]);
+                        fname = Guid.NewGuid().ToString()+fi.Extension;
+                        fname = Path.Combine(folder + "\\", fname);
                         file.SaveAs(fname);
 
                         String sCreateDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
@@ -63,7 +65,7 @@ namespace Scorelink.web.Controllers
                         DocumentInfoModel doc = new DocumentInfoModel();
                         doc.FileUID = Guid.NewGuid().ToString();
                         doc.FileName = allKeys[0];
-                        doc.FilePath = folder +"\\"+ allKeys[0];
+                        doc.FilePath = fname;
                         doc.CreateBy = "Tanasitj";
                         doc.CreateDate = sCreateDate;
 
@@ -91,9 +93,26 @@ namespace Scorelink.web.Controllers
             return Json(users, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult DeleteDocumentInfo(string id)
+        public JsonResult DeleteDocumentInfo(string id,string filePath)
         {
-            var result = docInfoRepo.Delete(id);
+            var result = "";
+
+            if (System.IO.File.Exists(filePath))
+            {
+                try
+                {
+                    if (System.IO.File.Exists(filePath))
+                    {
+                        System.IO.File.Delete(filePath);
+                        result = docInfoRepo.Delete(id);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return Json(ex.Message);
+                }
+            }
+
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
