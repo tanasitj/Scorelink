@@ -28,7 +28,7 @@ namespace Scorelink.MO
         public virtual DbSet<AccTitleDict> AccTitleDicts { get; set; }
         public virtual DbSet<DocumentArea> DocumentAreas { get; set; }
         public virtual DbSet<DocumentDetail> DocumentDetails { get; set; }
-        public virtual DbSet<DocumentInfo> DocumentInfoes { get; set; }
+        public virtual DbSet<DocumentInfo> DocumentInfo { get; set; }
         public virtual DbSet<OCRResult> OCRResults { get; set; }
         public virtual DbSet<User> Users { get; set; }
     }
