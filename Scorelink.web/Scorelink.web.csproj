@@ -399,9 +399,6 @@
     <Content Include="dist\js\pages\dashboard2.js" />
     <Content Include="dist\js\pages\dashboard3.js" />
     <Content Include="Global.asax" />
-    <Content Include="obj\Debug\Scorelink.web.csproj.FileListAbsolute.txt" />
-    <Content Include="obj\Debug\Scorelink.web.dll" />
-    <Content Include="obj\Debug\Scorelink.web.pdb" />
     <Content Include="plugins\bootstrap-colorpicker\css\bootstrap-colorpicker.css" />
     <Content Include="plugins\bootstrap-colorpicker\css\bootstrap-colorpicker.min.css" />
     <Content Include="plugins\bootstrap-colorpicker\js\bootstrap-colorpicker.js" />
@@ -1995,10 +1992,6 @@
     <Content Include="dist\css\alt\adminlte.plugins.min.css.map" />
     <Content Include="dist\js\adminlte.js.map" />
     <Content Include="dist\js\adminlte.min.js.map" />
-    <Content Include="obj\Debug\build.force" />
-    <Content Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
-    <Content Include="obj\Debug\Scorelink.web.csproj.CopyComplete" />
-    <Content Include="obj\Debug\Scorelink.web.csprojAssemblyReference.cache" />
     <Content Include="Content\css\plugins\fontawesome-free\webfonts\fa-brands-400.eot" />
     <Content Include="Content\css\plugins\fontawesome-free\webfonts\fa-brands-400.ttf" />
     <Content Include="Content\css\plugins\fontawesome-free\webfonts\fa-brands-400.woff" />
@@ -2226,8 +2219,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="obj\Debug\TempPE\" />
-    <Folder Include="obj\Release\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

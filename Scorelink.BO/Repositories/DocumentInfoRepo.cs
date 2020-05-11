@@ -77,7 +77,7 @@ namespace Scorelink.BO.Repositories
                 {
                     try
                     {
-                        var user = db.DocumentInfoes.Where(x => x.CreateBy == id).First();
+                        var user = db.DocumentInfoes.Where(x => x.DocId.ToString() == id).First();
                         db.DocumentInfoes.Remove(user);
 
                         db.SaveChanges();

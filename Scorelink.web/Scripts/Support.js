@@ -47,7 +47,7 @@ function PNotification(title, text, type) {
         title: title,
         text: text,
         type: type,
-        styling: 'bootstrap3'
+        styling: 'bootstrap4'
     });
 }
 
