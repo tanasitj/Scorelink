@@ -1,6 +1,7 @@
-﻿function DocInfoModel(id, fileName, filePath, date) {
+﻿function DocInfoModel(id, fileUID, fileName, filePath, date) {
     var self = this;
     self.DocId = ko.observable(id);
+    self.FileUID = ko.observable(fileUID);
     self.FileName = ko.observable(fileName);
     self.FilePath = ko.observable(filePath);
     self.CreateDate = ko.observable(date);
@@ -19,6 +20,30 @@ var ViewModel = function () {
         readURL(document.getElementById("fileUpload1"));
         GetDoclist();
         PNotification("Successful", "Upload completed", "success");
+    }
+
+    self.ClickScan = function (data, event) {
+        //alert(data.FileName + data.FilePath);
+        var filter = {
+            //filterId: self.FilterUserId,
+            'path': data.FilePath(),
+            'folder': data.FileUID()
+        }
+
+        $.ajax({
+            url: '/Upload/ScanDocumentInfo',
+            cache: false,
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            data: ko.toJSON(filter),
+            success: function (data) {
+                //if (!data) return PNotification("Failed", "Deleted failed", "error");
+
+                //PNotification("Successful", "Deleted completed", "success");
+                GetDoclist();
+                //window.location.href = '/Upload/Index';
+            }
+        });
     }
 
     self.ClickDelete = function (data, event) {
@@ -78,6 +103,7 @@ var ViewModel = function () {
                     self.DocumentInfo.push(
                         new DocInfoModel(
                             data.DocId,
+                            data.FileUID,
                             data.FileName,
                             data.FilePath,
                             data.CreateDate
