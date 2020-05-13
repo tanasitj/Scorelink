@@ -116,6 +116,13 @@ namespace Scorelink.web.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult ScanDocumentInfo(string path, string folder)
+        {
+            GetLicenseLeadTool();
+            PDFConverter(path, folder);
+            return View("Upload");
+        }
+
         private void CreateDocFolder(string path)
         {
             bool folderExists = Directory.Exists(path);
@@ -125,5 +132,70 @@ namespace Scorelink.web.Controllers
             }
         }
 
+        private bool PDFConverter(string path,string folder)
+        {
+            try
+            {
+                using (var documentConverter = new Leadtools.Document.Converter.DocumentConverter())
+                {
+                    // RasterCodecsオブジェクトを初期化します。
+                    var codecs = new Leadtools.Codecs.RasterCodecs();
+                    // 水平および垂直方向の表示解像度（DPI）を設定します。
+                    codecs.Options.RasterizeDocument.Load.XResolution = 300;
+                    codecs.Options.RasterizeDocument.Load.YResolution = 300;
+                    // ファイルに含まれているページ数を調べます。
+                    Leadtools.Codecs.CodecsImageInfo info = codecs.GetInformation(path, true);
+
+                    // ページごとにロードして保存します。
+                    int pageNumber;
+                    var loopTo = info.TotalPages;
+                    for (pageNumber = 1; pageNumber <= loopTo; pageNumber++)
+                    {
+                        // 画像をロードします。
+                        Leadtools.RasterImage image = codecs.Load(path, 0, Leadtools.Codecs.CodecsLoadByteOrder.BgrOrGray, pageNumber, pageNumber);
+
+                        FileInfo file = new FileInfo(path);
+
+                        // ロードしたページをTifで保存します。
+                        string pageFileName = Path.Combine(folder, file.FullName + pageNumber.ToString() + file.Extension);
+                        codecs.Save(image, pageFileName, Leadtools.RasterImageFormat.Tif, 24);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private void GetLicenseLeadTool()
+        {
+            string sPath = Server.MapPath("..\\LicenseLeadTools\\");
+            try
+            {
+                // ライセンスファイル（xxx.lic）が配置されているパス
+                string licenseFilePath = sPath + @"tis-ImgPro-190-20171019.txt";
+                // キーファイル（xxx.key）内に記載されている文字列
+                string developerkeyPath = sPath + @"Leadtools.lic.key.txt";
+                developerkeyPath = Path.Combine(developerkeyPath);
+                //string developerkey = System.IO.File.ReadAllText(developerkeyPath);
+                string developerkey = "0cwaXp9T2ZaebVHDFtE+k4CRUcBJLjcIvt383qJp6jPtoM/YamPF1yiYkXqsCmFEbJzGcuyaOCTXpLdGpuHLl0wjSKF9nx/u";
+
+
+                // ' ライセンスファイル（xxx.lic）が配置されているパス
+                // Dim licenseFilePath As String = FCCS.PresetValues.EnvironmentPath.App() & "\tis-ImgPro-190-20171019.lic"
+                // ' キーファイル（xxx.key）内に記載されている文字列
+                // Dim developerkey As String = "0cwaXp9T2ZaebVHDFtE+k4CRUcBJLjcIvt383qJp6jPtoM/YamPF1yiYkXqsCmFEbJzGcuyaOCTXpLdGpuHLl0wjSKF9nx/u"
+                Leadtools.RasterSupport.SetLicense(licenseFilePath, developerkey);
+            }
+            catch (Exception ex)
+            {
+                //FCM.Common.PutStakTrace(ex);
+                //MessageBox.Show(ex.Message);
+                return;
+            }
+        }
     }
 }
