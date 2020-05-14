@@ -1,4 +1,5 @@
 ﻿using Scorelink.BO.Repositories;
+using Scorelink.BO.Helper;
 using Scorelink.MO;
 using Scorelink.MO.DataModel;
 using System;
@@ -30,6 +31,7 @@ namespace Scorelink.web.Controllers
                     // var id = allKeys[0];
                     //var uploadNo = allKeys[0];
                     var uploadNo = "Tanasit";
+                    string sUID = Guid.NewGuid().ToString();
 
                     //string folder = Server.MapPath("..\\FileUploads\\" + id + "\\" + uploadNo);
                     string folder = Server.MapPath("..\\FileUploads\\" + uploadNo);
@@ -49,21 +51,21 @@ namespace Scorelink.web.Controllers
                         }
                         else
                         {
-                            fname = Guid.NewGuid().ToString();
+                            fname = sUID;
                         }
 
                         // Get the complete folder path and store the file inside it. 
                         CreateDocFolder(folder);
 
                         FileInfo fi = new FileInfo(folder + "\\" + allKeys[0]);
-                        fname = Guid.NewGuid().ToString()+fi.Extension;
+                        fname = sUID + fi.Extension;
                         fname = Path.Combine(folder + "\\", fname);
                         file.SaveAs(fname);
 
                         String sCreateDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
 
                         DocumentInfoModel doc = new DocumentInfoModel();
-                        doc.FileUID = Guid.NewGuid().ToString();
+                        doc.FileUID = sUID;
                         doc.FileName = allKeys[0];
                         doc.FilePath = fname;
                         doc.CreateBy = "Tanasitj";
@@ -118,7 +120,8 @@ namespace Scorelink.web.Controllers
 
         public ActionResult ScanDocumentInfo(string path, string folder)
         {
-            GetLicenseLeadTool();
+            Common comm = new Common();
+            comm.GetLicenseLeadTool();
             PDFConverter(path, folder);
             return View("Upload");
         }
@@ -156,8 +159,11 @@ namespace Scorelink.web.Controllers
 
                         FileInfo file = new FileInfo(path);
 
+                        string sTempFolder = Server.MapPath("..\\FileUploads\\Tanasit\\Temp\\");
+                        CreateDocFolder(sTempFolder);
+
                         // ロードしたページをTifで保存します。
-                        string pageFileName = Path.Combine(folder, file.FullName + pageNumber.ToString() + file.Extension);
+                        string pageFileName = sTempFolder + Guid.NewGuid().ToString() + ".tif";
                         codecs.Save(image, pageFileName, Leadtools.RasterImageFormat.Tif, 24);
                     }
                 }
@@ -168,34 +174,6 @@ namespace Scorelink.web.Controllers
             }
 
             return true;
-        }
-
-        private void GetLicenseLeadTool()
-        {
-            string sPath = Server.MapPath("..\\LicenseLeadTools\\");
-            try
-            {
-                // ライセンスファイル（xxx.lic）が配置されているパス
-                string licenseFilePath = sPath + @"tis-ImgPro-190-20171019.txt";
-                // キーファイル（xxx.key）内に記載されている文字列
-                string developerkeyPath = sPath + @"Leadtools.lic.key.txt";
-                developerkeyPath = Path.Combine(developerkeyPath);
-                //string developerkey = System.IO.File.ReadAllText(developerkeyPath);
-                string developerkey = "0cwaXp9T2ZaebVHDFtE+k4CRUcBJLjcIvt383qJp6jPtoM/YamPF1yiYkXqsCmFEbJzGcuyaOCTXpLdGpuHLl0wjSKF9nx/u";
-
-
-                // ' ライセンスファイル（xxx.lic）が配置されているパス
-                // Dim licenseFilePath As String = FCCS.PresetValues.EnvironmentPath.App() & "\tis-ImgPro-190-20171019.lic"
-                // ' キーファイル（xxx.key）内に記載されている文字列
-                // Dim developerkey As String = "0cwaXp9T2ZaebVHDFtE+k4CRUcBJLjcIvt383qJp6jPtoM/YamPF1yiYkXqsCmFEbJzGcuyaOCTXpLdGpuHLl0wjSKF9nx/u"
-                Leadtools.RasterSupport.SetLicense(licenseFilePath, developerkey);
-            }
-            catch (Exception ex)
-            {
-                //FCM.Common.PutStakTrace(ex);
-                //MessageBox.Show(ex.Message);
-                return;
-            }
         }
     }
 }
