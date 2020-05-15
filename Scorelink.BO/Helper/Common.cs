@@ -9,9 +9,9 @@ namespace Scorelink.BO.Helper
 {
     public class Common
     {
-        public void GetLicenseLeadTool()
+        public static void GetLicenseLeadTool()
         {
-            string sPath = "C:\\LEADTOOLS 20\\Support\\Common\\License\\";
+            string sPath = Consts.LeadtoolsLIC;
             try
             {
                 string licenseFilePath = sPath + @"LEADTOOLS.LIC";
@@ -23,6 +23,15 @@ namespace Scorelink.BO.Helper
             catch (Exception ex)
             {
 
+            }
+        }
+
+        public static void CreateDocFolder(string path)
+        {
+            bool folderExists = Directory.Exists(path);
+            if (!folderExists)
+            {
+                Directory.CreateDirectory(path);
             }
         }
     }
