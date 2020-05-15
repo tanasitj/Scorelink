@@ -1998,7 +1998,6 @@
     <Content Include="Scripts\Pages\Home.Login.js" />
     <Content Include="Scripts\Pages\Upload.Index.js" />
     <Content Include="Scripts\Support.js" />
-    <Content Include="Temp\Copy.tiff" />
     <Content Include="Web.config" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Home\Register.cshtml" />
