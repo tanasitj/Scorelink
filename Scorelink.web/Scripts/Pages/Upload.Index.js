@@ -29,7 +29,7 @@ var ViewModel = function () {
             'path': data.FilePath(),
             'folder': data.FileUID()
         }
-
+        blockUI();
         $.ajax({
             url: '/Upload/ScanDocumentInfo',
             cache: false,

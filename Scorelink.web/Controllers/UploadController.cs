@@ -28,13 +28,9 @@ namespace Scorelink.web.Controllers
                 try
                 {
                     string[] allKeys = Request.Files.AllKeys[0].Split('|');
-                    // var id = allKeys[0];
-                    //var uploadNo = allKeys[0];
                     var uploadNo = "Tanasit";
                     string sUID = Guid.NewGuid().ToString();
-
-                    //string folder = Server.MapPath("..\\FileUploads\\" + id + "\\" + uploadNo);
-                    string folder = Server.MapPath("..\\FileUploads\\" + uploadNo);
+                    string folder = Consts.SLUserFlie + "\\FileUploads\\" + uploadNo;
 
                     //  Get all files from Request object  
                     HttpFileCollectionBase files = Request.Files;
@@ -55,7 +51,7 @@ namespace Scorelink.web.Controllers
                         }
 
                         // Get the complete folder path and store the file inside it. 
-                        CreateDocFolder(folder);
+                        Common.CreateDocFolder(folder);
 
                         FileInfo fi = new FileInfo(folder + "\\" + allKeys[0]);
                         fname = sUID + fi.Extension;
@@ -120,25 +116,15 @@ namespace Scorelink.web.Controllers
 
         public ActionResult ScanDocumentInfo(string path, string folder)
         {
-            Common comm = new Common();
-            comm.GetLicenseLeadTool();
             PDFConverter(path, folder);
             return View("Upload");
-        }
-
-        private void CreateDocFolder(string path)
-        {
-            bool folderExists = Directory.Exists(path);
-            if (!folderExists)
-            {
-                Directory.CreateDirectory(path);
-            }
         }
 
         private bool PDFConverter(string path,string folder)
         {
             try
             {
+                Common.GetLicenseLeadTool();
                 using (var documentConverter = new Leadtools.Document.Converter.DocumentConverter())
                 {
                     // RasterCodecsオブジェクトを初期化します。
@@ -159,8 +145,8 @@ namespace Scorelink.web.Controllers
 
                         FileInfo file = new FileInfo(path);
 
-                        string sTempFolder = Server.MapPath("..\\FileUploads\\Tanasit\\Temp\\");
-                        CreateDocFolder(sTempFolder);
+                        string sTempFolder = Consts.SLUserFlie + "\\FileUploads\\Tanasit\\Temp\\";
+                        Common.CreateDocFolder(sTempFolder);
 
                         // ロードしたページをTifで保存します。
                         string pageFileName = sTempFolder + Guid.NewGuid().ToString() + ".tif";
