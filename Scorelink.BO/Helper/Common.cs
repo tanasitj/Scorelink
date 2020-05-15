@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using Leadtools;
 
 namespace Scorelink.BO.Helper
 {
@@ -33,6 +34,22 @@ namespace Scorelink.BO.Helper
             {
                 Directory.CreateDirectory(path);
             }
+        }
+
+        public static string GenZero(string value, int iDigit)
+        {
+            int iLen = value.Length;
+            int iLoop = iDigit - iLen;
+            string sZero = "";
+
+            for (int i = 0; i < iLoop; i++)
+            {
+                sZero += "0";
+            }
+
+            string sOutput = sZero + value;
+
+            return sOutput;
         }
     }
 }
