@@ -13,6 +13,8 @@ namespace Scorelink.web.Controllers
 {
     public class UploadController : Controller
     {
+        int iUserId = 1;
+
         DocumentInfoRepo docInfoRepo = new DocumentInfoRepo();
         // GET: Upload
         public ActionResult Index()
@@ -28,7 +30,7 @@ namespace Scorelink.web.Controllers
                 try
                 {
                     string[] allKeys = Request.Files.AllKeys[0].Split('|');
-                    var uploadNo = "Tanasit";
+                    var uploadNo = Common.GenZero(iUserId.ToString(),8);
                     string sUID = Guid.NewGuid().ToString();
                     string folder = Consts.SLUserFlie + "\\FileUploads\\" + uploadNo;
 
@@ -64,7 +66,7 @@ namespace Scorelink.web.Controllers
                         doc.FileUID = sUID;
                         doc.FileName = allKeys[0];
                         doc.FilePath = fname;
-                        doc.CreateBy = "Tanasitj";
+                        doc.CreateBy = "tanasitj";
                         doc.CreateDate = sCreateDate;
 
                         DocumentInfoRepo documentInfoRepo = new DocumentInfoRepo();
@@ -145,7 +147,7 @@ namespace Scorelink.web.Controllers
 
                         FileInfo file = new FileInfo(path);
 
-                        string sTempFolder = Consts.SLUserFlie + "\\FileUploads\\Tanasit\\Temp\\";
+                        string sTempFolder = Consts.SLUserFlie + "\\FileUploads\\"+ Common.GenZero(iUserId.ToString(), 8) +"\\Temp\\";
                         Common.CreateDocFolder(sTempFolder);
 
                         // ロードしたページをTifで保存します。
