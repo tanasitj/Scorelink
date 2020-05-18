@@ -10,6 +10,7 @@ namespace Scorelink.BO.Helper
 {
     public class Common
     {
+        //For get License Leadtools in Server.
         public static void GetLicenseLeadTool()
         {
             string sPath = Consts.LeadtoolsLIC;

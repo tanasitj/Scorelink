@@ -2114,9 +2114,9 @@
     <Content Include="Views\Digitize\Index.cshtml" />
     <Content Include="Views\Digitize\Index2.cshtml" />
     <Content Include="Views\Digitize\Test.cshtml" />
-    <Content Include="Views\Test\Test.cshtml" />
     <Content Include="Views\Upload\Upload.cshtml" />
     <Content Include="Views\Shared\_ConfirmDeleted.cshtml" />
+    <Content Include="Views\Test\Test.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2130,6 +2130,7 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\RegisterController.cs" />
     <Compile Include="Controllers\SubscriptionController.cs" />
+    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\UploadController.cs" />
     <Compile Include="Controllers\UserProfileController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
