@@ -31,7 +31,10 @@ namespace Scorelink.web.Controllers
         {
             return View("Test");
         }
-
+        public ActionResult ScanEdit()
+        {
+            return View();
+        }
         public JsonResult SaveArea(List<String> values, string fileName)
         {
             String sFrom = "C:\\Tanasit\\MFEC\\Score Link\\SRC\\Scorelink\\Scorelink.web\\Temp\\"+fileName;
