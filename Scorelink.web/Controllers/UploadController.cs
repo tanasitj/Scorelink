@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Threading;
 
 namespace Scorelink.web.Controllers
 {
@@ -118,12 +119,32 @@ namespace Scorelink.web.Controllers
 
         public ActionResult ScanDocumentInfo(string path, string folder)
         {
+            //try
+            //{
+            //    int iLoop = 1;
+            //    for (int i = 0; i < iLoop; i++)
+            //    {
+            //        Thread t = new Thread(delegate ()
+            //        {
+            //            PDFConverter(path, folder);
+            //            Console.WriteLine("Thread >> " + i);
+            //        });
+            //        t.Start();
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+                
+            //}
+            //Console.WriteLine("END >> ");
+
             PDFConverter(path, folder);
             return View("Upload");
         }
 
         private bool PDFConverter(string path,string folder)
         {
+            string sTest = Guid.NewGuid().ToString();
             try
             {
                 Common.GetLicenseLeadTool();
@@ -147,13 +168,21 @@ namespace Scorelink.web.Controllers
 
                         FileInfo file = new FileInfo(path);
 
-                        string sTempFolder = Consts.SLUserFlie + "\\FileUploads\\"+ Common.GenZero(iUserId.ToString(), 8) +"\\Temp\\";
+                        //string sTempFolder = Consts.SLUserFlie + "\\FileUploads\\"+ sTest + "\\"+folder+"\\";
+                        //string sTempFolder = Consts.SLUserFlie + "\\FileUploads\\" + Common.GenZero(iUserId.ToString(), 8) + "\\" + folder + "\\Temp\\" + sTest + "\\";
+                        string sTempFolder = Consts.SLUserFlie + "\\FileUploads\\" + Common.GenZero(iUserId.ToString(), 8) + "\\" + sTest + "\\";
                         Common.CreateDocFolder(sTempFolder);
 
                         // ロードしたページをTifで保存します。
-                        string pageFileName = sTempFolder + Guid.NewGuid().ToString() + ".tif";
+                        //string pageFileName = sTempFolder + Guid.NewGuid().ToString() + ".tif";
+                        string pageFileName = sTempFolder + Common.GenZero(pageNumber.ToString(), 3) + ".tif";
                         codecs.Save(image, pageFileName, Leadtools.RasterImageFormat.Tif, 24);
+                        image.Dispose();
                     }
+
+                    codecs.Dispose();
+                    documentConverter.Dispose();
+                    GC.Collect(0);
                 }
             }
             catch (Exception ex)
