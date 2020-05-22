@@ -119,26 +119,26 @@ namespace Scorelink.web.Controllers
 
         public ActionResult ScanDocumentInfo(string path, string folder)
         {
-            try
-            {
-                int iLoop = 5;
-                for (int i = 0; i < iLoop; i++)
-                {
-                    Thread t = new Thread(delegate ()
-                    {
-                        PDFConverter(path, folder);
-                        Console.WriteLine("Thread >> " + i);
-                    });
-                    t.Start();
-                }
-            }
-            catch (Exception ex)
-            {
-                //return false;
-            }
-            Console.WriteLine("END >> ");
+            //try
+            //{
+            //    int iLoop = 1;
+            //    for (int i = 0; i < iLoop; i++)
+            //    {
+            //        Thread t = new Thread(delegate ()
+            //        {
+            //            PDFConverter(path, folder);
+            //            Console.WriteLine("Thread >> " + i);
+            //        });
+            //        t.Start();
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+                
+            //}
+            //Console.WriteLine("END >> ");
 
-            //PDFConverter(path, folder);
+            PDFConverter(path, folder);
             return View("Upload");
         }
 
@@ -168,8 +168,9 @@ namespace Scorelink.web.Controllers
 
                         FileInfo file = new FileInfo(path);
 
-                        string sTempFolder = Consts.SLUserFlie + "\\FileUploads\\"+ sTest + "\\"+folder+"\\";
-                        //string sTempFolder = Consts.SLUserFlie + "\\FileUploads\\" + Common.GenZero(iUserId.ToString(), 8) + "\\" + folder + "\\";
+                        //string sTempFolder = Consts.SLUserFlie + "\\FileUploads\\"+ sTest + "\\"+folder+"\\";
+                        //string sTempFolder = Consts.SLUserFlie + "\\FileUploads\\" + Common.GenZero(iUserId.ToString(), 8) + "\\" + folder + "\\Temp\\" + sTest + "\\";
+                        string sTempFolder = Consts.SLUserFlie + "\\FileUploads\\" + Common.GenZero(iUserId.ToString(), 8) + "\\" + sTest + "\\";
                         Common.CreateDocFolder(sTempFolder);
 
                         // ロードしたページをTifで保存します。
@@ -181,6 +182,7 @@ namespace Scorelink.web.Controllers
 
                     codecs.Dispose();
                     documentConverter.Dispose();
+                    GC.Collect(0);
                 }
             }
             catch (Exception ex)

@@ -2116,7 +2116,6 @@
     <Content Include="Views\Digitize\Test.cshtml" />
     <Content Include="Views\Upload\Upload.cshtml" />
     <Content Include="Views\Shared\_ConfirmDeleted.cshtml" />
-    <Content Include="Views\Test\Test.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2129,8 +2128,8 @@
     <Compile Include="Controllers\DigitizeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\RegisterController.cs" />
+    <Compile Include="Controllers\SelectPageController.cs" />
     <Compile Include="Controllers\SubscriptionController.cs" />
-    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\UploadController.cs" />
     <Compile Include="Controllers\UserProfileController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -2243,6 +2242,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\SelectPage\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
