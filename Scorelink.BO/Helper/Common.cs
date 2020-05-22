@@ -28,6 +28,8 @@ namespace Scorelink.BO.Helper
             }
         }
 
+        //Create Folder
+        //Parameter : Path
         public static void CreateDocFolder(string path)
         {
             bool folderExists = Directory.Exists(path);
@@ -37,6 +39,9 @@ namespace Scorelink.BO.Helper
             }
         }
 
+        //Example   : Value 1 , Digit 3 = "001" | Value 10 , Digit 3 = "010"
+        //Parameter : Value String , Digit Integer.
+        //Return    : String.
         public static string GenZero(string value, int iDigit)
         {
             int iLen = value.Length;
