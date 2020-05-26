@@ -47,6 +47,8 @@
       <DependentUpon>ScorelinkModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DataModel\DigitizeModel.cs" />
+    <Compile Include="DataModel\DocumentAreaModel.cs" />
+    <Compile Include="DataModel\DocumentDetailModel.cs" />
     <Compile Include="DataModel\DocumentInfoModel.cs" />
     <Compile Include="DataModel\User.cs" />
     <Compile Include="DocumentArea.cs">

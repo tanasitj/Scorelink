@@ -14,9 +14,9 @@ namespace Scorelink.MO
     
     public partial class DocumentArea
     {
-        public int DocId { get; set; }
-        public int DocPageNo { get; set; }
         public int AreaNo { get; set; }
+        public int DocId { get; set; }
+        public int DocDetId { get; set; }
         public string AreaX { get; set; }
         public string AreaY { get; set; }
         public string AreaH { get; set; }

@@ -1,0 +1,74 @@
+﻿
+@{
+    //ViewBag.Title = "Select Area";
+}
+
+<link href="~/plugins/jquery-selectareas/css/jquery.selectareas.css" rel="stylesheet" />
+@*<link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">*@
+
+<section class="content">
+    <input type="text" id="hdId" value="@ViewBag.Id" />
+    <input type="hidden" id="hdPath" value="@ViewBag.Path" />
+    <div class="container-fluid">
+        <!-- ROW 1 -->
+        <div class="row">
+            <!-- COL 1 -->
+            <div class="col-auto connectedSortable">
+                <div class="card">
+                    <!-- HEAD -->
+                    <div class="card-header bg-gradient-primary">
+                        <h3 class="card-title"><b><i class="far fa-object-ungroup"></i> Select Areas</b></h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <div class="image-decorator">
+
+                                <table id="tab1" class="table table-bordered">
+                                    <tbody data-bind="foreach: DocumentDetail">
+                                        <tr>
+                                            <!-- PAGE NO. -->
+                                            <td class="text-center">
+                                                <span data-bind="text: DocPageNo"></span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <!-- PAGE PREVIEW -->
+                                            <td>
+                                                <img alt="" id="view" src="" />
+                                                <span data-bind="text: PagePath"></span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- /COL 1 -->
+            <!-- COL 2 -->
+            <div class="col-auto connectedSortable">
+                <div class="card">
+                    <div class="card-header bg-gradient-primary">
+                        <h3 class="card-title"><b><i class="far fa-edit"></i> Pattern</b></h3>
+                    </div>
+                    <div class="card-body">
+                        <img alt="Pattern" id="pattern" src="~/Content/img/Pattern/OCRArea_Pattern1n.png" />
+                        <hr>
+                        <button type="button" class="btn bg-gradient-success">Execute OCR</button>
+                        <button type="button" class="btn bg-gradient-danger">Back</button>
+                    </div>
+                </div>
+            </div>
+            <!-- /COL 2 -->
+        </div>
+        <!-- /ROW 1 -->
+    </div>
+</section>
+
+@section scripts{
+    <script src="~/plugins/jquery-selectareas/js/jquery.selectareas.js"></script>
+    <script src="~/Scripts/Pages/SelectArea.Main.js"></script>
+}

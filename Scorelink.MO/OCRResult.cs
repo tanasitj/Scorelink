@@ -14,9 +14,9 @@ namespace Scorelink.MO
     
     public partial class OCRResult
     {
-        public int DocId { get; set; }
-        public int DocPageNo { get; set; }
         public int OCRId { get; set; }
+        public int DocId { get; set; }
+        public int DocDetId { get; set; }
         public string RowNo { get; set; }
         public string Footnote { get; set; }
         public string AccountTitle { get; set; }
@@ -26,6 +26,6 @@ namespace Scorelink.MO
         public Nullable<System.DateTime> CreateDate { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
     
-        public virtual DocumentDetail DocumentDetail { get; set; }
+        public virtual DocumentInfo DocumentInfo { get; set; }
     }
 }
