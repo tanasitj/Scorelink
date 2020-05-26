@@ -18,6 +18,7 @@ namespace Scorelink.MO
         public DocumentInfo()
         {
             this.DocumentDetails = new HashSet<DocumentDetail>();
+            this.OCRResults = new HashSet<OCRResult>();
         }
     
         public int DocId { get; set; }
@@ -29,5 +30,7 @@ namespace Scorelink.MO
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DocumentDetail> DocumentDetails { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OCRResult> OCRResults { get; set; }
     }
 }

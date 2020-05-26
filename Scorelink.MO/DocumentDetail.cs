@@ -18,11 +18,11 @@ namespace Scorelink.MO
         public DocumentDetail()
         {
             this.DocumentAreas = new HashSet<DocumentArea>();
-            this.OCRResults = new HashSet<OCRResult>();
         }
     
+        public int DocDetId { get; set; }
         public int DocId { get; set; }
-        public int DocPageNo { get; set; }
+        public string DocPageNo { get; set; }
         public string FootnoteNo { get; set; }
         public string PageType { get; set; }
         public string ScanStatus { get; set; }
@@ -32,11 +32,10 @@ namespace Scorelink.MO
         public string PatternNo { get; set; }
         public string CreateBy { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
+        public Nullable<System.DateTime> UpdateDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DocumentArea> DocumentAreas { get; set; }
         public virtual DocumentInfo DocumentInfo { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<OCRResult> OCRResults { get; set; }
     }
 }

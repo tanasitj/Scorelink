@@ -56,6 +56,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\LEADTOOLS 20\Bin\Dotnet4\Win32\Leadtools.Codecs.dll</HintPath>
     </Reference>
+    <Reference Include="Leadtools.Codecs.Cmp, Version=20.0.4.0, Culture=neutral, PublicKeyToken=9cf889f53ea9b907, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\LEADTOOLS 20\Bin\Dotnet4\Win32\Leadtools.Codecs.Cmp.dll</HintPath>
+    </Reference>
     <Reference Include="Leadtools.Codecs.Tif, Version=20.0.4.0, Culture=neutral, PublicKeyToken=9cf889f53ea9b907, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\LEADTOOLS 20\Bin\Dotnet4\Win32\Leadtools.Codecs.Tif.dll</HintPath>
@@ -171,6 +175,11 @@
     <Content Include="Content\css\plugins\fontawesome-free\webfonts\fa-solid-900.svg" />
     <Content Include="Content\css\plugins\icheck-bootstrap\icheck-bootstrap.css" />
     <Content Include="Content\css\plugins\icheck-bootstrap\icheck-bootstrap.min.css" />
+    <Content Include="Content\img\Pattern\OCRArea_Pattern1n.png" />
+    <Content Include="Content\img\Pattern\OCRArea_Pattern2n.png" />
+    <Content Include="Content\img\Pattern\OCRArea_Pattern3n.png" />
+    <Content Include="Content\img\Pattern\OCRArea_Pattern4n.png" />
+    <Content Include="Content\img\Pattern\OCRArea_Pattern5n.png" />
     <Content Include="Content\js\adminlte.js" />
     <Content Include="Content\js\init.js" />
     <Content Include="Content\js\plugins\bootstrap-select\bootstrap-select.js" />
@@ -2116,6 +2125,9 @@
     <Content Include="Views\Digitize\Test.cshtml" />
     <Content Include="Views\Upload\Upload.cshtml" />
     <Content Include="Views\Shared\_ConfirmDeleted.cshtml" />
+    <Content Include="Views\SelectPage\SelectPage.cshtml" />
+    <Content Include="Views\SelectArea\SelectAreaMain.cshtml" />
+    <Content Include="Scripts\Pages\SelectArea.Main.js" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2128,6 +2140,7 @@
     <Compile Include="Controllers\DigitizeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\RegisterController.cs" />
+    <Compile Include="Controllers\SelectAreaController.cs" />
     <Compile Include="Controllers\SelectPageController.cs" />
     <Compile Include="Controllers\SubscriptionController.cs" />
     <Compile Include="Controllers\UploadController.cs" />
@@ -2242,7 +2255,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\SelectPage\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />

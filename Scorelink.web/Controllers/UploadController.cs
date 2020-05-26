@@ -170,12 +170,14 @@ namespace Scorelink.web.Controllers
 
                         //string sTempFolder = Consts.SLUserFlie + "\\FileUploads\\"+ sTest + "\\"+folder+"\\";
                         //string sTempFolder = Consts.SLUserFlie + "\\FileUploads\\" + Common.GenZero(iUserId.ToString(), 8) + "\\" + folder + "\\Temp\\" + sTest + "\\";
-                        string sTempFolder = Consts.SLUserFlie + "\\FileUploads\\" + Common.GenZero(iUserId.ToString(), 8) + "\\" + sTest + "\\";
+                        string sTempFolder = Consts.SLUserFlie + "\\FileUploads\\" + Common.GenZero(iUserId.ToString(), 8) + "\\" + folder + "\\";
                         Common.CreateDocFolder(sTempFolder);
 
                         // ロードしたページをTifで保存します。
                         //string pageFileName = sTempFolder + Guid.NewGuid().ToString() + ".tif";
-                        string pageFileName = sTempFolder + Common.GenZero(pageNumber.ToString(), 3) + ".tif";
+                        //string pageFileName = sTempFolder + Common.GenZero(pageNumber.ToString(), 4) + ".jpg";
+                        string pageFileName = sTempFolder + Common.GenZero(pageNumber.ToString(), 4) + ".tif";
+                        //codecs.Save(image, pageFileName, Leadtools.RasterImageFormat.Jpeg, 24);
                         codecs.Save(image, pageFileName, Leadtools.RasterImageFormat.Tif, 24);
                         image.Dispose();
                     }

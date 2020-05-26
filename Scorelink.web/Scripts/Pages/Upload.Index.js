@@ -37,11 +37,11 @@ var ViewModel = function () {
             contentType: 'application/json; charset=utf-8',
             data: ko.toJSON(filter),
             success: function (data) {
-                //if (!data) return PNotification("Failed", "Deleted failed", "error");
-
-                //PNotification("Successful", "Deleted completed", "success");
-                GetDoclist();
-                //window.location.href = '/Upload/Index';
+                unblockUI();
+                $.redirect("/SelectPage/SelectPage", {
+                    //'id': data.UserId()
+                    'id': '1'
+                }, "POST"); 
             }
         });
     }

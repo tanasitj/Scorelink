@@ -13,5 +13,11 @@ namespace Scorelink.web.Controllers
         {
             return View();
         }
+
+        public ActionResult SelectPage(string id)
+        {
+            ViewBag.Id = id;
+            return View();
+        }
     }
 }
