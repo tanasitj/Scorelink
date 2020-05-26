@@ -680,7 +680,7 @@ var HTML5Demos;
                     // The Document Library contains properties to set that will connect to the Document Service.
                     // However, sometimes these values may need to be specified outside of the client side code, like in a configuration file.
                     // Here we show how that approach is used, and provide manual setting of the properties as a backup.
-                    $.getJSON("./serviceConfig.json", { _: new Date().getTime() })
+                    $.getJSON("../serviceConfig.json", { _: new Date().getTime() })
                         .done(function (json) {
                         // You can set the directory in which to check the license (client side)
                         // commented out, because we're using the default value ("./LEADTOOLS")
@@ -1015,7 +1015,7 @@ var HTML5Demos;
             DocumentViewerDemoApp.prototype.initDocumentViewer = function () {
                 var _this = this;
                 // For interpolation
-                lt.Controls.ImageViewer.imageProcessingLibrariesPath = "./Common";
+                lt.Controls.ImageViewer.imageProcessingLibrariesPath = "./Scripts/Leadtools/";
                 var createOptions = new lt.Document.Viewer.DocumentViewerCreateOptions();
                 // Set the UI part where the main view is displayed
                 createOptions.viewContainer = document.getElementById("imageViewerDiv");
@@ -2264,7 +2264,8 @@ var HTML5Demos;
                 var _this = this;
                 // Setup the document load options
                 var documentUri = "http://localhost/sample/OCR/DoDayDream.pdf";
-                //var documentUri = "http://localhost/sample/OCR/tiff/DoDayDream_Page_10.tiff";
+                //var documentUri = "http://localhost/sample/OCR/tiff/";
+                //var documentUri = "https://demo.leadtools.com/images/pdf/leadtools.pdf";
                 var loadOptions = this.createLoadOptions(annotations, loadEmbeddedAnnotations, documentName, firstPage, lastPage);
                 lt.Document.DocumentFactory.loadFromUri(documentUri, loadOptions)
                     .fail(function (jqXHR, statusText, errorThrown) {
@@ -2782,24 +2783,6 @@ window.onload = function () {
             if (window.location.href.indexOf("?mode") > -1)
                 demoMode = window.location.href.substring(window.location.href.indexOf("?mode"));
             window.location.href = "index.mobile.html" + demoMode;
-            return;
-        }
-    }
-    else {
-        // Run desktop version
-        if (window.location.href.toLocaleLowerCase().indexOf("index.html") == -1) {
-            var cacheId = "";
-            if (window.location.href.indexOf("?cacheId") > -1) {
-                // The demo is called from external storage manager
-                // So run the default mode
-                cacheId = window.location.href.substring(window.location.href.indexOf("?cacheId"));
-                window.location.href = "index.html" + cacheId;
-                return;
-            }
-            var demoMode = "";
-            if (window.location.href.indexOf("?mode") > -1)
-                demoMode = window.location.href.substring(window.location.href.indexOf("?mode"));
-            window.location.href = "index.html" + demoMode;
             return;
         }
     }

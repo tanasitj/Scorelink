@@ -199,12 +199,13 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
    left: 0px;
    right: 0px;
 }
-/*page size  ================================================================*/
 #imageViewerDiv {
-   position: relative;
-   width: 50%;
-   height: 100%;
-   background-color: #C2C2C2;
+    position: relative;
+    left: 20px;
+    top: 120px;
+    width: 70%;
+    height: 75%;
+    background-color: #C2C2C2;
 }
 
 button {
@@ -299,9 +300,9 @@ a {
    background-color: #DFE1E5;
    display: block;
    width: 40px;
-   left: 0px;
+   left: 0px;  
    bottom: 0px;
-   top: 0px;
+   top: 50px;
    border-right: 1px solid;
    border-right-color: #D4D6DB;
    -webkit-box-shadow: 2px 0px 7px rgba(0, 0, 0, 0.3);
@@ -315,7 +316,7 @@ a {
 
 .navigationbarBtn {
    padding: 7px 0px 8px 0px;
-   width: 100%;
+   width: 50%;
    background-color: transparent;
    border: 1px solid transparent;
    border-right: 0;

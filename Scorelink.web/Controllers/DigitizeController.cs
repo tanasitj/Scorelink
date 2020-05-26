@@ -12,16 +12,16 @@ namespace Scorelink.web.Controllers
     public class DigitizeController : Controller
     {
         // GET: Digitize
-        public ActionResult Index()
-        {
-            // Construct a bitmap from the button image resource.
-            Bitmap bmp1 = new Bitmap("C:\\Tanasit\\MFEC\\Score Link\\SRC\\Scorelink\\Scorelink.web\\Temp\\Copy.tiff");
+        //public ActionResult Index()
+        //{
+        //    // Construct a bitmap from the button image resource.
+        //    //Bitmap bmp1 = new Bitmap("C:\\Tanasit\\MFEC\\Score Link\\SRC\\Scorelink\\Scorelink.web\\Temp\\Copy.tiff");
 
-            // Save the image as a JPEG.
-            bmp1.Save("C:\\Tanasit\\MFEC\\Score Link\\SRC\\Scorelink\\Scorelink.web\\Temp\\Temp\\Test_Copy.jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
+        //    // Save the image as a JPEG.
+        //    //bmp1.Save("C:\\Tanasit\\MFEC\\Score Link\\SRC\\Scorelink\\Scorelink.web\\Temp\\Temp\\Test_Copy.jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
 
-            return View();
-        }
+        //    return View("ScanEdit");
+        //}
         public ActionResult Index2()
         {
             return View("Index2");
@@ -33,7 +33,11 @@ namespace Scorelink.web.Controllers
         }
         public ActionResult ScanEdit()
         {
-            return View();
+            return View("ScanEdit");
+        }
+        public ActionResult ScanResult()
+        {
+            return View("ScanResult");
         }
         public JsonResult SaveArea(List<String> values, string fileName)
         {

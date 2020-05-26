@@ -5,8 +5,8 @@
 .toolbar {
    background: #DFE1E5;
    position: fixed;
-   left: 0px;
-   right: 0px;
+   left: 40px;     
+   right: 360px;    
    z-index: 2;
    -webkit-box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.4);
    box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.4);
@@ -31,7 +31,7 @@
 .shortcutsbar {
    border-top: 1px solid silver;
    width: 100%;
-   height: 28px;
+   height: 40px;     
    background-color: #DFE1E5;
    overflow-x: visible;
    overflow-y: hidden;
@@ -49,6 +49,7 @@
 .verticalDivider {
    position: relative;
    bottom: 6px;
+   top:120px;
    border-right: 2px solid;
    color: silver !important;
 }

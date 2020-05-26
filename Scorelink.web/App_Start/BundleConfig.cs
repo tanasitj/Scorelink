@@ -51,9 +51,7 @@ namespace Scorelink.web.App_Start
                 //.Include("~/Content/js/init.js")
                 .Include("~/Content/js/plugins/knockout/knockout-3.4.2.js")
                 );
-            //bundles.Add(new ScriptBundle("~/Bundles/Leadtools")
-            //    .Include()
-
+           
 #if DEBUG
             BundleTable.EnableOptimizations = false;
 #else
