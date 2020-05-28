@@ -18,41 +18,19 @@
 var ViewModel = function () {
     var self = this;
     self.DocumentDetail = ko.observableArray();
+    var sImgPath = $("#hdPagePath").val();
 
-    $('img#view').attr("src", $("#hdPagePath").val());
+    $('img#view').attr("src", sImgPath);
     $('img#view').selectAreas({
         minSize: [10, 10],
         onChanged: debugQtyAreas,
         width: 600
     });
 
-    function areaToSave(area) {
-        return (typeof area.id === "undefined" ? "" : (area.id + "|")) + area.x + '|' + area.y + '|' + area.width + '|' + area.height
-    }
-
-    // Log the quantity of selections
-    function debugQtyAreas(event, id, areas) {
-        console.log(areas.length + " areas", arguments);
-    }
-
-    function SetNextPage() {
-        $.ajax({
-            url: '/SelectArea/',
-            cache: false,
-            type: 'GET',
-            contentType: 'application/json; charset=utf-8',
-            success: function (data) {
-                self.Departments([]);
-                self.Departments(data);
-            }
-        });
-    }
-
     $(document).ready(function () {
-        $('img#view').attr("src", $("#hdPagePath").val());
+        $('img#view').attr("src", sImgPath);
         //---- New ----//
         $('#btnSubmit').click(function () {
-            $('img#view').attr("src", $("#hdPagePath").val());
             var a = 0;
             var aArea = new Array();
             var areas = $('img#view').selectAreas('relativeAreas');
@@ -79,7 +57,6 @@ var ViewModel = function () {
                 datatype: "json",
                 contentType: "application/json; charset=utf-8",
                 url: "/SelectArea/SaveArea",
-                //JSON.stringify(postData);
                 data: JSON.stringify(postData),
                 success: function (data) {
                     $("#hdId").val(data.DocId);
@@ -88,18 +65,27 @@ var ViewModel = function () {
                     $("#hdPageFileName").val(data.PageFileName);
                     $("#hdPagePath").val(data.PagePath);
 
-                    $('img#view').attr("src", data.PagePath);
+                    $('img#view').attr("src", data.PagePath).width(600);
                     $('img#view').selectAreas('reset');
-                    //alert("Save completed");
                 },
                 dataType: "json",
                 traditional: true
             })
+
         });
 
         //------------//
-
+        
     });
+
+    function areaToSave(area) {
+        return (typeof area.id === "undefined" ? "" : (area.id + "|")) + area.x + '|' + area.y + '|' + area.width + '|' + area.height
+    };
+
+    // Log the quantity of selections
+    function debugQtyAreas(event, id, areas) {
+        console.log(areas.length + " areas", arguments);
+    };
 }
 
 var viewModel = new ViewModel();
