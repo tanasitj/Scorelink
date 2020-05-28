@@ -13,13 +13,17 @@ namespace Scorelink.web.Controllers
 {
     public class SelectAreaController : Controller
     {
+        //Fix code for Test.
         int iUserId = 1;
+        int iDocId = 48;
+        //----------------//
+
         DocumentDetailRepo docDetRepo = new DocumentDetailRepo();
 
         // GET: SelectArea
         public ActionResult Index()
         {
-            var data = docDetRepo.Get(48);
+            var data = docDetRepo.Get(iDocId);
             ViewBag.Id = data.DocId;
             ViewBag.DocDetId = data.DocDetId;
             ViewBag.DocPageNo = data.DocPageNo;
@@ -89,13 +93,6 @@ namespace Scorelink.web.Controllers
                         docDet.UpdateDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
                         DocumentDetailRepo docDetRepo = new DocumentDetailRepo();
                         docDetRepo.UpdateScanStatus(docDet);
-
-                        //var data = docDetRepo.Get(docId);
-                        //ViewBag.Id = data.DocId;
-                        //ViewBag.DocDetId = data.DocDetId;
-                        //ViewBag.DocPageNo = data.DocPageNo;
-                        //ViewBag.PageFileName = data.PageFileName;
-                        //ViewBag.PagePath = data.PagePath;
                     }
                 }
                 catch (Exception ex)
@@ -104,7 +101,10 @@ namespace Scorelink.web.Controllers
                 }
             }
 
+            //Return Next Page Data
             var data = docDetRepo.Get(docId);
+
+
             return Json(data, JsonRequestBehavior.AllowGet);
         }
 
