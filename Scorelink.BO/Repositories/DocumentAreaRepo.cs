@@ -84,7 +84,7 @@ namespace Scorelink.BO.Repositories
                     {
                         var doc = new DocumentArea
                         {
-                            AreaNo = item.AreaNo,
+                            //AreaNo = item.AreaNo,
                             DocId = item.DocId,
                             DocDetId = item.DocDetId,
                             AreaX = item.AreaX,

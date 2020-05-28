@@ -10,6 +10,30 @@ namespace Scorelink.BO.Repositories
 {
     public class DocumentInfoRepo : Interface.IDocumentInfo<DocumentInfoModel>
     {
+        public DocumentInfoModel Get(int id)
+        {
+            ScorelinkEntities db = new ScorelinkEntities();
+            try
+            {
+                var data = (from doc in db.DocumentInfo
+                            where doc.DocId == id
+                            select new DocumentInfoModel
+                            {
+                                DocId = doc.DocId,
+                                FileUID = doc.FileUID,
+                                FileName = doc.FileName,
+                                FilePath = doc.FilePath,
+                                CreateBy = doc.CreateBy,
+                                CreateDate = doc.CreateDate.ToString()
+                            }).FirstOrDefault();
+
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public IEnumerable<DocumentInfoModel> GetList(string id)
         {
             ScorelinkEntities db = new ScorelinkEntities();
