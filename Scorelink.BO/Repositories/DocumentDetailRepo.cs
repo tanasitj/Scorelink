@@ -13,8 +13,10 @@ namespace Scorelink.BO.Repositories
         public DocumentDetailModel Get(int id)
         {
             ScorelinkEntities db = new ScorelinkEntities();
-            var user = (from doc in db.DocumentDetails
-                        where doc.DocId == id
+            try
+            {
+                var data = (from doc in db.DocumentDetails
+                        where doc.DocId == id && doc.ScanStatus != "Y"
                         select new DocumentDetailModel
                         {
                             DocDetId = doc.DocDetId,
@@ -32,15 +34,21 @@ namespace Scorelink.BO.Repositories
                             UpdateDate = doc.UpdateDate.ToString()
                         }).FirstOrDefault();
 
-            return user;
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
-        public IEnumerable<DocumentDetailModel> GetList(string id)
+
+        public IEnumerable<DocumentDetailModel> GetList(int id)
         {
             ScorelinkEntities db = new ScorelinkEntities();
             try
             {
                 var query = (from doc in db.DocumentDetails
-                             where doc.CreateBy.Contains(id)
+                             where doc.DocId == id
                              select new DocumentDetailModel
                              {
                                  DocDetId = doc.DocDetId,
@@ -99,6 +107,32 @@ namespace Scorelink.BO.Repositories
             }
         }
 
+        public string UpdateScanStatus(DocumentDetailModel item)
+        {
+            using (ScorelinkEntities db = new ScorelinkEntities())
+            {
+                using (System.Data.Entity.DbContextTransaction dbTran = db.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var docDet = db.DocumentDetails.Where(x => x.DocDetId == item.DocDetId).First();
+                        docDet.ScanStatus = item.ScanStatus;
+                        docDet.UpdateDate = DateTime.Parse(item.UpdateDate);
+
+                        db.SaveChanges();
+                        dbTran.Commit();
+
+                        return "OK";
+                    }
+                    catch (Exception ex)
+                    {
+                        dbTran.Rollback();
+                        return ex.ToString();
+                    }
+                }
+            }
+        }
+
         public string Add(DocumentDetailModel item)
         {
             using (ScorelinkEntities db = new ScorelinkEntities())
@@ -109,7 +143,7 @@ namespace Scorelink.BO.Repositories
                     {
                         var doc = new DocumentDetail
                         {
-                            DocDetId = item.DocDetId,
+                            //DocDetId = item.DocDetId,
                             DocId = item.DocId,
                             DocPageNo = item.DocPageNo,
                             FootnoteNo = item.FootnoteNo,

@@ -10,6 +10,7 @@ namespace Scorelink.BO.Helper
     {
         //Path Config
         public const string LeadtoolsLIC = "C:\\LEADTOOLS 20\\Support\\Common\\License\\";
-        public const string SLUserFlie = "E:\\SLUserFile";
+        //public const string SLUserFlie = "E:\\SLUserFile";
+        public const string SLUserFlie = "C:\\Tanasit\\MFEC\\Score Link\\SRC\\Scorelink\\Scorelink.web";
     }
 }

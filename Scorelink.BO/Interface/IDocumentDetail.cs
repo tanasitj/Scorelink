@@ -8,7 +8,7 @@ namespace Scorelink.BO.Interface
 {
     public interface IDocumentDetail<T>
     {
-        IEnumerable<T> GetList(string id);
+        IEnumerable<T> GetList(int id);
         string Add(T item);
         string Update(T item);
         string Delete(string id);
