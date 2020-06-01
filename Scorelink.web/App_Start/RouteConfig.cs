@@ -12,7 +12,12 @@ namespace Scorelink.web
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
+<<<<<<< Updated upstream
                 defaults: new { controller = "Home", action = "Login", id = UrlParameter.Optional }
+=======
+                defaults: new { controller = "Digitize", action = "Preview", id = UrlParameter.Optional }
+                //defaults: new { controller = "Home", action = "Login", id = UrlParameter.Optional }
+>>>>>>> Stashed changes
             );
         }
     }

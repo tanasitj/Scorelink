@@ -48,6 +48,33 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+<<<<<<< Updated upstream
+=======
+    <Reference Include="Leadtools, Version=20.0.4.0, Culture=neutral, PublicKeyToken=9cf889f53ea9b907, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\LEADTOOLS 20\Bin\Dotnet4\x64\Leadtools.dll</HintPath>
+    </Reference>
+    <Reference Include="Leadtools.Codecs, Version=20.0.4.0, Culture=neutral, PublicKeyToken=9cf889f53ea9b907, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\LEADTOOLS 20\Bin\Dotnet4\x64\Leadtools.Codecs.dll</HintPath>
+    </Reference>
+    <Reference Include="Leadtools.Codecs.Cmp, Version=20.0.4.0, Culture=neutral, PublicKeyToken=9cf889f53ea9b907, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\LEADTOOLS 20\Bin\Dotnet4\x64\Leadtools.Codecs.Cmp.dll</HintPath>
+    </Reference>
+    <Reference Include="Leadtools.Codecs.Tif, Version=20.0.4.0, Culture=neutral, PublicKeyToken=9cf889f53ea9b907, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\LEADTOOLS 20\Bin\Dotnet4\x64\Leadtools.Codecs.Tif.dll</HintPath>
+    </Reference>
+    <Reference Include="Leadtools.Document, Version=20.0.4.0, Culture=neutral, PublicKeyToken=9cf889f53ea9b907, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\LEADTOOLS 20\Bin\Dotnet4\x64\Leadtools.Document.dll</HintPath>
+    </Reference>
+    <Reference Include="Leadtools.Document.Converter, Version=20.0.4.0, Culture=neutral, PublicKeyToken=9cf889f53ea9b907, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\LEADTOOLS 20\Bin\Dotnet4\x64\Leadtools.Document.Converter.dll</HintPath>
+    </Reference>
+>>>>>>> Stashed changes
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -1975,6 +2002,14 @@
     <Content Include="plugins\toastr\toastr.css" />
     <Content Include="plugins\toastr\toastr.min.css" />
     <Content Include="plugins\toastr\toastr.min.js" />
+<<<<<<< Updated upstream
+=======
+    <Content Include="Scripts\Converter\Dialogs\AdvancedPdfOptionsDlg.js" />
+    <Content Include="Scripts\Converter\Dialogs\DocumentConverterDlg.js" />
+    <Content Include="Scripts\Converter\Dialogs\DocumentFormatOptionsDlg.js" />
+    <Content Include="Scripts\Converter\Dialogs\SaveToDlg.js" />
+    <Content Include="Scripts\Converter\DocumentConverterFormats.js" />
+>>>>>>> Stashed changes
     <Content Include="Scripts\Dialogs\ColorPicker.js" />
     <Content Include="Scripts\Dialogs\CustomRenderModeDlg.js" />
     <Content Include="Scripts\Dialogs\DocumentPropertiesDlg.js" />
@@ -2222,7 +2257,10 @@
     <Content Include="Scripts\Resources\Styles\Icons.css" />
     <Content Include="Scripts\Resources\Styles\ImageViewerStyles.css" />
     <Content Include="Scripts\Resources\Styles\ImageViewerThumbnailStyles.css" />
+<<<<<<< Updated upstream
     <Content Include="Scripts\Resources\Styles\LEADServiceStyles.css" />
+=======
+>>>>>>> Stashed changes
     <Content Include="Scripts\Resources\Styles\Sidebar.css" />
     <Content Include="Scripts\Resources\Styles\Table.css" />
     <Content Include="Scripts\Resources\Styles\Toolbars.css" />
@@ -2347,6 +2385,12 @@
     <Content Include="Views\Test\Test.cshtml" />
     <Content Include="Views\Upload\Upload.cshtml" />
     <Content Include="Views\Shared\_ConfirmDeleted.cshtml" />
+<<<<<<< Updated upstream
+=======
+    <Content Include="Views\SelectPage\SelectPage.cshtml" />
+    <Content Include="Views\SelectArea\SelectAreaMain.cshtml" />
+    <Content Include="Scripts\Pages\SelectArea.Main.js" />
+>>>>>>> Stashed changes
     <Content Include="Scripts\Resources\Cmaps\78-EUC-H.bcmap" />
     <Content Include="Scripts\Resources\Cmaps\78-EUC-V.bcmap" />
     <Content Include="Scripts\Resources\Cmaps\78-H.bcmap" />
@@ -2518,8 +2562,13 @@
     <Content Include="Scripts\Resources\Cmaps\WP-Symbol.bcmap" />
     <Content Include="Scripts\Resources\Styles\ImageViewerStyles.scss" />
     <Content Include="Scripts\Resources\Styles\ImageViewerThumbnailStyles.scss" />
+<<<<<<< Updated upstream
     <Content Include="serviceConfig.json" />
     <None Include="Views\Digitize\ScanEdit.cshtml" />
+=======
+    <Content Include="Views\Digitize\Preview.cshtml" />
+    <Content Include="serviceConfig.json" />
+>>>>>>> Stashed changes
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

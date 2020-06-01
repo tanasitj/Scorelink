@@ -9,7 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scorelink.MO", "Scorelink.M
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scorelink.BO", "Scorelink.BO\Scorelink.BO.csproj", "{C2655C85-79D7-4D37-B787-319BFC3CDBEA}"
 EndProject
+<<<<<<< Updated upstream
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocumentService", "C:\LEADTOOLS 20\Examples\JS\Services\DocumentServiceDotNet\fx\DocumentService.csproj", "{281F9CA3-EB35-4288-B8BE-C537095E37DA}"
+=======
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocumentService", "C:\LEADTOOLS 20\Examples\JS\Services\DocumentServiceDotNet\fx\DocumentService.csproj", "{8BF99A10-37EB-4185-B318-B0A252765410}"
+>>>>>>> Stashed changes
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +61,7 @@ Global
 		{C2655C85-79D7-4D37-B787-319BFC3CDBEA}.Release|x64.Build.0 = Release|Any CPU
 		{C2655C85-79D7-4D37-B787-319BFC3CDBEA}.Release|x86.ActiveCfg = Release|Any CPU
 		{C2655C85-79D7-4D37-B787-319BFC3CDBEA}.Release|x86.Build.0 = Release|Any CPU
+<<<<<<< Updated upstream
 		{281F9CA3-EB35-4288-B8BE-C537095E37DA}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{281F9CA3-EB35-4288-B8BE-C537095E37DA}.Debug|x64.ActiveCfg = Debug|x64
 		{281F9CA3-EB35-4288-B8BE-C537095E37DA}.Debug|x64.Build.0 = Debug|x64
@@ -67,6 +72,18 @@ Global
 		{281F9CA3-EB35-4288-B8BE-C537095E37DA}.Release|x64.Build.0 = Release|x64
 		{281F9CA3-EB35-4288-B8BE-C537095E37DA}.Release|x86.ActiveCfg = Release|x86
 		{281F9CA3-EB35-4288-B8BE-C537095E37DA}.Release|x86.Build.0 = Release|x86
+=======
+		{8BF99A10-37EB-4185-B318-B0A252765410}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{8BF99A10-37EB-4185-B318-B0A252765410}.Debug|x64.ActiveCfg = Debug|x64
+		{8BF99A10-37EB-4185-B318-B0A252765410}.Debug|x64.Build.0 = Debug|x64
+		{8BF99A10-37EB-4185-B318-B0A252765410}.Debug|x86.ActiveCfg = Debug|x86
+		{8BF99A10-37EB-4185-B318-B0A252765410}.Debug|x86.Build.0 = Debug|x86
+		{8BF99A10-37EB-4185-B318-B0A252765410}.Release|Any CPU.ActiveCfg = Release|x86
+		{8BF99A10-37EB-4185-B318-B0A252765410}.Release|x64.ActiveCfg = Release|x64
+		{8BF99A10-37EB-4185-B318-B0A252765410}.Release|x64.Build.0 = Release|x64
+		{8BF99A10-37EB-4185-B318-B0A252765410}.Release|x86.ActiveCfg = Release|x86
+		{8BF99A10-37EB-4185-B318-B0A252765410}.Release|x86.Build.0 = Release|x86
+>>>>>>> Stashed changes
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
