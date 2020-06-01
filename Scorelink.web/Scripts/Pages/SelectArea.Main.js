@@ -79,12 +79,6 @@ var ViewModel = function () {
                 dataType: "json",
                 traditional: true
             })
-            //.done(function () {
-            //    alert("done");
-            //})
-            //.fail(function () {
-            //    alert("fail");
-            //});
         });
 
         //------------//
