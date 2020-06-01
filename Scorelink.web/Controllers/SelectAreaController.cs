@@ -103,9 +103,14 @@ namespace Scorelink.web.Controllers
 
             //Return Next Page Data
             var data = docDetRepo.Get(docId);
-
-
-            return Json(data, JsonRequestBehavior.AllowGet);
+            if (data == null)
+            {
+                return Json("", JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(data, JsonRequestBehavior.AllowGet);
+            }
         }
 
         private static Image cropImage(Image img, Rectangle cropArea)

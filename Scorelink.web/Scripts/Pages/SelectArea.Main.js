@@ -31,6 +31,7 @@ var ViewModel = function () {
         $('img#view').attr("src", sImgPath);
         //---- New ----//
         $('#btnSubmit').click(function () {
+            blockUI();
             var a = 0;
             var aArea = new Array();
             var areas = $('img#view').selectAreas('relativeAreas');
@@ -59,19 +60,31 @@ var ViewModel = function () {
                 url: "/SelectArea/SaveArea",
                 data: JSON.stringify(postData),
                 success: function (data) {
-                    $("#hdId").val(data.DocId);
-                    $("#hdDocDetId").val(data.DocDetId);
-                    $("#hdDocPageNo").val(data.DocPageNo);
-                    $("#hdPageFileName").val(data.PageFileName);
-                    $("#hdPagePath").val(data.PagePath);
 
-                    $('img#view').attr("src", data.PagePath).width(600);
-                    $('img#view').selectAreas('reset');
+                    unblockUI();
+                    if (!data) {
+                        window.location.href = '/Upload/Index';
+                    } else {
+                        $("#hdId").val(data.DocId);
+                        $("#hdDocDetId").val(data.DocDetId);
+                        $("#hdDocPageNo").val(data.DocPageNo);
+                        $("#hdPageFileName").val(data.PageFileName);
+                        $("#hdPagePath").val(data.PagePath);
+
+                        $('img#view').attr("src", data.PagePath).width(600);
+                        $('img#view').selectAreas('reset');
+
+                    }
                 },
                 dataType: "json",
                 traditional: true
             })
-
+            //.done(function () {
+            //    alert("done");
+            //})
+            //.fail(function () {
+            //    alert("fail");
+            //});
         });
 
         //------------//
