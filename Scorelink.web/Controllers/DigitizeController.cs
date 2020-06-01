@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
+using NLog.Targets;
 
 namespace Scorelink.web.Controllers
 {
@@ -31,7 +32,14 @@ namespace Scorelink.web.Controllers
         {
             return View("Test");
         }
-
+        public ActionResult Preview()
+        {
+            return View("Preview");
+        }
+       public ActionResult ScanEdit()
+        {
+            return View("ScanEdit");
+        }
         public JsonResult SaveArea(List<String> values, string fileName)
         {
             String sFrom = "C:\\Tanasit\\MFEC\\Score Link\\SRC\\Scorelink\\Scorelink.web\\Temp\\"+fileName;
