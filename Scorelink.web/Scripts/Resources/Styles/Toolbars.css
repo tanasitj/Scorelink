@@ -4,9 +4,15 @@
 /* **************************************************************/
 .toolbar {
    background: #DFE1E5;
+<<<<<<< Updated upstream
    position: fixed;
    left: 40px;     
    right: 360px;    
+=======
+/*   position: fixed;*****************************************************/
+   left: 40px;     
+   right: 0px;    
+>>>>>>> Stashed changes
    z-index: 2;
    -webkit-box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.4);
    box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.4);
@@ -30,7 +36,11 @@
 
 .shortcutsbar {
    border-top: 1px solid silver;
+<<<<<<< Updated upstream
    width: 100%;
+=======
+/*   width: 40%;****************************************************/ 
+>>>>>>> Stashed changes
    height: 40px;     
    background-color: #DFE1E5;
    overflow-x: visible;

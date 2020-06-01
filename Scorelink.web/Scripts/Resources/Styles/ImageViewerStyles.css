@@ -51,7 +51,11 @@ canvas.lt-imageviewer-forecanvas.ready-for-transitions.hide-for-transitions {
    border: 0 solid #e4a462;
    background-color: transparent;
    margin: 0px;
+<<<<<<< Updated upstream
    padding: 0px;
+=======
+   padding: 300px;  
+>>>>>>> Stashed changes
    /* Image Loading */
    /* Image Loaded */
 }

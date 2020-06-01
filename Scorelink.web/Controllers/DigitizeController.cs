@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
+using NLog.Targets;
 
 namespace Scorelink.web.Controllers
 {
@@ -31,6 +32,7 @@ namespace Scorelink.web.Controllers
         {
             return View("Test");
         }
+<<<<<<< Updated upstream
         public ActionResult ScanEdit()
         {
             return View("ScanEdit");
@@ -38,6 +40,15 @@ namespace Scorelink.web.Controllers
         public ActionResult ScanResult()
         {
             return View("ScanResult");
+=======
+        public ActionResult Preview()
+        {
+            return View("Preview");
+        }
+       public ActionResult ScanEdit()
+        {
+            return View("ScanEdit");
+>>>>>>> Stashed changes
         }
         public JsonResult SaveArea(List<String> values, string fileName)
         {
