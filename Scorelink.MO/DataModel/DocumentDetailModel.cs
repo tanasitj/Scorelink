@@ -21,5 +21,17 @@ namespace Scorelink.MO.DataModel
         public string CreateBy { get; set; }
         public string CreateDate { get; set; }
         public string UpdateDate { get; set; }
+
+        //-- For Select Pattern --//
+        public string AccTitleAlphabet { get; set; }
+        public string AccTitleNumber { get; set; }
+        public string AccTitleSymbol { get; set; }
+        public string FootnoteAlphabet { get; set; }
+        public string FootnoteNumber { get; set; }
+        public string FootnoteSymbol { get; set; }
+        public string NumberOfDec { get; set; }
+        public string NoiseReduce { get; set; }
+
+
     }
 }
