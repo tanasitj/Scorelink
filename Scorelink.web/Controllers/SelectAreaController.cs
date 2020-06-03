@@ -15,7 +15,7 @@ namespace Scorelink.web.Controllers
     {
         //Fix code for Test.
         int iUserId = 1;
-        int iDocId = 48;
+        int iDocId = 1038;
         //----------------//
 
         DocumentDetailRepo docDetRepo = new DocumentDetailRepo();
@@ -25,6 +25,20 @@ namespace Scorelink.web.Controllers
         {
             var data = docDetRepo.Get(iDocId);
             ViewBag.Id = data.DocId;
+            ViewBag.DocDetId = data.DocDetId;
+            ViewBag.DocPageNo = data.DocPageNo;
+            ViewBag.PageFileName = data.PageFileName;
+            ViewBag.PagePath = data.PagePath;
+
+            return View("SelectAreaMain");
+        }
+
+        public ActionResult SelectArea(DocumentDetailModel item)
+        {
+            ViewBag.Id = item.DocId;
+            ViewBag.PatternNo = item.PatternNo;
+
+            var data = docDetRepo.Get(iDocId);
             ViewBag.DocDetId = data.DocDetId;
             ViewBag.DocPageNo = data.DocPageNo;
             ViewBag.PageFileName = data.PageFileName;

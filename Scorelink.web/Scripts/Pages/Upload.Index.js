@@ -19,7 +19,7 @@ var ViewModel = function () {
     self.Upload = function () {
         readURL(document.getElementById("fileUpload1"));
         GetDoclist();
-        PNotification("Successful", "Upload completed", "success");
+        //PNotification("Successful", "Upload completed", "success");
     }
 
     self.ClickScan = function (data, event) {
