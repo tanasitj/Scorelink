@@ -12,7 +12,7 @@ namespace Scorelink.web
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Upload", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "PreviewPage", action = "Index", id = UrlParameter.Optional }
             );
         }
     }
