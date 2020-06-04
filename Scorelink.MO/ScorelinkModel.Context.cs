@@ -30,6 +30,8 @@ namespace Scorelink.MO
         public virtual DbSet<DocumentDetail> DocumentDetails { get; set; }
         public virtual DbSet<DocumentInfo> DocumentInfo { get; set; }
         public virtual DbSet<OCRResult> OCRResults { get; set; }
+        public virtual DbSet<StatementType> StatementTypes { get; set; }
+        public virtual DbSet<SysConfig> SysConfigs { get; set; }
         public virtual DbSet<User> Users { get; set; }
     }
 }

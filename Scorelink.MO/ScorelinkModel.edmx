@@ -77,6 +77,30 @@
           <Property Name="CreateDate" Type="datetime" />
           <Property Name="UpdateDate" Type="datetime" />
         </EntityType>
+        <EntityType Name="StatementType">
+          <Key>
+            <PropertyRef Name="StatementId" />
+          </Key>
+          <Property Name="StatementId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StatementName" Type="varchar" MaxLength="50" />
+          <Property Name="Active" Type="varchar" MaxLength="1" />
+          <Property Name="CreateBy" Type="varchar" MaxLength="50" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="UpdateBy" Type="varchar" MaxLength="50" />
+          <Property Name="UpdateDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="SysConfig">
+          <Key>
+            <PropertyRef Name="ConstId" />
+          </Key>
+          <Property Name="ConstId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ConstName" Type="varchar" MaxLength="50" />
+          <Property Name="ConstOutput" Type="varchar" MaxLength="50" />
+          <Property Name="CreateBy" Type="varchar" MaxLength="50" />
+          <Property Name="CreateDate" Type="datetime" />
+          <Property Name="UpdateBy" Type="varchar" MaxLength="50" />
+          <Property Name="UpdateDate" Type="datetime" />
+        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="UserId" />
@@ -138,6 +162,8 @@
           <EntitySet Name="DocumentDetail" EntityType="Self.DocumentDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DocumentInfo" EntityType="Self.DocumentInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OCRResult" EntityType="Self.OCRResult" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StatementType" EntityType="Self.StatementType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SysConfig" EntityType="Self.SysConfig" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_DocumentArea_DocumentDetail" Association="Self.FK_DocumentArea_DocumentDetail">
             <End Role="DocumentDetail" EntitySet="DocumentDetail" />
@@ -235,6 +261,30 @@
           <Property Name="UpdateDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="DocumentInfo" Relationship="Self.FK_OCRResult_DocumentInfo" FromRole="OCRResult" ToRole="DocumentInfo" />
         </EntityType>
+        <EntityType Name="StatementType">
+          <Key>
+            <PropertyRef Name="StatementId" />
+          </Key>
+          <Property Name="StatementId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StatementName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Active" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="CreateBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdateBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="SysConfig">
+          <Key>
+            <PropertyRef Name="ConstId" />
+          </Key>
+          <Property Name="ConstId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ConstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ConstOutput" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreateBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdateBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UpdateDate" Type="DateTime" Precision="3" />
+        </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="UserId" />
@@ -296,6 +346,8 @@
           <EntitySet Name="DocumentDetails" EntityType="Self.DocumentDetail" />
           <EntitySet Name="DocumentInfoes" EntityType="Self.DocumentInfo" />
           <EntitySet Name="OCRResults" EntityType="Self.OCRResult" />
+          <EntitySet Name="StatementTypes" EntityType="Self.StatementType" />
+          <EntitySet Name="SysConfigs" EntityType="Self.SysConfig" />
           <EntitySet Name="Users" EntityType="Self.User" />
           <AssociationSet Name="FK_DocumentArea_DocumentDetail" Association="Self.FK_DocumentArea_DocumentDetail">
             <End Role="DocumentDetail" EntitySet="DocumentDetails" />
@@ -389,6 +441,32 @@
                 <ScalarProperty Name="Modified" ColumnName="Modified" />
                 <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StatementTypes">
+            <EntityTypeMapping TypeName="ScorelinkModel.StatementType">
+              <MappingFragment StoreEntitySet="StatementType">
+                <ScalarProperty Name="StatementId" ColumnName="StatementId" />
+                <ScalarProperty Name="StatementName" ColumnName="StatementName" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateBy" ColumnName="UpdateBy" />
+                <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SysConfigs">
+            <EntityTypeMapping TypeName="ScorelinkModel.SysConfig">
+              <MappingFragment StoreEntitySet="SysConfig">
+                <ScalarProperty Name="ConstId" ColumnName="ConstId" />
+                <ScalarProperty Name="ConstName" ColumnName="ConstName" />
+                <ScalarProperty Name="ConstOutput" ColumnName="ConstOutput" />
+                <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UpdateBy" ColumnName="UpdateBy" />
                 <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
               </MappingFragment>
             </EntityTypeMapping>

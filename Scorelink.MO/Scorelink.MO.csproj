@@ -79,6 +79,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ScorelinkModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="StatementType.cs">
+      <DependentUpon>ScorelinkModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SysConfig.cs">
+      <DependentUpon>ScorelinkModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="User.cs">
       <DependentUpon>ScorelinkModel.tt</DependentUpon>
     </Compile>
