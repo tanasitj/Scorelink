@@ -2263,9 +2263,10 @@ var HTML5Demos;
             DocumentViewerDemoApp.prototype.loadFromUri = function (documentUri, annotations, loadEmbeddedAnnotations, documentName, firstPage, lastPage) {
                 var _this = this;
                 // Setup the document load options
-                var documentUri = "http://localhost/sample/OCR/DoDayDream.pdf";
+                //var documentUri = "http://localhost/sample/OCR/DoDayDream.pdf";
                 //var documentUri = "http://localhost/sample/OCR/tiff/";
                 //var documentUri = "https://demo.leadtools.com/images/pdf/leadtools.pdf";
+                var documentUri = document.getElementById("hdPDFFile").value;
                 var loadOptions = this.createLoadOptions(annotations, loadEmbeddedAnnotations, documentName, firstPage, lastPage);
                 lt.Document.DocumentFactory.loadFromUri(documentUri, loadOptions)
                     .fail(function (jqXHR, statusText, errorThrown) {

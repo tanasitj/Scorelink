@@ -183,17 +183,17 @@
     background-color: #C2C2C2;
 }
 
-button {
+/*button {
    color: #4D5F82 !important;
-}
+}*/
 
    button:disabled {
       opacity: 0.5 !important;
    }
 
-a {
+/*a {
    color: #4D5F82 !important;
-}
+}*/
 
 .dropdown-menu {
    width: 250px;
@@ -846,7 +846,6 @@ ul.dlg-tabs {
 
 /*/////////// Dialog Collapsible in Annotations Demo ///////////*/
 .collapse-container {
-   position: relative;
    margin-bottom: 15px;
    border-radius: 2px;
    overflow: hidden;
