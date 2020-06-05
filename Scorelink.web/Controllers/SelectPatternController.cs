@@ -17,6 +17,7 @@ namespace Scorelink.web.Controllers
         int iDocId = 1038;
         //----------------//
 
+        DocumentInfoRepo docInfoRepo = new DocumentInfoRepo();
         DocumentDetailRepo docDetRepo = new DocumentDetailRepo();
         // GET: SelectPattern
         public ActionResult Index()
@@ -27,6 +28,9 @@ namespace Scorelink.web.Controllers
             ViewBag.DocPageNo = data.DocPageNo;
             ViewBag.PageFileName = data.PageFileName;
             ViewBag.PagePath = data.PagePath;
+
+            var docInfo = docInfoRepo.Get(iDocId);
+            ViewBag.PDFPath = docInfo.FilePath;
 
             return View("SelectPatternMain");
         }
