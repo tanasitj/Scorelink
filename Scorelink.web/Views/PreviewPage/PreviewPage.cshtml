@@ -18,37 +18,7 @@
     <link rel="stylesheet" href="~/Scripts/Resources/Styles/Table.css" type="text/css" />
     <link rel="stylesheet" href="~/Scripts/Resources/Styles/Dialogs.css" type="text/css" />
     <link rel="stylesheet" href="~/Scripts/Resources/Styles/Icons.css" type="text/css" />
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $("#BtnSelectPage").click(function () {
-                var PageNumber = $("#pageNumber").val();
-                var Footnotes = "Test Footnotes";
-                var TypeFinancial = $("input[name = 'Kind_of_Financial']:checked").val();
-                if (TypeFinancial == "Income Statement") {
-                    $('#select_page tr').each(function () {
-                        if (!this.rowIndex) return;
-                        var Financial = this.cells[2].innerHTML;
-                        if (Financial == "Income Statement") {
-                            var content = this.cells[0].innerHTML;
-                            var x = document.getElementById('select_page').rows[parseInt(1, 10)].cells;
-                            x[parseInt(0, 10)].innerHTML = content + "," + PageNumber;
-                        }
-                    });
-                }
-                var tr;
-                tr = $('<tr/>');
-                tr.append("<td>" + PageNumber + "</td>");
-                tr.append("<td>" + Footnotes + "</td>");
-                tr.append("<td>" + TypeFinancial + "</td>");
-                tr.append("<td> <button id='Scan='botaoadd'>  Scan  </button> </td>");
-                tr.append("<td> <button id='Scan_Edit' class='botaoadd'>  Scan/Edit  </button> </td>");
-                $('#select_page').append(tr);
 
-            });
-
-        });
-    </script>
 </head>
 <body>
 
