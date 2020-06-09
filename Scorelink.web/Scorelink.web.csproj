@@ -60,10 +60,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\LEADTOOLS 20\Bin\Dotnet4\Win32\Leadtools.Codecs.Cmp.dll</HintPath>
     </Reference>
-    <Reference Include="Leadtools.Codecs.Tif, Version=20.0.4.0, Culture=neutral, PublicKeyToken=9cf889f53ea9b907, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\LEADTOOLS 20\Bin\Dotnet4\Win32\Leadtools.Codecs.Tif.dll</HintPath>
-    </Reference>
     <Reference Include="Leadtools.Document, Version=20.0.4.0, Culture=neutral, PublicKeyToken=9cf889f53ea9b907, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\LEADTOOLS 20\Bin\Dotnet4\Win32\Leadtools.Document.dll</HintPath>
@@ -71,6 +67,10 @@
     <Reference Include="Leadtools.Document.Converter, Version=20.0.4.0, Culture=neutral, PublicKeyToken=9cf889f53ea9b907, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\LEADTOOLS 20\Bin\Dotnet4\Win32\Leadtools.Document.Converter.dll</HintPath>
+    </Reference>
+    <Reference Include="Leadtools.Document.Pdf, Version=20.0.4.0, Culture=neutral, PublicKeyToken=9cf889f53ea9b907, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\LEADTOOLS 20\Bin\Dotnet4\Win32\Leadtools.Document.Pdf.dll</HintPath>
     </Reference>
     <Reference Include="Leadtools.Pdf, Version=20.0.4.0, Culture=neutral, PublicKeyToken=9cf889f53ea9b907, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
@@ -2714,6 +2714,9 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\..\..\..\..\..\LEADTOOLS 20\Bin\Dotnet4\x64\Leadtools.dll" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

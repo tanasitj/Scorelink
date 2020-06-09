@@ -22,6 +22,7 @@ namespace Scorelink.MO
         public string AreaH { get; set; }
         public string AreaW { get; set; }
         public string AreaPath { get; set; }
+        public string AreaUrl { get; set; }
         public string CreateBy { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
         public Nullable<System.DateTime> UpdateDate { get; set; }
