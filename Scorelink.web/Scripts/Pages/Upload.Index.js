@@ -1,9 +1,10 @@
-﻿function DocInfoModel(id, fileUID, fileName, filePath, date) {
+﻿function DocInfoModel(id, fileUID, fileName, filePath, fileUrl, date) {
     var self = this;
     self.DocId = ko.observable(id);
     self.FileUID = ko.observable(fileUID);
     self.FileName = ko.observable(fileName);
     self.FilePath = ko.observable(filePath);
+    self.FileUrl = ko.observable(fileUrl);
     self.CreateDate = ko.observable(date);
 }
 
@@ -13,6 +14,7 @@ var ViewModel = function () {
     self.DocumentInfo = ko.observableArray();
     self.DocId = ko.observable();
     self.FilePath = ko.observable();
+    self.FileUrl = ko.observable();
 
     GetDoclist();
 
@@ -88,7 +90,7 @@ var ViewModel = function () {
         //---- Object for search ----
         var filter = {
             //filterId: self.FilterUserId,
-            filterId: "Tanasitj"
+            filterId: $("#hdUserId").val()
         }
 
         $.ajax({
@@ -164,6 +166,8 @@ var ViewModel = function () {
             for (var i = 0; i < files.length; i++) {
                 fileData.append(files[i].name, files[i]);
             }
+
+            fileData.append("userId", $("#hdUserId").val());
 
             $.ajax({
                 url: '/Upload/UploadFiles',

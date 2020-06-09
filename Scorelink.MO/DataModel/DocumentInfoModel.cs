@@ -12,6 +12,7 @@ namespace Scorelink.MO.DataModel
         public string FileUID { get; set; }
         public string FileName { get; set; }
         public string FilePath { get; set; }
+        public string FileUrl { get; set; }
         public string CreateBy { get; set; }
         public string CreateDate { get; set; }
     }
