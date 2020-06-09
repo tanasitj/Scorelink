@@ -173,13 +173,14 @@
     left: 20px;
     top: 10px;
     width: 60%;
-    height: 65%;
+    height: 60%;
 }
 #imageViewerDiv {
-    left: 20px;
-    top: 10px;
-    width: 95%;
-    height: 80%;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    width: 100%;
+    height: 60%;
     background-color: #C2C2C2;
 }
 
@@ -846,6 +847,7 @@ ul.dlg-tabs {
 
 /*/////////// Dialog Collapsible in Annotations Demo ///////////*/
 .collapse-container {
+   /*position: relative;*/
    margin-bottom: 15px;
    border-radius: 2px;
    overflow: hidden;
