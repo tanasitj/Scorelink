@@ -18,16 +18,25 @@
     <link rel="stylesheet" href="~/Scripts/Resources/Styles/Table.css" type="text/css" />
     <link rel="stylesheet" href="~/Scripts/Resources/Styles/Dialogs.css" type="text/css" />
     <link rel="stylesheet" href="~/Scripts/Resources/Styles/Icons.css" type="text/css" />
+    @*<script type="text/javascript">
+            // check if HTML5 canvas is supported
+            if (!("HTMLCanvasElement" in window)) {
+                alert("HTML5 Canvas not supported, redirecting ...");
+                location.href = "~/Scripts/Resources/NoHTML5Support.html";
+            }
+        </script>*@
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script>
         $(document).ready(function () {
             $("#BtnSelectPage").click(function () {
+
+                //Getting value from to populate
                 var PageNumber = $("#pageNumber").val();
                 var Footnotes = "Test Footnotes";
                 var TypeFinancial = $("input[name = 'Kind_of_Financial']:checked").val();
                 if (TypeFinancial == "Income Statement") {
                     $('#select_page tr').each(function () {
-                        if (!this.rowIndex) return;
+                        if (!this.rowIndex) return; // skip first row
                         var Financial = this.cells[2].innerHTML;
                         if (Financial == "Income Statement") {
                             var content = this.cells[0].innerHTML;
@@ -43,6 +52,7 @@
                 tr.append("<td>" + TypeFinancial + "</td>");
                 tr.append("<td> <button id='Scan='botaoadd'>  Scan  </button> </td>");
                 tr.append("<td> <button id='Scan_Edit' class='botaoadd'>  Scan/Edit  </button> </td>");
+                tr.append("<td>" + "" + "</td>");
                 $('#select_page').append(tr);
 
             });
@@ -69,8 +79,8 @@
                                     <div id="headerToolbarContainer" class="toolbar headerToolbarDiv hide-for-print">
                                         <div class="shortcutsbar">
                                             @*<button id="showThumbnails" class="navigationbarBtn">
-                                                <span class="icon thumbnailsIcon"></span>
-                                            </button>*@
+                                                    <span class="icon thumbnailsIcon"></span>
+                                                </button>*@
 
                                             <!-- Previous page -->
                                             <button id="previousPage_shortcut" title="Go to previous page in the document">
@@ -151,19 +161,19 @@
                                         </div>
                                     </div>
 
-                                    <div id="annotationsListControls" class="annotations hide-for-print">
+                                    @*<div id="annotationsListControls" class="annotations hide-for-print">
                                         <div id="annotationslist" class="annotationsListContainer">
 
                                         </div>
-                                    </div>
+                                    </div>*@
 
-                                    <div id="annotationObjectBtnsContainer" class="annotations footerToolbar hide-for-print" style="height:auto;">
+                                    @*<div id="annotationObjectBtnsContainer" class="annotations footerToolbar hide-for-print" style="height:auto;">
 
-                                    </div>
-                                    <div id="thumbnailsContextMenuParent" class="hide-for-print" tabindex="-1">
-                                    </div>
-                                    <div id="viewContextMenuParent" class="hide-for-print" tabindex="-1">
-                                    </div>
+                                    </div>*@
+                                    @*<div id="thumbnailsContextMenuParent" class="hide-for-print" tabindex="-1">
+                                    </div>*@
+                                    @*<div id="viewContextMenuParent" class="hide-for-print" tabindex="-1">
+                                    </div>*@
                                     <!-- find text div -->
                                     <div id="findTextPanel" class="hide-for-print">
                                         <div class="inputGroupContainer">
@@ -1783,109 +1793,7 @@
                                     </div>
                                     <!-- Document redaction dialog -->
                                     <div id="dlgRedactionOptions" class="dlg-container container">
-                                        <div class="dlg-box">
-                                            <header>
-                                                <h3>Redaction Options</h3>
-                                            </header>
-                                            <div class="dlg-body modal-body">
-                                                <ul class="nav nav-tabs">
-                                                    <li class="active"><a href="#dlgRedactionOptions_AutoOptionsTab" data-toggle="tab">Auto</a></li>
-                                                    <li><a href="#dlgRedactionOptions_ViewOptionsTab" data-toggle="tab">View</a></li>
-                                                    <li><a href="#dlgRedactionOptions_ConvertOptionsTab" data-toggle="tab">Convert</a></li>
-                                                </ul>
-                                                <div class="tab-content">
-                                                    <div class="tab-pane active" id="dlgRedactionOptions_AutoOptionsTab">
-                                                        <div class="table-responsive top-push">
-                                                            <table class="table table-bordered">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <td>Presets</td>
-                                                                        <td>
-                                                                            <div id="dlgAutoRedaction_Presets">
-                                                                            </div>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Annotation Type</td>
-                                                                        <td>
-                                                                            <select id="dlgAutoRedaction_Type" class="form-control">
-                                                                                <option value="1">Redact</option>
-                                                                                <option value="2">Hilite</option>
-                                                                            </select>
-                                                                        </td>
-                                                                    </tr>
-                                                                </thead>
-                                                            </table>
-                                                            <button id="dlgAutoRedaction_Apply" class="btn btn-default top-push">Apply Preset</button>
-                                                            <p>The annotation objects of the selected type will be placed over words matching the preset conditions</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="tab-pane" id="dlgRedactionOptions_ViewOptionsTab">
-                                                        <div class="table-responsive top-push">
-                                                            <table class="table table-bordered">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <td>Redaction Mode</td>
-                                                                        <td>
-                                                                            <select id="dlgViewRedaction_Mode" class="form-control">
-                                                                                <option selected="selected" value="0">None</option>
-                                                                                <option value="1">Apply</option>
-                                                                                <option value="2">Apply then rasterize</option>
-                                                                            </select>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Replace Character</td>
-                                                                        <td>
-                                                                            <input id="dlgViewRedaction_ReplaceCharacter" maxlength="1" />
-                                                                        </td>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody id="dlgRedactionOptions_ViewOptions"></tbody>
-                                                            </table>
-                                                            <p>Changes made to this option will cause saving the document to cache then reload it.</p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="tab-pane" id="dlgRedactionOptions_ConvertOptionsTab">
-                                                        <div class="table-responsive top-push">
-                                                            <table class="table table-bordered">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <td>Redaction Mode</td>
-                                                                        <td>
-                                                                            <select id="dlgConvertRedaction_Mode" class="form-control">
-                                                                                <option selected="selected" value="0">None</option>
-                                                                                <option value="1">Apply</option>
-                                                                                <option value="2">Apply then rasterize</option>
-                                                                            </select>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td>Replace Character</td>
-                                                                        <td>
-                                                                            <input id="dlgConvertRedaction_ReplaceCharacter" maxlength="1" />
-                                                                        </td>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody id="dlgRedactionOptions_ConvertOptions"></tbody>
-                                                            </table>
-                                                            <p></p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button id="dlgRedactionOptions_Apply" class="btn btn-default">Apply</button>
-                                                <button class="btn btn-default dlg-close">Cancel</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <!-- Print containers -->
-                                        <div id="printDiv" class="lt-print print-div">
-                                        </div>
-                                        <iframe id="printFrame" class="lt-print print-frame"></iframe>
-                                        <iframe id="pdfPrintFrame" class="lt-print print-frame"></iframe>
+                                       
                                     </div>
                                 </td>
                             </tr>
@@ -1895,7 +1803,7 @@
             </div>
             <!--Select kind of financial statements -->
             <div class="col-lg-4">
-                <div class="card">
+                <div class="card" style="height:700px">
                     <div class="card-header bg-gradient-primary">
                         <h3 class="card-title"><b><i class="far fa-edit"></i>Select kind of financial statements</b></h3>
                     </div>
@@ -1906,31 +1814,30 @@
                                 <td>
                                     <!-- Group of default radios - option 1 -->
                                     <div class="custom-control custom-radio">
-                                        <label><input type="radio" value ="Income Statement" name="Kind_of_Financial" checked>Income Statement</label>
+                                        <label><input type="radio" value="Income Statement" name="Kind_of_Financial" checked>  Income Statement</label>
                                     </div>
 
                                     <!-- Group of default radios - option 2 -->
                                     <div class="custom-control custom-radio">
-                                        <label><input type="radio" value="Balance Sheet" name="Kind_of_Financial">Balance Sheet</label>
+                                        <label><input type="radio" value="Balance Sheet" name="Kind_of_Financial">  Balance Sheet</label>
                                     </div>
 
                                     <!-- Group of default radios - option 3 -->
                                     <div class="custom-control custom-radio">
-                                        <label><input type="radio" value="Cash Flow" name="Kind_of_Financial">Cash Flow</label>
+                                        <label><input type="radio" value="Cash Flow" name="Kind_of_Financial">  Cash Flow</label>
                                     </div>
                                     <!-- Group of default radios - option 4 -->
                                     <div class="custom-control custom-radio">
-                                        <label><input type="radio" value="FootNotes" name="Kind_of_Financial">FootNotes</label>
+                                        <label><input type="radio" value="FootNotes" name="Kind_of_Financial">  FootNotes</label>
                                     </div>
                                 </td>
                             </tr>
-
                             <tr>
                                 <td>
                                     <!-- Footnotes-->
                                     <!-- Select Dropdown-->
-                                    <b>  Footnotes No. and Titile</b>
-                                    <form>
+                                    <div class="card-body">
+                                        <b>  Footnotes No. and Titile</b>
                                         <div class="form-row">
                                             <div class="form-group col-md-2">
                                                 @*<label for="inputFootnote">Footnotes</label>*@
@@ -1944,49 +1851,23 @@
                                             </div>
                                         </div>
                                         <div class="form-row">
-                                            <div class="form-group col-md-2">
-
-                                            </div>
-                                            <div class="form-group col-md-7">
                                                 <b class="text-success">Input Footnotes No. and Title</b>
                                                 <b class="text-success">Select text from Statement image or type in</b>
-                                            </div>
                                         </div>
                                         <div class="form-row">
-                                            <div class="form-group col-md-2">
-
-                                            </div>
-                                            <div class="form-group col-md-6">
-
-                                                <button type="button" id ="BtnSelectPage" class="btn btn-light btn-md">Select this page</button>
-
-                                            </div>
+          
+                                                <button type="button" id="BtnSelectPage" class="btn btn-light btn-lg">Select this page</button>                                          
                                         </div>
                                         <div class="form-row">
-                                            <div class="form-group col-md-2">
-
-                                            </div>
-                                            <div class="form-group col-md-8">
                                                 <b class="text-success">Add the currently displayed page to</b>
                                                 <b class="text-success"> a statement</b>
-                                            </div>
                                         </div>
-                                        <br />
-                                        <br />
-                                        <br />
-                                        <br />
-                                        <br />
-                                        <br />
-                                        <br />
-                                    </form>
+                                    </div>                                    
                                 </td>
                             </tr>
-
                         </tbody>
                     </table>
                     <br />
-
-
                 </div>
             </div>
         </div>
@@ -2002,10 +1883,8 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <br />
-                        <br /><br />
                         <table id="select_page" class="table table-bordered table-hover">
-                           <thead class="bg-gray-light">
+                            <thead class="bg-gray-light">
                                 <tr class="text-center">
                                     <th style="width: 10px">Page No.</th>
                                     <th>Footnote No.</th>
@@ -2040,47 +1919,19 @@
 </html>
 @section scripts {
 
-
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    @* <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />*@
-    <link rel="stylesheet" href="~/Scripts/Resources/Styles/DocumentViewerDemo.css" type="text/css" />
-    <link rel="stylesheet" href="~/Scripts/Resources/Styles/Toolbars.css" type="text/css" />
-    <link rel="stylesheet" href="~/Scripts/Resources/Styles/ImageViewerStyles.css" type="text/css" />
-    <link rel="stylesheet" href="~/Scripts/Resources/Styles/ImageViewerThumbnailStyles.css" type="text/css" />
-    <link rel="stylesheet" href="~/Scripts/Resources/Styles/Sidebar.css" type="text/css" />
-    <link rel="stylesheet" href="~/Scripts/Resources/Styles/Table.css" type="text/css" />
-    <link rel="stylesheet" href="~/Scripts/Resources/Styles/Dialogs.css" type="text/css" />
-    <link rel="stylesheet" href="~/Scripts/Resources/Styles/Icons.css" type="text/css" />
-
-    <link rel="stylesheet" href="~/Scripts/Resources/Styles/AutomationObjectsList.css" type="text/css" />
-
-
-    @* External .js files*@
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
-    @* <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>*@
     @*[if !IE]><!*@
-    <script>
-        // Point PDFJS in the direction of the worker file
-        if (typeof PDFJS !== "undefined") {
-            // We use a custom pdf.worker.js file that does not draw annotations
-            PDFJS.workerSrc = "~/Scripts/Leadtools/Leadtools.Pdf.Worker.js";
-            // Ensure your server hosts cmap files (.bcmap)
-            PDFJS.cMapUrl = "~/Scripts/Resources/Cmaps/";
-            PDFJS.cMapPacked = true;
-        }
-    </script>
-    @*<![endif]
-        OneDrive
-        Replace APP_ID with your registered app's ID or client ID*@
-    <script type="text/javascript" src="https://js.live.net/v5.0/OneDrive.js" id="onedrive-js" client-id="APP_ID"></script>
+    @*<script>
+            // Point PDFJS in the direction of the worker file
+            if (typeof PDFJS !== "undefined") {
+                // We use a custom pdf.worker.js file that does not draw annotations
+                PDFJS.workerSrc = "~/Scripts/Leadtools/Leadtools.Pdf.Worker.js";
+                // Ensure your server hosts cmap files (.bcmap)
+                PDFJS.cMapUrl = "~/Scripts/Resources/Cmaps/";
+                PDFJS.cMapPacked = true;
+            }
+        </script>*@
 
-    @*Google Drive (conditional comment below targets IE 5-9, for which Google Drive is not supported)*@
-    @*[if !IE]><!*@
-    <script type="text/javascript" src="https://apis.google.com/js/api.js"></script>
-    <script type="text/javascript" src="https://apis.google.com/js/client.js"></script>
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    @*<![endif]
-        Leadtools .js files*@
+    @*  Leadtools .js files*@
     <script type="text/javascript" src="~/Scripts/Leadtools/Leadtools.js"></script>
     <script type="text/javascript" src="~/Scripts/Leadtools/Leadtools.Controls.js"></script>
     <script type="text/javascript" src="~/Scripts/Leadtools/Leadtools.Annotations.Engine.js"></script>
@@ -2129,15 +1980,7 @@
     <script type="text/javascript" src="~/Scripts/DriveHelper/DriveHelper.js"></script>
     <script type="text/javascript" src="~/Scripts/DriveHelper/SharePointService.js"></script>
     <script type="text/javascript" src="~/Scripts/DriveHelper/SharePointPickerDlg.js"></script>
-    <script>
-        var myName = $("#pageNumber").val();
 
-        $("#addName").click(showName(myName));
+    <script src="~/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
 
-        function showName(value) {
-            $("p").html(value);
-        };
-
-
-    </script>
 }
