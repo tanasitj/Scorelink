@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using Leadtools;
+using Leadtools.Pdf;
 
 namespace Scorelink.BO.Helper
 {
@@ -56,6 +57,26 @@ namespace Scorelink.BO.Helper
             string sOutput = sZero + value;
 
             return sOutput;
+        }
+
+        public static void PDFFileDeletePages(string sFrom , string sTo ,int iPage)
+        {
+            GetLicenseLeadTool();
+
+            string sourceFileName = sFrom; //Path.Combine(LEAD_VARS.ImagesDir, @"Leadtools.pdf");
+            string destinationFileName = sTo; //Path.Combine(LEAD_VARS.ImagesDir, @"LEAD_DeletePages.pdf");
+
+            // Get the number of pages in the source file 
+            PDFFile file = new PDFFile(sourceFileName);
+            int pageCount = file.GetPageCount();
+            Console.WriteLine("Pages in source file : {0}", pageCount);
+
+            // If the file has more than 1 page, delete all except the first page 
+            if (pageCount > 1)
+            {
+                // -1 is (up to and including last page) 
+                file.DeletePages(2, -1, destinationFileName);
+            }
         }
     }
 }

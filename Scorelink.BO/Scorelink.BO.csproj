@@ -33,27 +33,27 @@
   <ItemGroup>
     <Reference Include="Leadtools, Version=20.0.4.0, Culture=neutral, PublicKeyToken=9cf889f53ea9b907, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\LEADTOOLS 20\Bin\Dotnet4\Win32\Leadtools.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\LEADTOOLS 20\Bin\Dotnet4\x64\Leadtools.dll</HintPath>
     </Reference>
     <Reference Include="Leadtools.Codecs, Version=20.0.4.0, Culture=neutral, PublicKeyToken=9cf889f53ea9b907, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\LEADTOOLS 20\Bin\Dotnet4\Win32\Leadtools.Codecs.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\LEADTOOLS 20\Bin\Dotnet4\x64\Leadtools.Codecs.dll</HintPath>
     </Reference>
     <Reference Include="Leadtools.Codecs.Tif, Version=20.0.4.0, Culture=neutral, PublicKeyToken=9cf889f53ea9b907, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\LEADTOOLS 20\Bin\Dotnet4\Win32\Leadtools.Codecs.Tif.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\LEADTOOLS 20\Bin\Dotnet4\x64\Leadtools.Codecs.Tif.dll</HintPath>
     </Reference>
     <Reference Include="Leadtools.Document, Version=20.0.4.0, Culture=neutral, PublicKeyToken=9cf889f53ea9b907, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\LEADTOOLS 20\Bin\Dotnet4\Win32\Leadtools.Document.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\LEADTOOLS 20\Bin\Dotnet4\x64\Leadtools.Document.dll</HintPath>
     </Reference>
     <Reference Include="Leadtools.Document.Converter, Version=20.0.4.0, Culture=neutral, PublicKeyToken=9cf889f53ea9b907, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\LEADTOOLS 20\Bin\Dotnet4\Win32\Leadtools.Document.Converter.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\LEADTOOLS 20\Bin\Dotnet4\x64\Leadtools.Document.Converter.dll</HintPath>
     </Reference>
     <Reference Include="Leadtools.Pdf, Version=20.0.4.0, Culture=neutral, PublicKeyToken=9cf889f53ea9b907, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\LEADTOOLS 20\Bin\Dotnet4\Win32\Leadtools.Pdf.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\LEADTOOLS 20\Bin\Dotnet4\x64\Leadtools.Pdf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

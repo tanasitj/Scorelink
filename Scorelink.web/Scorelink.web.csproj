@@ -1794,6 +1794,9 @@
     <Content Include="plugins\pdfmake\pdfmake.js" />
     <Content Include="plugins\pdfmake\pdfmake.min.js" />
     <Content Include="plugins\pdfmake\vfs_fonts.js" />
+    <Content Include="plugins\PDFObject-master\.gitignore" />
+    <Content Include="plugins\PDFObject-master\pdfobject.js" />
+    <Content Include="plugins\PDFObject-master\pdfobject.min.js" />
     <Content Include="plugins\popper\esm\popper-utils.js" />
     <Content Include="plugins\popper\esm\popper-utils.min.js" />
     <Content Include="plugins\popper\esm\popper.js" />
@@ -2554,6 +2557,11 @@
     <Content Include="Scripts\Resources\Cmaps\WP-Symbol.bcmap" />
     <Content Include="Scripts\Resources\Styles\ImageViewerStyles.scss" />
     <Content Include="Scripts\Resources\Styles\ImageViewerThumbnailStyles.scss" />
+    <Content Include="Views\Test\Index.cshtml" />
+    <Content Include="plugins\PDFObject-master\bower.json" />
+    <Content Include="plugins\PDFObject-master\package-lock.json" />
+    <Content Include="plugins\PDFObject-master\package.json" />
+    <Content Include="plugins\PDFObject-master\readme.md" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2570,6 +2578,7 @@
     <Compile Include="Controllers\SelectPageController.cs" />
     <Compile Include="Controllers\SelectPatternController.cs" />
     <Compile Include="Controllers\SubscriptionController.cs" />
+    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\UploadController.cs" />
     <Compile Include="Controllers\UserProfileController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
