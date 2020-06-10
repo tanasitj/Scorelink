@@ -24,16 +24,9 @@
         }
         //alert("Test send DocID is data :" + @ViewBag.FilePath);
 </script>
-<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script>
-    $(document).ready(function () {
-
-    });
-</script>
-
 <section class="content">
     <input type="hidden" id="hdId" value="@ViewBag.Id" />
-    <input type="hidden" id="hdPDFFile" value="@ViewBag.FilePath" />
+    <input type="hidden" id="hdPDFFile" value="@ViewBag.FileUrl" />
     <input type="hidden" id="hdCreateBy" value="@ViewBag.CreateBy" />
     <div class="container-fluid">
         <div class="row">

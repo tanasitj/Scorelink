@@ -40,6 +40,7 @@ namespace Scorelink.web.Controllers
             ViewBag.FileUID = data.FileUID;
             ViewBag.FileName = data.FileName;
             ViewBag.FilePath = data.FilePath;
+            ViewBag.FileUrl = data.FileUrl;
             ViewBag.CreateBy = data.CreateBy;
 
             //var docInfo = docInfoRepo.Get(iDocId);
