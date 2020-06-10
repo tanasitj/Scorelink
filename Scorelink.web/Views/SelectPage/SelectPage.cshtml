@@ -6,65 +6,35 @@
     var xdata = ViewData["Message"];
     var hdId = ViewBag.Id;
 }
-<!DOCTYPE html>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/DocumentViewerDemo.css" type="text/css" />
-    <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/Toolbars.css" type="text/css" />
-    <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/ImageViewerStyles.css" type="text/css" />
-    <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/ImageViewerThumbnailStyles.css" type="text/css" />
-    <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/Sidebar.css" type="text/css" />
-    <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/Table.css" type="text/css" />
-    <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/Dialogs.css" type="text/css" />
-    <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/Icons.css" type="text/css" />
-    <script type="text/javascript">
+<meta name="viewport" content="width=device-width" />
+<link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/DocumentViewerDemo.css" type="text/css" />
+<link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/Toolbars.css" type="text/css" />
+<link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/ImageViewerStyles.css" type="text/css" />
+<link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/ImageViewerThumbnailStyles.css" type="text/css" />
+<link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/Sidebar.css" type="text/css" />
+<link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/Table.css" type="text/css" />
+<link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/Dialogs.css" type="text/css" />
+<link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/Icons.css" type="text/css" />
+<script type="text/javascript">
             // check if HTML5 canvas is supported
             if (!("HTMLCanvasElement" in window)) {
                 alert("HTML5 Canvas not supported, redirecting ...");
                 location.href = "~/Scripts/Resources/NoHTML5Support.html";
         }
-        alert("Test send DocID is data :" + @hdId);
-        </script>
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $("#BtnSelectPage").click(function () {
+        //alert("Test send DocID is data :" + @ViewBag.FilePath);
+</script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script>
+    $(document).ready(function () {
 
-                //Getting value from to populate
-                var PageNumber = $("#pageNumber").val();
-                var Footnotes = "Test Footnotes";
-                var TypeFinancial = $("input[name = 'Kind_of_Financial']:checked").val();
-                if (TypeFinancial == "Income Statement") {
-                    $('#select_page tr').each(function () {
-                        if (!this.rowIndex) return; // skip first row
-                        var Financial = this.cells[2].innerHTML;
-                        if (Financial == "Income Statement") {
-                            var content = this.cells[0].innerHTML;
-                            var x = document.getElementById('select_page').rows[parseInt(1, 10)].cells;
-                            x[parseInt(0, 10)].innerHTML = content + "," + PageNumber;
-                        }
-                    });
-                }
-                var tr;
-                tr = $('<tr/>');
-                tr.append("<td>" + PageNumber + "</td>");
-                tr.append("<td>" + Footnotes + "</td>");
-                tr.append("<td>" + TypeFinancial + "</td>");
-                tr.append("<td> <button id='Scan='botaoadd'>  Scan  </button> </td>");
-                tr.append("<td> <button id='Scan_Edit' class='botaoadd'>  Scan/Edit  </button> </td>");
-                tr.append("<td>" + "" + "</td>");
-                $('#select_page').append(tr);
+    });
+</script>
 
-            });
-
-        });
-    </script>
-</head>
-<body>
-
-
+<section class="content">
+    <input type="hidden" id="hdId" value="@ViewBag.Id" />
+    <input type="hidden" id="hdPDFFile" value="@ViewBag.FilePath" />
+    <input type="hidden" id="hdCreateBy" value="@ViewBag.CreateBy" />
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-8">
@@ -164,18 +134,18 @@
                                     </div>
 
                                     @*<div id="annotationsListControls" class="annotations hide-for-print">
-                                        <div id="annotationslist" class="annotationsListContainer">
+                                            <div id="annotationslist" class="annotationsListContainer">
 
-                                        </div>
-                                    </div>*@
+                                            </div>
+                                        </div>*@
 
                                     @*<div id="annotationObjectBtnsContainer" class="annotations footerToolbar hide-for-print" style="height:auto;">
 
-                                    </div>*@
+                                        </div>*@
                                     @*<div id="thumbnailsContextMenuParent" class="hide-for-print" tabindex="-1">
-                                    </div>*@
+                                        </div>*@
                                     @*<div id="viewContextMenuParent" class="hide-for-print" tabindex="-1">
-                                    </div>*@
+                                        </div>*@
                                     <!-- find text div -->
                                     <div id="findTextPanel" class="hide-for-print">
                                         <div class="inputGroupContainer">
@@ -1795,7 +1765,7 @@
                                     </div>
                                     <!-- Document redaction dialog -->
                                     <div id="dlgRedactionOptions" class="dlg-container container">
-                                       
+
                                     </div>
                                 </td>
                             </tr>
@@ -1853,18 +1823,18 @@
                                             </div>
                                         </div>
                                         <div class="form-row">
-                                                <b class="text-success">Input Footnotes No. and Title</b>
-                                                <b class="text-success">Select text from Statement image or type in</b>
+                                            <b class="text-success">Input Footnotes No. and Title</b>
+                                            <b class="text-success">Select text from Statement image or type in</b>
                                         </div>
                                         <div class="form-row">
-          
-                                                <button type="button" id="BtnSelectPage" class="btn btn-light btn-lg">Select this page</button>                                          
+
+                                            <button type="button" id="BtnSelectPage" class="btn btn-light btn-lg">Select this page</button>
                                         </div>
                                         <div class="form-row">
-                                                <b class="text-success">Add the currently displayed page to</b>
-                                                <b class="text-success"> a statement</b>
+                                            <b class="text-success">Add the currently displayed page to</b>
+                                            <b class="text-success"> a statement</b>
                                         </div>
-                                    </div>                                    
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -1896,7 +1866,19 @@
                                     <th style="width: 150px">completed</th>
                                 </tr>
                             </thead>
-                            <tbody></tbody>
+                            <tbody data-bind="foreach: DocumentInfo">
+                                <tr>
+                                    <td class="text-center"><span data-bind="text: $index() + 1"></span></td>
+                                    <td><span data-bind="text: FileName"></span></td>
+                                    <td class="text-center"><span data-bind="text: CreateDate"></span></td>
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-block bg-gradient-danger" data-bind="click: $root.ClickDelete">Delete</button>
+                                    </td>
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-block bg-gradient-success" data-bind="click: $root.ClickScan">Scan</button>
+                                    </td>
+                                </tr>
+                            </tbody>
                         </table>
                         <button type="button" class="btn btn-light" data-bind="click: $root.ClickSeeResult">See All Results</button>
                         <button type="button" class="btn btn-light" data-bind="click: $root.ClickExport">Export All Results</button>
@@ -1909,29 +1891,21 @@
 
         </div>
     </div>
-    @if (Request.Form["BtnSelectPage"] != null)
-    {
-        <script type="text/javascript">
-                    window.onload = function () {
-                        alert("@ViewBag.Message");
-                    };
-        </script>
-    }
-</body>
-</html>
+</section>
+
 @section scripts {
 
     @*[if !IE]><!*@
     <script>
-            // Point PDFJS in the direction of the worker file
-            if (typeof PDFJS !== "undefined") {
-                // We use a custom pdf.worker.js file that does not draw annotations
-                PDFJS.workerSrc = "~/plugins/Leadtools/Leadtools-lib/Leadtools.Pdf.Worker.js";
-                // Ensure your server hosts cmap files (.bcmap)
-                PDFJS.cMapUrl = "~/plugins/Leadtools/Resources/Cmaps/";
-                PDFJS.cMapPacked = true;
-            }
-        </script>
+        // Point PDFJS in the direction of the worker file
+        if (typeof PDFJS !== "undefined") {
+            // We use a custom pdf.worker.js file that does not draw annotations
+            PDFJS.workerSrc = "~/plugins/Leadtools/Leadtools-lib/Leadtools.Pdf.Worker.js";
+            // Ensure your server hosts cmap files (.bcmap)
+            PDFJS.cMapUrl = "~/plugins/Leadtools/Resources/Cmaps/";
+            PDFJS.cMapPacked = true;
+        }
+    </script>
 
     @*  Leadtools .js files*@
     <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.js"></script>
@@ -1984,5 +1958,6 @@
     <script type="text/javascript" src="~/plugins/Leadtools/DriveHelper/SharePointPickerDlg.js"></script>
 
     <script src="~/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+    <script src="~/Scripts/Pages/SelectPage.Index.js"></script>
 
 }
