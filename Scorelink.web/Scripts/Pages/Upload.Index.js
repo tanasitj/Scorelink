@@ -26,27 +26,46 @@ var ViewModel = function () {
 
     self.ClickScan = function (data, event) {
         //alert(data.FileName + data.FilePath);
-        var filter = {
-            //filterId: self.FilterUserId,
-            'path': data.FilePath(),
-            'folder': data.FileUID()
-        }
-        blockUI();
-        $.ajax({
-            url: '/Upload/ScanDocumentInfo',
-            cache: false,
-            type: 'POST',
-            contentType: 'application/json; charset=utf-8',
-            data: ko.toJSON(filter),
-            success: function (data) {
-                unblockUI();
-                $.redirect("/SelectPage/SelectPage", {
-                    //'id': data.UserId()
-                    'id': '1'
-                }, "POST"); 
-            }
-        });
+        //var filter = {
+        //    //filterId: self.FilterUserId,
+        //    'path': data.FilePath(),
+        //    'folder': data.FileUID()
+        //}
+        //blockUI();
+        //$.ajax({
+        //    url: '/Upload/ScanDocumentInfo',
+        //    cache: false,
+        //    type: 'POST',
+        //    contentType: 'application/json; charset=utf-8',
+        //    data: ko.toJSON(filter),
+        //    success: function (data) {
+        //        unblockUI();
+        //        $.redirect("/SelectPage/SelectPage", {
+        //            //'id': data.UserId()
+        //            'id': '1'
+        //        }, "POST"); 
+        //    }
+        //});
+
+        $.redirect("/SelectPage/SelectPage", {
+            'id': data.DocId()
+        }, "POST");
     }
+
+    function goSelectArea() {
+        var arg = {
+            DocDetId: $("#hdDocDetId").val(),
+            DocId: $("#hdId").val(),
+            DocPageNo: $("#hdDocPageNo").val(),
+            PageFileName: $("#hdPageFileName").val(),
+            PagePath: $("#hdPagePath").val(),
+            PatternNo: $("#rdPattern:checked").val()
+        }
+
+        $.redirect("/SelectArea/SelectArea", {
+            item: arg
+        }, "POST");
+    };
 
     self.ClickDelete = function (data, event) {
         self.DocId(data.DocId());
