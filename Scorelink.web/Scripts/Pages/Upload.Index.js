@@ -52,21 +52,6 @@ var ViewModel = function () {
         }, "POST");
     }
 
-    function goSelectArea() {
-        var arg = {
-            DocDetId: $("#hdDocDetId").val(),
-            DocId: $("#hdId").val(),
-            DocPageNo: $("#hdDocPageNo").val(),
-            PageFileName: $("#hdPageFileName").val(),
-            PagePath: $("#hdPagePath").val(),
-            PatternNo: $("#rdPattern:checked").val()
-        }
-
-        $.redirect("/SelectArea/SelectArea", {
-            item: arg
-        }, "POST");
-    };
-
     self.ClickDelete = function (data, event) {
         self.DocId(data.DocId());
         self.FilePath(data.FilePath());
@@ -127,6 +112,7 @@ var ViewModel = function () {
                             data.FileUID,
                             data.FileName,
                             data.FilePath,
+                            data.FileUrl,
                             data.CreateDate
                         )
                     );
