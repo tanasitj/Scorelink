@@ -1,9 +1,12 @@
 ﻿using System.Web.Mvc;
+using Scorelink.MO.DataModel;
 
 namespace Scorelink.web.Controllers
 {
     public class HomeController : Controller
     {
+
+
         [HttpGet]
         public ActionResult Index()
         {
@@ -29,6 +32,12 @@ namespace Scorelink.web.Controllers
         public ActionResult ForgotPassword()
         {
             return View("ForgotPassword");
+        }
+
+        public JsonResult SaveRegister(UserModel item)
+        {
+            var data = "";
+            return Json(data, JsonRequestBehavior.AllowGet);
         }
     }
 }
