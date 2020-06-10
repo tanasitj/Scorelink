@@ -1,10 +1,11 @@
-﻿function DocInfoModel(id, fileUID, fileName, filePath, fileUrl, date) {
+﻿function DocInfoModel(id, fileUID, fileName, filePath, fileUrl, UserId, date) {
     var self = this;
     self.DocId = ko.observable(id);
     self.FileUID = ko.observable(fileUID);
     self.FileName = ko.observable(fileName);
     self.FilePath = ko.observable(filePath);
     self.FileUrl = ko.observable(fileUrl);
+    self.CreateBy = ko.observable(UserId);
     self.CreateDate = ko.observable(date);
 }
 
@@ -113,6 +114,7 @@ var ViewModel = function () {
                             data.FileName,
                             data.FilePath,
                             data.FileUrl,
+                            data.CreateBy,
                             data.CreateDate
                         )
                     );

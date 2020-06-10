@@ -97,8 +97,8 @@ namespace Scorelink.web.Controllers
 
         public JsonResult GetDocumentList(string filterId)
         {
-            var users = docInfoRepo.GetList(filterId).ToList();
-            return Json(users, JsonRequestBehavior.AllowGet);
+            var doc = docInfoRepo.GetList(filterId).ToList();
+            return Json(doc, JsonRequestBehavior.AllowGet);
         }
 
         public JsonResult DeleteDocumentInfo(string id,string filePath)
