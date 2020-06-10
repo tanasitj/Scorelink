@@ -9,6 +9,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Threading;
+using Leadtools.Pdf;
+using System.Net;
+using System.ServiceModel.Channels;
 
 namespace Scorelink.web.Controllers
 {
@@ -20,10 +23,11 @@ namespace Scorelink.web.Controllers
         // GET: Upload
         public ActionResult Index()
         {
+            ViewBag.UserId = "1";
             return View("Upload");
         }
 
-        public ActionResult UploadFiles()
+        public ActionResult UploadFiles(string userId)
         {
             // Checking no of files injected in Request object  
             if (Request.Files.Count > 0)
@@ -31,7 +35,7 @@ namespace Scorelink.web.Controllers
                 try
                 {
                     string[] allKeys = Request.Files.AllKeys[0].Split('|');
-                    var uploadNo = Common.GenZero(iUserId.ToString(),8);
+                    var uploadNo = Common.GenZero(userId, 8);
                     string sUID = Guid.NewGuid().ToString();
                     string folder = Consts.SLUserFlie + "\\FileUploads\\" + uploadNo;
 
@@ -62,12 +66,14 @@ namespace Scorelink.web.Controllers
                         file.SaveAs(fname);
 
                         String sCreateDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                        String sFileUrl = Consts.sUrl + "/FileUploads/"+uploadNo+"/"+sUID+fi.Extension;
 
                         DocumentInfoModel doc = new DocumentInfoModel();
                         doc.FileUID = sUID;
                         doc.FileName = allKeys[0];
                         doc.FilePath = fname;
-                        doc.CreateBy = "tanasitj";
+                        doc.FileUrl = sFileUrl;
+                        doc.CreateBy = userId;
                         doc.CreateDate = sCreateDate;
 
                         DocumentInfoRepo documentInfoRepo = new DocumentInfoRepo();
@@ -194,5 +200,7 @@ namespace Scorelink.web.Controllers
 
             return true;
         }
+
+        
     }
 }

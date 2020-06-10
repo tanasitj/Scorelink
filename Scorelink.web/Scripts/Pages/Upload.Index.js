@@ -1,9 +1,10 @@
-﻿function DocInfoModel(id, fileUID, fileName, filePath, date) {
+﻿function DocInfoModel(id, fileUID, fileName, filePath, fileUrl, date) {
     var self = this;
     self.DocId = ko.observable(id);
     self.FileUID = ko.observable(fileUID);
     self.FileName = ko.observable(fileName);
     self.FilePath = ko.observable(filePath);
+    self.FileUrl = ko.observable(fileUrl);
     self.CreateDate = ko.observable(date);
 }
 
@@ -13,6 +14,7 @@ var ViewModel = function () {
     self.DocumentInfo = ko.observableArray();
     self.DocId = ko.observable();
     self.FilePath = ko.observable();
+    self.FileUrl = ko.observable();
 
     GetDoclist();
 
@@ -24,27 +26,46 @@ var ViewModel = function () {
 
     self.ClickScan = function (data, event) {
         //alert(data.FileName + data.FilePath);
-        var filter = {
-            //filterId: self.FilterUserId,
-            'path': data.FilePath(),
-            'folder': data.FileUID()
-        }
-        blockUI();
-        $.ajax({
-            url: '/Upload/ScanDocumentInfo',
-            cache: false,
-            type: 'POST',
-            contentType: 'application/json; charset=utf-8',
-            data: ko.toJSON(filter),
-            success: function (data) {
-                unblockUI();
-                $.redirect("/SelectPage/SelectPage", {
-                    //'id': data.UserId()
-                    'id': '1'
-                }, "POST"); 
-            }
-        });
+        //var filter = {
+        //    //filterId: self.FilterUserId,
+        //    'path': data.FilePath(),
+        //    'folder': data.FileUID()
+        //}
+        //blockUI();
+        //$.ajax({
+        //    url: '/Upload/ScanDocumentInfo',
+        //    cache: false,
+        //    type: 'POST',
+        //    contentType: 'application/json; charset=utf-8',
+        //    data: ko.toJSON(filter),
+        //    success: function (data) {
+        //        unblockUI();
+        //        $.redirect("/SelectPage/SelectPage", {
+        //            //'id': data.UserId()
+        //            'id': '1'
+        //        }, "POST"); 
+        //    }
+        //});
+
+        $.redirect("/SelectPage/SelectPage", {
+            'id': data.DocId()
+        }, "POST");
     }
+
+    function goSelectArea() {
+        var arg = {
+            DocDetId: $("#hdDocDetId").val(),
+            DocId: $("#hdId").val(),
+            DocPageNo: $("#hdDocPageNo").val(),
+            PageFileName: $("#hdPageFileName").val(),
+            PagePath: $("#hdPagePath").val(),
+            PatternNo: $("#rdPattern:checked").val()
+        }
+
+        $.redirect("/SelectArea/SelectArea", {
+            item: arg
+        }, "POST");
+    };
 
     self.ClickDelete = function (data, event) {
         self.DocId(data.DocId());
@@ -88,7 +109,7 @@ var ViewModel = function () {
         //---- Object for search ----
         var filter = {
             //filterId: self.FilterUserId,
-            filterId: "Tanasitj"
+            filterId: $("#hdUserId").val()
         }
 
         $.ajax({
@@ -164,6 +185,8 @@ var ViewModel = function () {
             for (var i = 0; i < files.length; i++) {
                 fileData.append(files[i].name, files[i]);
             }
+
+            fileData.append("userId", $("#hdUserId").val());
 
             $.ajax({
                 url: '/Upload/UploadFiles',
