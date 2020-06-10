@@ -17,12 +17,13 @@ namespace Scorelink.web.Controllers
 {
     public class UploadController : Controller
     {
-        int iUserId = 1;
+        //int iUserId = 1;
 
         DocumentInfoRepo docInfoRepo = new DocumentInfoRepo();
         // GET: Upload
         public ActionResult Index()
         {
+            ViewBag.Id = "";
             ViewBag.UserId = "1";
             return View("Upload");
         }
@@ -150,6 +151,7 @@ namespace Scorelink.web.Controllers
 
         private bool PDFConverter(string path,string folder)
         {
+            int iUserId = 1;
             string sTest = Guid.NewGuid().ToString();
             try
             {
