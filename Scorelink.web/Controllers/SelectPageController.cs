@@ -6,32 +6,25 @@ using System.Web.Mvc;
 using Scorelink.BO.Helper;
 using Scorelink.MO.DataModel;
 using Scorelink.BO.Repositories;
-
 namespace Scorelink.web.Controllers
 {
     public class SelectPageController : Controller
     {
-        //Fix code for Test.
-        //int iUserId = 1;
-        //int iDocId = 6;
-        //----------------//
-
+        // GET: TestPage
+        DocumentDetailRepo docDetailRepo = new DocumentDetailRepo();
         DocumentInfoRepo docInfoRepo = new DocumentInfoRepo();
-        DocumentDetailRepo docDetRepo = new DocumentDetailRepo();
-        // GET: SelectPage
         public ActionResult Index()
         {
-            //    int DocId = 6;
-            //    var data = docInfoRepo.Get(DocId);
-            //    ViewBag.Id = data.DocId;
-            //    ViewBag.FilePath = data.FileUrl;
-            //    ViewBag.CreateBy = data.CreateBy;
+            int DocId = 14;
+            var data = docInfoRepo.Get(DocId);
+            ViewBag.Id = data.DocId;
+            ViewBag.FileUrl = data.FileUrl;
+            ViewBag.CreateBy = data.CreateBy;
 
-            //var docInfo = docInfoRepo.Get(iDocId);
-            //ViewBag.PDFPath = docInfo.FilePath;
+            var docInfo = docInfoRepo.Get(DocId);
+            ViewBag.PDFPath = docInfo.FilePath;
             return View("SelectPage");
         }
-
         public ActionResult SelectPage(int id)
         {
             //ViewBag.Id = id;
@@ -47,31 +40,72 @@ namespace Scorelink.web.Controllers
             //ViewBag.PDFPath = docInfo.FilePath;
             return View("SelectPage");
         }
-        //public ActionResult SelectPageNumber()
-        //{
-        //    string PageNumber = Request.Form["txtPage"];
-        //    try
-        //    {
-        //        String sCreateDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
-        //        DocumentDetailModel doc = new DocumentDetailModel();
-        //        doc.DocId = iDocId;
-        //        doc.DocPageNo = "1";
-        //        doc.PageType = "1";
-        //        doc.CreateBy = "tanasitj";
-        //        doc.CreateDate = sCreateDate;
-
-        //        DocumentDetailRepo documentDetailRepo = new DocumentDetailRepo();
-        //        documentDetailRepo.Add(doc);
-
-        //        //return Json("OK");
-        //    }
-        //    catch (Exception ex) { };
-        //    return Json("No files selected.");
-        //}
-        public JsonResult SaveSelectPage(DocumentDetailModel item)
+        public ActionResult DeletePage(int id,string pagetype)
         {
-            var data = docDetRepo.Add(item);
-            return Json(data, JsonRequestBehavior.AllowGet);
+            //Delete page of selected page
+            var data = docDetailRepo.Get(id);
+            ViewBag.Id = data.DocId;
+            ViewBag.PageType = data.PageType;
+            //var docInfo = docInfoRepo.Get(iDocId);
+            //ViewBag.PDFPath = docInfo.FilePath;
+            return View("DeletePage");
+        }
+        public JsonResult Get_SelectPage(string value, string pageType, int docId, string docPageNo)
+        {
+            try
+            {
+                //Insert table DocumentDetail           
+                DocumentDetailModel docDetail = new DocumentDetailModel();
+                docDetail.DocId = docId;
+                docDetail.DocPageNo = docPageNo;
+                docDetail.PageType = pageType;
+                docDetail.FootnoteNo = "1";
+                docDetail.ScanStatus = "1";
+                docDetail.PageFileName = "1";
+                docDetail.PagePath = "1";
+                docDetail.Selected = "1";
+                docDetail.PatternNo = "1";
+                docDetail.CreateBy = "1";
+                docDetail.PageUrl = "1";
+                docDetail.CreateDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                docDetail.UpdateDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                DocumentDetailRepo docDetailRepo = new DocumentDetailRepo();
+                docDetailRepo.Add(docDetail);
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message);
+            }
+
+            //Return Next Page Data
+            var data = docDetailRepo.Get(docId);
+            if (data == null)
+            {
+                return Json("", JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(data, JsonRequestBehavior.AllowGet);
+            }
+        }
+        public JsonResult GetDocumentList(int filterId)
+        {
+            var doc = docDetailRepo.GetListView(filterId).ToList();
+            return Json(doc, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult DeleteDocumentDetail(string id,string pagetype)
+        {
+            var result = "";    
+                try
+                {
+                        result = docDetailRepo.DeleteTypes(id,pagetype);
+                    
+                }
+                catch (Exception ex)
+                {
+                    return Json(ex.Message);
+                }
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
     }
 }

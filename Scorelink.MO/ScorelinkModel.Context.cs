@@ -33,5 +33,6 @@ namespace Scorelink.MO
         public virtual DbSet<StatementType> StatementTypes { get; set; }
         public virtual DbSet<SysConfig> SysConfigs { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<V_DocumentDetail> V_DocumentDetail { get; set; }
     }
 }
