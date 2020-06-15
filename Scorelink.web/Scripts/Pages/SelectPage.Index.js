@@ -17,20 +17,10 @@ var ViewModel = function () {
     GetDoclist();
 
     $(document).ready(function () {
-<<<<<<< HEAD
         // Event click button select page
         $("#BtnSelectPage").click(function () {
             var docId = $("#hdId").val();
             var docPageNo = $("#pageNumber").val();
-=======
-
-        // Start when click button select page
-        $("#BtnSelectPage").click(function () {
-            //Getting value from to populate
-            var docId = $("#hdId").val();
-            var docPageNo = $("#pageNumber").val();
-            //Getting value from to populate
->>>>>>> 50e9cee8fcccea4c621816df41e1484b6f448526
             var Footnotes = "Test Footnotes";
             var Kind_Of_Financial = $("input[name = 'Kind_of_Financial']:checked").val();
             var Type_Page;
@@ -47,26 +37,12 @@ var ViewModel = function () {
                 case "Footnotes":
                     Type_Page = '4';
                     break;
-<<<<<<< HEAD
                 default:              
             }         
             var postData = {                
                 'docId': docId,
                 'docPageno': docPageNo,
                 'pageType': Type_Page
-=======
-                default:
-                    
-            }
-            
-            //Send Value to Server Side.
-            var postData = {
-                
-                'docId': docId,
-                'docPageno': docPageNo,
-                'pageType': Type_Page
-
->>>>>>> 50e9cee8fcccea4c621816df41e1484b6f448526
             };
             $.ajax({
                 type: "POST",
@@ -84,7 +60,6 @@ var ViewModel = function () {
            
         });
     });
-<<<<<<< HEAD
     //show page for deleting
     self.ClickDelete = function (data,event) {
         self.DocId = data.DocId();
@@ -136,29 +111,6 @@ var ViewModel = function () {
         var filter = {
             //filter docid,
             filterId: $("#hdId").val()
-=======
-    self.ClickDelete = function (data,event) {
-        $.redirect("SelectPage/DeletePage", {
-            'id': data.DocId(),
-            'pagetype': data.PageType()
-        }, "POST");
-        //self.DocId(data.DocId());
-        //self.PageType(data.PageType());
-        ////alert(data.FilePath());
-        //$("#exampleModalCenter").modal('show');
-
-    }
-    function GetDoclist() {
-        //$('#table1').DataTable().clear();
-        //$('#table1').DataTable().destroy();
-
-        //blockUI();
-        //---- Object for search ----
-        var filter = {
-            //filterId: self.FilterUserId,
-            filterId: $("#hdId").val()
-          // 'id': 14
->>>>>>> 50e9cee8fcccea4c621816df41e1484b6f448526
         }
        
         $.ajax({
@@ -179,35 +131,8 @@ var ViewModel = function () {
                         )
                     );
                 });
-<<<<<<< HEAD
             }
         })
-=======
-
-                unblockUI();
-                //PNotification("Successful", "Insert data completed", "success");
-            }
-        })
-        //.done(function () {
-        //    var table = $('#table1');
-        //    table.DataTable(
-        //        {
-        //            columnDefs: [
-        //                { orderable: false, targets: 0 }
-        //            ],
-        //            bDestroy: true,
-        //            pageLength: 10,
-        //            "order": [[1, "asc"]]
-        //        }
-        //    );
-        //})
-        .fail(
-            function (xhr, textStatus, err) {
-                //PNotification("Error", err, "error");
-                unblockUI();
-            });
-
->>>>>>> 50e9cee8fcccea4c621816df41e1484b6f448526
     }
 }
 var viewModel = new ViewModel();
