@@ -35,19 +35,14 @@ namespace Scorelink.web.Controllers
             ViewBag.FilePath = data.FilePath;
             ViewBag.FileUrl = data.FileUrl;
             ViewBag.CreateBy = data.CreateBy;
-
-            //var docInfo = docInfoRepo.Get(iDocId);
-            //ViewBag.PDFPath = docInfo.FilePath;
             return View("SelectPage");
         }
         public ActionResult DeletePage(int id,string pagetype)
         {
-            //Delete page of selected page
+            //Delete page of page seleted
             var data = docDetailRepo.Get(id);
             ViewBag.Id = data.DocId;
             ViewBag.PageType = data.PageType;
-            //var docInfo = docInfoRepo.Get(iDocId);
-            //ViewBag.PDFPath = docInfo.FilePath;
             return View("DeletePage");
         }
         public JsonResult Get_SelectPage(string value, string pageType, int docId, string docPageNo)
@@ -93,12 +88,12 @@ namespace Scorelink.web.Controllers
             var doc = docDetailRepo.GetListView(filterId).ToList();
             return Json(doc, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult DeleteDocumentDetail(string id,string pagetype)
+        public JsonResult DeleteDocumentDetail(string docid,string pagetype,string docPageNo)
         {
             var result = "";    
                 try
                 {
-                        result = docDetailRepo.DeleteTypes(id,pagetype);
+                        result = docDetailRepo.DeleteTypes(docid,pagetype, docPageNo);
                     
                 }
                 catch (Exception ex)

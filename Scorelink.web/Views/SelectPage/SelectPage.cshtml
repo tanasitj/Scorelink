@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "PagePreview";
+   // ViewBag.Title = "PagePreview";
 }
 <!DOCTYPE html>
 <head>
@@ -1953,8 +1953,9 @@
                                 <td class="text-center"><span data-bind="text: DocPageNo"></span></td>
                                 <td><span data-bind="text: FootnoteNo"></span></td>
                                 <td class="text-center"><span data-bind="text: PageType"></span></td>
+
                                 <td class="text-center">
-                                    <button type="button" class="btn btn-block bg-gradient-danger" data-toggle="modal" data-target="#exampleModalCenter">Delete</button>
+                                    <button type="button" class="btn btn-block bg-gradient-danger" data-bind="click: $root.ClickDelete">Delete</button>
                                 </td>
                                 <td class="text-center">
                                     <button type="button" class="btn btn-block bg-gradient-success" data-bind="click: $root.ClickScan">Scan</button>
@@ -1962,7 +1963,8 @@
                                 <td class="text-center">
                                     <button type="button" class="btn btn-block bg-gradient-gray" data-bind="click: $root.ClickScan">Scan/Edit</button>
                                 </td>
-                                <td>
+                                <td class="text-center">
+                                    <label><input type="checkbox" value="" disabled></label>
                                 </td>
                             </tr>
                         </tbody>
@@ -1991,8 +1993,6 @@
 
         <!-- Add .modal-dialog-centered to .modal-dialog to vertically center the modal -->
         <div class="modal-dialog modal-dialog-centered" role="document">
-
-
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLongTitle">Delete Selected Page</h5>
@@ -2002,94 +2002,86 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-row">
-                        <div class="custom-control custom-radio">
-                            <label><input type="radio" value="DeleteAllPages" name="TypeDelete" checked>  Delete all pages</label>
-                        </div>
-                    </div>
-
-                    
+                        <label>&nbsp<input type="radio" value="DeleteAllPages" name="TypeDelete" checked>  Delete all pages</label>
+                    </div>                   
                     <div class="form-row">
-
                         <div class="form-group col-md-6">
-                            @*<label for="inputFootnote">Footnotes</label>*@
-                            <label>&nbsp&nbsp&nbsp&nbsp<input type="radio" value="Delete_specific_page" name="TypeDelete">  Delete specific page</label>
+                            <label><input type="radio" value="Delete_specific_page" name="TypeDelete">  Delete specific page</label>
                         </div>
                         <div class="form-group col-md-6">
-                            <select id="inputNotes" class="form-control">
-                                <option selected>11</option>
+                            <select id="page_delete" class="form-control">
+                                <option selected>..</option>
                                 <option>....</option>
                             </select>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Delete</button>
+                    <button type="button" id ="BtnDeletePage" class="btn btn-primary" data-bind="click: $root.SubmitDelete">Delete</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-
                 </div>
             </div>
         </div>
     </div>
 </div>
-    @section scripts{
-        <!-- bs-custom-file-input -->
-        <script src="https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.1.0.js"
-                type="text/javascript"></script>
-        @*<script src="~/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>*@
-        <script type="text/javascript">
-            $(document).ready(function () {
-                bsCustomFileInput.init();
-            });
-        </script>
-        <script src="~/Scripts/Pages/SelectPage.Index.js"></script>
+@section scripts{
+    <!-- bs-custom-file-input -->
+    <script src="https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.1.0.js"
+            type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            bsCustomFileInput.init();0
+        });
+    </script>
+    <script src="~/Scripts/Pages/SelectPage.Index.js"></script>
 
-        @*  Leadtools .js files*@
-        <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.js"></script>
-        <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.Controls.js"></script>
-        <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.Annotations.Engine.js"></script>
-        <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.Annotations.Designers.js"></script>
-        <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.Annotations.Rendering.JavaScript.js"></script>
-        <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.Annotations.Automation.js"></script>
-        <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.Document.js"></script>
-        <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.Document.Viewer.js"></script>
+    @*  Leadtools .js files*@
+    <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.Controls.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.Annotations.Engine.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.Annotations.Designers.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.Annotations.Rendering.JavaScript.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.Annotations.Automation.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.Document.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.Document.Viewer.js"></script>
 
-        @* DocumentViewerDemo .js fies*@
-        <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.Demos.js"></script>
-        <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.Demos.Annotations.js"></script>
-        <script type="text/javascript" src="~/plugins/Leadtools/Main/CommandBinder.js"></script>
-        <script type="text/javascript" src="~/plugins/Leadtools/Main/Main.js"></script>
-        <script type="text/javascript" src="~/plugins/Leadtools/Main/Main.File.js"></script>
-        <script type="text/javascript" src="~/plugins/Leadtools/Main/Main.Edit.js"></script>
-        <script type="text/javascript" src="~/plugins/Leadtools/Main/Main.View.js"></script>
-        <script type="text/javascript" src="~/plugins/Leadtools/Main/Main.Page.js"></script>
-        <script type="text/javascript" src="~/plugins/Leadtools/Main/Main.Interactive.js"></script>
-        <script type="text/javascript" src="~/plugins/Leadtools/Main/Main.Annotations.js"></script>
-        <script type="text/javascript" src="~/plugins/Leadtools/Main/Main.Preferences.js"></script>
-        <script type="text/javascript" src="~/plugins/Leadtools/Converter/DocumentConverterFormats.js"></script>
-        <script type="text/javascript" src="~/plugins/Leadtools/Converter/Dialogs/DocumentConverterDlg.js"></script>
-        <script type="text/javascript" src="~/plugins/Leadtools/Converter/Dialogs/DocumentFormatOptionsDlg.js"></script>
-        <script type="text/javascript" src="~/plugins/Leadtools/Converter/Dialogs/AdvancedPdfOptionsDlg.js"></script>
-        <script type="text/javascript" src="~/plugins/Leadtools/Converter/Dialogs/SaveToDlg.js"></script>
-        <script type="text/javascript" src="~/plugins/Leadtools/Dialogs/DocumentRedactionOptionsDlg.js"></script>
-        <script type="text/javascript" src="~/plugins/Leadtools/Dialogs/OpenDocumentDlg.js"></script>
-        <script type="text/javascript" src="~/plugins/Leadtools/Dialogs/ColorPicker.js"></script>
-        <script type="text/javascript" src="~/plugins/Leadtools/Dialogs/PagesDlg.js"></script>
-        <script type="text/javascript" src="~/plugins/Leadtools/Dialogs/PageRotationDlg.js"></script>
-        <script type="text/javascript" src="~/plugins/Leadtools/Dialogs/DocumentPropertiesDlg.js"></script>
-        <script type="text/javascript" src="~/plugins/Leadtools/Dialogs/ProcessingPagesDlg.js"></script>
-        <script type="text/javascript" src="~/plugins/Leadtools/Dialogs/CustomRenderModeDlg.js"></script>
-        <script type="text/javascript" src="~/plugins/Leadtools/Dialogs/InputDlg.js"></script>
-        <script type="text/javascript" src="~/plugins/Leadtools/Dialogs/DocumentViewerOptionsDlg.js"></script>
-        <script type="text/javascript" src="~/plugins/Leadtools/Dialogs/LinkValueDlg.js"></script>
-        <script type="text/javascript" src="~/plugins/Leadtools/Dialogs/LoadingDlg.js"></script>
-        <script type="text/javascript" src="~/plugins/Leadtools/Dialogs/PrintDlg.js"></script>
+    @* DocumentViewerDemo .js fies*@
+    <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.Demos.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.Demos.Annotations.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Main/CommandBinder.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Main/Main.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Main/Main.File.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Main/Main.Edit.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Main/Main.View.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Main/Main.Page.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Main/Main.Interactive.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Main/Main.Annotations.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Main/Main.Preferences.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Converter/DocumentConverterFormats.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Converter/Dialogs/DocumentConverterDlg.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Converter/Dialogs/DocumentFormatOptionsDlg.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Converter/Dialogs/AdvancedPdfOptionsDlg.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Converter/Dialogs/SaveToDlg.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Dialogs/DocumentRedactionOptionsDlg.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Dialogs/OpenDocumentDlg.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Dialogs/ColorPicker.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Dialogs/PagesDlg.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Dialogs/PageRotationDlg.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Dialogs/DocumentPropertiesDlg.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Dialogs/ProcessingPagesDlg.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Dialogs/CustomRenderModeDlg.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Dialogs/InputDlg.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Dialogs/DocumentViewerOptionsDlg.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Dialogs/LinkValueDlg.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Dialogs/LoadingDlg.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Dialogs/PrintDlg.js"></script>
 
-        <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.Pdf.js"></script>
-        <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.Pdf.Worker.js"></script>
-        <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.Pdf.Compatibility.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.Pdf.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.Pdf.Worker.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.Pdf.Compatibility.js"></script>
 
-        @*DriverHelper*@
-        <script type="text/javascript" src="~/plugins/Leadtools/DriveHelper/DriveHelper.js"></script>
-        <script type="text/javascript" src="~/plugins/Leadtools/DriveHelper/SharePointService.js"></script>
-        <script type="text/javascript" src="~/plugins/Leadtools/DriveHelper/SharePointPickerDlg.js"></script>
-    }
+    @*DriverHelper*@
+    <script type="text/javascript" src="~/plugins/Leadtools/DriveHelper/DriveHelper.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/DriveHelper/SharePointService.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/DriveHelper/SharePointPickerDlg.js"></script>
+}

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using Scorelink.MO;
@@ -27,6 +28,7 @@ namespace Scorelink.BO.Repositories
                             ScanStatus = doc.ScanStatus,
                             PageFileName = doc.PageFileName,
                             PagePath = doc.PagePath,
+                            PageUrl = doc.PageUrl,
                             Selected = doc.Selected,
                             PatternNo = doc.PatternNo,
                             CreateBy = doc.CreateBy,
@@ -59,6 +61,7 @@ namespace Scorelink.BO.Repositories
                                  ScanStatus = doc.ScanStatus,
                                  PageFileName = doc.PageFileName,
                                  PagePath = doc.PagePath,
+                                 PageUrl = doc.PageUrl,
                                  Selected = doc.Selected,
                                  PatternNo = doc.PatternNo,
                                  CreateBy = doc.CreateBy,
@@ -72,7 +75,27 @@ namespace Scorelink.BO.Repositories
                 throw ex;
             }
         }
-
+        public IEnumerable<DocumentDetailModel> GetListView(int id)
+        {
+            ScorelinkEntities db = new ScorelinkEntities();
+            try
+            {
+                var query = (from doc in db.F_DocumentDetail(id)
+                             where doc.DocId == id
+                             select new DocumentDetailModel
+                             {
+                                 DocId = doc.DocId,
+                                 DocPageNo = doc.PageNo,
+                                 FootnoteNo = doc.FootnoteNo,
+                                 PageType = doc.StatementName
+                             });
+                return query;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public string Update(DocumentDetailModel item)
         {
             using (ScorelinkEntities db = new ScorelinkEntities())
@@ -181,6 +204,7 @@ namespace Scorelink.BO.Repositories
                             ScanStatus = item.ScanStatus,
                             PageFileName = item.PageFileName,
                             PagePath = item.PagePath,
+                            PageUrl = item.PageUrl,
                             Selected = item.Selected,
                             PatternNo = item.PatternNo,
                             CreateBy = item.CreateBy,
@@ -220,6 +244,37 @@ namespace Scorelink.BO.Repositories
                         db.SaveChanges();
                         dbTran.Commit();
 
+                        return "OK";
+                    }
+                    catch (Exception ex)
+                    {
+                        dbTran.Rollback();
+                        return ex.ToString();
+                    }
+                }
+            }
+        }
+        public string DeleteTypes(string docid,string pagetype,string docPageNo)
+        {
+            using (ScorelinkEntities db = new ScorelinkEntities())
+            {
+                using (System.Data.Entity.DbContextTransaction dbTran = db.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        if (docPageNo == "0") // Delete All Pages
+                        {
+                            var doc = db.DocumentDetails.Where(x => x.DocId.ToString() == docid && x.PageType.ToString() == pagetype).First();
+                            db.DocumentDetails.Remove(doc);
+                        }
+                        else  
+                        {
+                            var doc = db.DocumentDetails.Where(x => x.DocId.ToString() == docid 
+                            && x.PageType.ToString() == pagetype && x.DocPageNo.ToString() == docPageNo).First();
+                            db.DocumentDetails.Remove(doc);
+                        }                    
+                        db.SaveChanges();
+                        dbTran.Commit();
                         return "OK";
                     }
                     catch (Exception ex)
