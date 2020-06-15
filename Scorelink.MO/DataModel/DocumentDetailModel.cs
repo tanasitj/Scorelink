@@ -16,6 +16,7 @@ namespace Scorelink.MO.DataModel
         public string ScanStatus { get; set; }
         public string PageFileName { get; set; }
         public string PagePath { get; set; }
+        public string PageUrl { get; set; }
         public string Selected { get; set; }
         public string PatternNo { get; set; }
         public string CreateBy { get; set; }
