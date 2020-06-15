@@ -1,4 +1,4 @@
-﻿function DocDetailModel(DocId, DocPageNo, FootnoteNo,PageType,UserId,date) {
+﻿function DocDetailModel(DocId, DocPageNo, FootnoteNo, PageType, UserId, date) {
     var self = this;
     self.DocId = ko.observable(DocId);
     self.DocPageNo = ko.observable(DocPageNo);
@@ -30,16 +30,16 @@ var ViewModel = function () {
                     break;
                 case "Balance Sheet":
                     Type_Page = '2';
-                    break; 
+                    break;
                 case "Cash Flow":
                     Type_Page = '3';
-                    break; 
+                    break;
                 case "Footnotes":
                     Type_Page = '4';
                     break;
-                default:              
-            }         
-            var postData = {                
+                default:
+            }
+            var postData = {
                 'docId': docId,
                 'docPageno': docPageNo,
                 'pageType': Type_Page
@@ -51,17 +51,17 @@ var ViewModel = function () {
                 url: "/SelectPage/Get_SelectPage",
                 data: ko.toJSON(postData),
                 success: function (data) {
-                     GetDoclist();
+                    GetDoclist();
                 },
                 error: function (err) {
                     return Notification('Error', err.statusText, 'error');
                 }
             });
-           
+
         });
     });
     //show page for deleting
-    self.ClickDelete = function (data,event) {
+    self.ClickDelete = function (data, event) {
         self.DocId = data.DocId();
         self.PageType = data.PageType();
         var PageNo = data.DocPageNo(),
@@ -71,7 +71,7 @@ var ViewModel = function () {
         $('#page_delete').empty();
         $.each(array, function (i, p) {
             $('#page_delete').append($('<option></option>').val(p).html(p));
-        });   
+        });
         $("#exampleModalCenter").modal('show');
     }
     //delete page
@@ -79,15 +79,16 @@ var ViewModel = function () {
         var Type_Delete = $("input[name = 'TypeDelete']:checked").val();
         var page_no;
         switch (Type_Delete) {
-            case "DeleteAllPages": page_no = '0';break;
-            case "Delete_specific_page": page_no = $("#page_delete").val();break;
+            case "DeleteAllPages": page_no = '0'; break;
+            case "Delete_specific_page": page_no = $("#page_delete").val(); break;
             default:
         }
         var Type_Page;
-        switch (self.PageType) {case "Income Statement":Type_Page = '1';break;
-            case "Balance Sheet": Type_Page = '2';break;
-            case "Cash Flow": Type_Page = '3';break;
-            case "Footnotes": Type_Page = '4';break;
+        switch (self.PageType) {
+            case "Income Statement": Type_Page = '1'; break;
+            case "Balance Sheet": Type_Page = '2'; break;
+            case "Cash Flow": Type_Page = '3'; break;
+            case "Footnotes": Type_Page = '4'; break;
             default:
         }
         var filter = {
@@ -112,7 +113,7 @@ var ViewModel = function () {
             //filter docid,
             filterId: $("#hdId").val()
         }
-       
+
         $.ajax({
             url: '/SelectPage/GetDocumentList',
             cache: false,
