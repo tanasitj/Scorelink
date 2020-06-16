@@ -24,19 +24,10 @@ var ViewModel = function () {
             var Footnotes = "Test Footnotes";
             var Kind_Of_Financial = $("input[name = 'Kind_of_Financial']:checked").val();
             var Type_Page;
-            switch (Kind_Of_Financial) {
-                case "Income Statement":
-                    Type_Page = '1';
-                    break;
-                case "Balance Sheet":
-                    Type_Page = '2';
-                    break;
-                case "Cash Flow":
-                    Type_Page = '3';
-                    break;
-                case "Footnotes":
-                    Type_Page = '4';
-                    break;
+            switch (Kind_Of_Financial) { case "Income Statement": Type_Page = '1';break;
+                case "Balance Sheet": Type_Page = '2';break;
+                case "Cash Flow": Type_Page = '3';break;
+                case "Footnotes":Type_Page = '4';break;
                 default:
             }
             var postData = {
@@ -72,7 +63,7 @@ var ViewModel = function () {
         $.each(array, function (i, p) {
             $('#page_delete').append($('<option></option>').val(p).html(p));
         });
-        $("#exampleModalCenter").modal('show');
+        $("#Modal_DeletePage").modal('show');
     }
     //delete page
     self.SubmitDelete = function () {
@@ -103,10 +94,20 @@ var ViewModel = function () {
             contentType: 'application/json; charset=utf-8',
             data: ko.toJSON(filter),
             success: function (data) {
-                $("#exampleModalCenter").modal('hide');
+                $("#Modal_DeletePage").modal('hide');
                 GetDoclist();
             }
         });
+    }
+    self.ClickScan = function (data,event) {
+        $.redirect("/SelectPattern/Index", {
+            'id': data.DocId()
+        }, "POST");
+    }
+    self.ClickScan_Edit = function () {
+        $.redirect("/ScanResult/Index", {
+            
+        })
     }
     function GetDoclist() {
         var filter = {
