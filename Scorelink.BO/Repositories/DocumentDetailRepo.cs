@@ -264,8 +264,8 @@ namespace Scorelink.BO.Repositories
                     {
                         if (docPageNo == "0") // Delete All Pages
                         {
-                            var doc = db.DocumentDetails.Where(x => x.DocId.ToString() == docid && x.PageType.ToString() == pagetype).First();
-                            db.DocumentDetails.Remove(doc);
+                            var doc = db.DocumentDetails.Where(x => x.DocId.ToString() == docid && x.PageType.ToString() == pagetype);
+                            db.DocumentDetails.RemoveRange(doc);
                         }
                         else  
                         {

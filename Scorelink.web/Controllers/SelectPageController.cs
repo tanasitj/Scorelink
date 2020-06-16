@@ -51,17 +51,18 @@ namespace Scorelink.web.Controllers
             {
                 //Insert table DocumentDetail           
                 DocumentDetailModel docDetail = new DocumentDetailModel();
+                var data_detail = docInfoRepo.Get(docId);
                 docDetail.DocId = docId;
                 docDetail.DocPageNo = docPageNo;
                 docDetail.PageType = pageType;
-                docDetail.FootnoteNo = "1";
-                docDetail.ScanStatus = "1";
-                docDetail.PageFileName = "1";
-                docDetail.PagePath = "1";
-                docDetail.Selected = "1";
-                docDetail.PatternNo = "1";
-                docDetail.CreateBy = "1";
-                docDetail.PageUrl = "1";
+                docDetail.FootnoteNo = null;
+                docDetail.ScanStatus = null;
+                docDetail.PageFileName = data_detail.FileName;
+                docDetail.PagePath = data_detail.FilePath;
+                docDetail.Selected = null;
+                docDetail.PatternNo = null;
+                docDetail.CreateBy = data_detail.CreateBy;
+                docDetail.PageUrl = data_detail.FileUrl;
                 docDetail.CreateDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
                 docDetail.UpdateDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
                 DocumentDetailRepo docDetailRepo = new DocumentDetailRepo();
