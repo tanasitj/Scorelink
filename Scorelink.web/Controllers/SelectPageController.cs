@@ -57,7 +57,7 @@ namespace Scorelink.web.Controllers
                 docDetail.PageType = pageType;
                 docDetail.FootnoteNo = null;
                 docDetail.ScanStatus = null;
-                docDetail.PageFileName = data_detail.FileName;
+                docDetail.PageFileName = Common.GenZero(pageType,5);
                 docDetail.PagePath = data_detail.FilePath;
                 docDetail.Selected = null;
                 docDetail.PatternNo = null;
