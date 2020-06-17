@@ -99,11 +99,41 @@ var ViewModel = function () {
             }
         });
     }
-    self.ClickScan = function (data,event) {
+    self.ClickScan = function (data, event) {
+        var Type_Page;
+        switch (data.PageType()) {
+            case "Income Statement": Type_Page = '1'; break;
+            case "Balance Sheet": Type_Page = '2'; break;
+            case "Cash Flow": Type_Page = '3'; break;
+            case "Footnotes": Type_Page = '4'; break;
+            default:
+        }
+        var DocId = data.DocId();
+        var filter = {
+            'docId': data.DocId(),
+            'pageType': Type_Page
+        }
+        blockUI();
+        $.ajax({
+            url: '/SelectPage/SelectScan',
+            cache: false,
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            data: ko.toJSON(filter),
+            success: function (data) {
+                //unblockUI();
+                goSelectPattern(DocId, Type_Page);
+            }
+        });
+    }
+
+    function goSelectPattern(docId,pageType) {
         $.redirect("/SelectPattern/Index", {
-            'id': data.DocId()
+            'docId': docId,
+            'pageType': pageType
         }, "POST");
     }
+
     self.ClickScan_Edit = function () {
         $.redirect("/ScanResult/Index", {
             

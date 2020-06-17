@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using Scorelink.BO.Helper;
 using Scorelink.MO.DataModel;
 using Scorelink.BO.Repositories;
+using System.IO;
+
 namespace Scorelink.web.Controllers
 {
     public class SelectPageController : Controller
@@ -37,7 +39,7 @@ namespace Scorelink.web.Controllers
             ViewBag.CreateBy = data.CreateBy;
             return View("SelectPage");
         }
-        public ActionResult DeletePage(int id,string pagetype)
+        public ActionResult DeletePage(int id, string pagetype)
         {
             //Delete page of page seleted
             var data = docDetailRepo.Get(id);
@@ -57,7 +59,7 @@ namespace Scorelink.web.Controllers
                 docDetail.PageType = pageType;
                 docDetail.FootnoteNo = null;
                 docDetail.ScanStatus = null;
-                docDetail.PageFileName = Common.GenZero(pageType,5);
+                docDetail.PageFileName = Common.GenZero(pageType, 5);
                 docDetail.PagePath = data_detail.FilePath;
                 docDetail.Selected = null;
                 docDetail.PatternNo = null;
@@ -89,19 +91,95 @@ namespace Scorelink.web.Controllers
             var doc = docDetailRepo.GetListView(filterId).ToList();
             return Json(doc, JsonRequestBehavior.AllowGet);
         }
-        public JsonResult DeleteDocumentDetail(string docid,string pagetype,string docPageNo)
+        public JsonResult DeleteDocumentDetail(string docid, string pagetype, string docPageNo)
         {
-            var result = "";    
-                try
-                {
-                        result = docDetailRepo.DeleteTypes(docid,pagetype, docPageNo);
-                    
-                }
-                catch (Exception ex)
-                {
-                    return Json(ex.Message);
-                }
+            var result = "";
+            try
+            {
+                result = docDetailRepo.DeleteTypes(docid, pagetype, docPageNo);
+
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message);
+            }
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult SelectScan(int docId, string pageType)
+        {
+            var result = "";
+            try
+            {
+                //Temp for Test.
+                int iUserId = 1;
+
+                //Get DocumentInfo data.
+                var docInfo = docInfoRepo.Get(docId);
+                String sFolder = docInfo.FileUID;
+                String sPath = docInfo.FilePath;
+                //Folder for New File.
+                String sTempFolder = Consts.SLUserFlie + "\\FileUploads\\" + Common.GenZero(iUserId.ToString(), 8) + "\\" + sFolder + "\\";
+                //Check and Create Folder.
+                Common.CreateDocFolder(sTempFolder);
+                //Get PageType for File Name.
+                String sSavePath = sTempFolder + Common.GenZero(pageType, 5) + ".tif";
+                //Check for Delete File for Initail.
+                if (System.IO.File.Exists(sSavePath))
+                {
+                    System.IO.File.Delete(sSavePath);
+                }
+
+                //Get DocumentDetail data.
+                var docDet = docDetailRepo.GetList(docId, pageType);
+                //Get Leadtools License.
+                Common.GetLicenseLeadTool();
+
+                using (var documentConverter = new Leadtools.Document.Converter.DocumentConverter())
+                {
+                    var codecs = new Leadtools.Codecs.RasterCodecs();
+                    codecs.Options.RasterizeDocument.Load.XResolution = 150;
+                    codecs.Options.RasterizeDocument.Load.YResolution = 150;
+
+                    Leadtools.Codecs.CodecsImageInfo info = codecs.GetInformation(sPath, true);
+
+                    int iNum = 1;
+                    int iRow = docDet.Count();
+
+                    foreach (var doc in docDet)
+                    {
+                        //Get Page Number convert to integer.
+                        int iPage = Convert.ToInt32(doc.DocPageNo);
+                        Leadtools.RasterImage image = codecs.Load(sPath, 0, Leadtools.Codecs.CodecsLoadByteOrder.BgrOrGray, iPage, iPage);
+                        //Generate File.
+                        codecs.Save(image, sSavePath, Leadtools.RasterImageFormat.Tif, 24, 1, -1, 1, Leadtools.Codecs.CodecsSavePageMode.Append);
+                        //Check for Clear Temp.
+                        if (iNum == iRow)
+                        {
+                            image.Dispose();
+                        }
+                        else
+                        {
+                            iNum++;
+                        }
+                    }
+                }
+                //Update Path to DocumentDetail.
+                DocumentDetailModel docDetail = new DocumentDetailModel();
+                docDetail.DocId = docId;
+                docDetail.PageType = pageType;
+                docDetail.PagePath = sTempFolder + Common.GenZero(pageType, 5) + ".tif";
+                docDetail.PageUrl = Consts.sUrl + "/FileUploads/" + Common.GenZero(iUserId.ToString(), 8) + "/" + sFolder + "/" + Common.GenZero(pageType, 5) + ".tif";
+                SelectPageRepo pageRepo = new SelectPageRepo();
+                result = pageRepo.UpdatePathFile(docDetail);
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message);
+            }
+
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

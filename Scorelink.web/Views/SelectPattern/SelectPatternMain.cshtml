@@ -3,19 +3,21 @@
     //ViewBag.Title = "Select Pattern";
 }
 
-<link rel="stylesheet" href="~/Scripts/Resources/Styles/DocumentViewerDemo.css" type="text/css" />
-<link rel="stylesheet" href="~/Scripts/Resources/Styles/Toolbars.css" type="text/css" />
-<link rel="stylesheet" href="~/Scripts/Resources/Styles/ImageViewerStyles.css" type="text/css" />
-<link rel="stylesheet" href="~/Scripts/Resources/Styles/ImageViewerThumbnailStyles.css" type="text/css" />
-<link rel="stylesheet" href="~/Scripts/Resources/Styles/Sidebar.css" type="text/css" />
-<link rel="stylesheet" href="~/Scripts/Resources/Styles/Table.css" type="text/css" />
-<link rel="stylesheet" href="~/Scripts/Resources/Styles/Dialogs.css" type="text/css" />
-<link rel="stylesheet" href="~/Scripts/Resources/Styles/Icons.css" type="text/css" />
+<link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/DocumentViewerDemo.css" type="text/css" />
+<link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/Toolbars.css" type="text/css" />
+<link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/ImageViewerStyles.css" type="text/css" />
+<link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/ImageViewerThumbnailStyles.css" type="text/css" />
+<link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/Sidebar.css" type="text/css" />
+<link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/Table.css" type="text/css" />
+<link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/Dialogs.css" type="text/css" />
+<link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/Icons.css" type="text/css" />
 
 <section class="content">
     <input type="hidden" id="hdId" value="@ViewBag.Id" />
     <input type="hidden" id="hdDocDetId" value="@ViewBag.DocDetId" />
     <input type="hidden" id="hdDocPageNo" value="@ViewBag.DocPageNo" />
+    <input type="hidden" id="hdPDFFile" value="@ViewBag.PDFPath" />
+
     <input type="hidden" id="hdPageFileName" value="@ViewBag.PageFileName" />
     <input type="hidden" id="hdPagePath" value="@ViewBag.PagePath" />
     <input type="hidden" id="hdPatternNo" value="@ViewBag.PatternNo" />
@@ -27,7 +29,6 @@
     <input type="hidden" id="hdFootnoteSymbol" value="@ViewBag.FootnoteSymbol" />
     <input type="hidden" id="hdNumberOfDec" value="@ViewBag.NumberOfDec" />
     <input type="hidden" id="hdNoiseReduce" value="@ViewBag.NoiseReduce" />
-    <input type="hidden" id="hdPDFFile" value="@ViewBag.PDFPath" />
 
     <div class="container-fluid">
         <!-- ROW 1 -->
@@ -39,45 +40,43 @@
                         <h3 class="card-title"><b><i class="far fa-object-ungroup"></i> Select Pattern For Scan</b></h3>
                     </div>
                     <div class="card-body">
-                        <div class="form-group">
-                            <div class="image-decorator text-center">
-                                <table id="tab1" class="table table-bordered">
-                                    <thead class="bg-gray-light">
-                                        <tr class="text-center">
-                                            <th><input id="rdPattern" type="radio" name="rdPattern" value="1" checked /></th>
-                                            <th><input id="rdPattern" type="radio" name="rdPattern" value="2" /></th>
-                                            <th><input id="rdPattern" type="radio" name="rdPattern" value="3" /></th>
-                                            <th><input id="rdPattern" type="radio" name="rdPattern" value="4" /></th>
-                                            <th><input id="rdPattern" type="radio" name="rdPattern" value="5" /></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr class="text-center">
-                                            <td>
-                                                <img id="Pattern1" src="~/Content/img/Pattern/OCRArea_Pattern1n.png" />
-                                            </td>
-                                            <td>
-                                                <img id="Pattern1" src="~/Content/img/Pattern/OCRArea_Pattern2n.png" />
-                                            </td>
-                                            <td>
-                                                <img id="Pattern1" src="~/Content/img/Pattern/OCRArea_Pattern3n.png" />
-                                            </td>
-                                            <td>
-                                                <img id="Pattern1" src="~/Content/img/Pattern/OCRArea_Pattern4n.png" />
-                                            </td>
-                                            <td>
-                                                <img id="Pattern1" src="~/Content/img/Pattern/OCRArea_Pattern5n.png" />
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-
-                                <button type="button" class="btn bg-gradient-success" id="btnSubmit" value="Submit">Begin Scan</button>
-                                <button type="button" class="btn bg-gradient-danger">Back</button>
-                            </div>
+                        <div class="form-group text-center">
+                            <table id="tab1" class="table table-bordered">
+                                <thead class="bg-gray-light">
+                                    <tr class="text-center">
+                                        <th><input id="rdPattern" type="radio" name="rdPattern" value="1" checked /></th>
+                                        <th><input id="rdPattern" type="radio" name="rdPattern" value="2" /></th>
+                                        <th><input id="rdPattern" type="radio" name="rdPattern" value="3" /></th>
+                                        <th><input id="rdPattern" type="radio" name="rdPattern" value="4" /></th>
+                                        <th><input id="rdPattern" type="radio" name="rdPattern" value="5" /></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="text-center">
+                                        <td>
+                                            <img id="Pattern1" src="~/Content/img/Pattern/OCRArea_Pattern1n.png" />
+                                        </td>
+                                        <td>
+                                            <img id="Pattern1" src="~/Content/img/Pattern/OCRArea_Pattern2n.png" />
+                                        </td>
+                                        <td>
+                                            <img id="Pattern1" src="~/Content/img/Pattern/OCRArea_Pattern3n.png" />
+                                        </td>
+                                        <td>
+                                            <img id="Pattern1" src="~/Content/img/Pattern/OCRArea_Pattern4n.png" />
+                                        </td>
+                                        <td>
+                                            <img id="Pattern1" src="~/Content/img/Pattern/OCRArea_Pattern5n.png" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-
+                    <div class="card-footer text-center">
+                        <button type="button" class="btn bg-gradient-success" id="btnSubmit" value="Submit">Begin Scan</button>
+                        <button type="button" class="btn bg-gradient-danger">Back</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -95,6 +94,7 @@
                         <div class="form-group">
                             <div class="image-decorator">
 
+                                <!-- Leadtools Preview -->
                                 <table id="tab0" class="table">
                                     <tbody>
                                         <tr>
@@ -102,10 +102,6 @@
                                                 <!-- Create a header toolbar -->
                                                 <div id="headerToolbarContainer" class="toolbar headerToolbarDiv hide-for-print">
                                                     <div class="shortcutsbar">
-                                                        @*<button id="showThumbnails" class="navigationbarBtn">
-                                                                <span class="icon thumbnailsIcon"></span>
-                                                            </button>*@
-
                                                         <!-- Previous page -->
                                                         <button id="previousPage_shortcut" title="Go to previous page in the document">
                                                             <span class="icon icon-sm previousIcon"></span>
@@ -176,9 +172,6 @@
                                                 </div>
 
                                                 <div id="thumbnailsControl" class="affectedContainers hide-for-print">
-                                                    <div class="controlHeader">
-                                                        <label></label>
-                                                    </div>
                                                     <div id="thumbnails">
                                                     </div>
                                                 </div>
@@ -231,7 +224,7 @@
                                                                 <div class="inline-center">
                                                                     <div>Copyright © 1991-2019 All Rights Reserved.</div>
                                                                     <div>LEAD Technologies, Inc.</div>
-                                                                    <img src="../Scripts/Resources/Images/LEAD.png" alt="LEADTOOLS" />
+                                                                    <img src="Resources/Images/LEAD.png" alt="LEADTOOLS" />
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
@@ -1167,7 +1160,7 @@
                                                                     </div>
                                                                     <div class="top-push">
                                                                         <div class="inline-center">
-                                                                            <img id="dlgExportSave_FileSaving" src="../Scripts/Resources/Images/Loading.gif" />
+                                                                            <img id="dlgExportSave_FileSaving" src="Resources/Images/Loading.gif" />
                                                                         </div>
                                                                         <div id="dlgExportSave_GoogleSaveContainer" class="input-group">
                                                                             <p class="help-block">
@@ -1338,7 +1331,7 @@
                                                                 <h3><strong class="process-name">[Process]</strong> for <strong class="process-pages">#</strong> page(s)</h3>
                                                             </header>
                                                             <div class="dlg-body modal-body">
-                                                                <h4><span class="process-status"></span><img id="documentLoading" class="process-loading" src="../Scripts/Resources/Images/Loading.gif" /></h4>
+                                                                <h4><span class="process-status"></span><img id="documentLoading" class="process-loading" src="Resources/Images/Loading.gif" /></h4>
                                                                 <h5 class="process-summary"></h5>
                                                                 <div class="process-content"></div>
                                                                 <button class="process-cancel btn btn-default">Cancel</button>
@@ -1753,7 +1746,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <img id="dlgSharePointPicker_Loading" src="../Scripts/Resources/Images/Loading.gif" />
+                                                                <img id="dlgSharePointPicker_Loading" src="Resources/Images/Loading.gif" />
                                                                 <button type="button" id="dlgSharePointPicker_SetProperties" class="btn btn-default pull-left">
                                                                     <span class="icon icon-sm server"></span>
                                                                     <span class="text">Disconnect</span>
@@ -1912,17 +1905,11 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div>
-                                                    <!-- Print containers -->
-                                                    <div id="printDiv" class="lt-print print-div">
-                                                    </div>
-                                                    <iframe id="printFrame" class="lt-print print-frame"></iframe>
-                                                    <iframe id="pdfPrintFrame" class="lt-print print-frame"></iframe>
-                                                </div>
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
+                                <!-- /Leadtools Preview -->
                             </div>
                         </div>
                     </div>
@@ -2012,63 +1999,64 @@
 </section>
 
 @section scripts{
-
-    @*Leadtools .js files*@
-    <script type="text/javascript" src="~/Scripts/Leadtools/Leadtools.js"></script>
-    <script type="text/javascript" src="~/Scripts/Leadtools/Leadtools.Controls.js"></script>
-    <script type="text/javascript" src="~/Scripts/Leadtools/Leadtools.Annotations.Engine.js"></script>
-    <script type="text/javascript" src="~/Scripts/Leadtools/Leadtools.Annotations.Designers.js"></script>
-    <script type="text/javascript" src="~/Scripts/Leadtools/Leadtools.Annotations.Rendering.JavaScript.js"></script>
-    <script type="text/javascript" src="~/Scripts/Leadtools/Leadtools.Annotations.Automation.js"></script>
-    <script type="text/javascript" src="~/Scripts/Leadtools/Leadtools.Document.js"></script>
-    <script type="text/javascript" src="~/Scripts/Leadtools/Leadtools.Document.Viewer.js"></script>
-
-    @* DocumentViewerDemo .js fies*@
-    <script type="text/javascript" src="~/Scripts/Leadtools/Leadtools.Demos.js"></script>
-    <script type="text/javascript" src="~/Scripts/Leadtools/Leadtools.Demos.Annotations.js"></script>
-    <script type="text/javascript" src="~/Scripts/Main/CommandBinder.js"></script>
-    <script type="text/javascript" src="~/Scripts/Main/Main.js"></script>
-    <script type="text/javascript" src="~/Scripts/Main/Main.File.js"></script>
-    <script type="text/javascript" src="~/Scripts/Main/Main.Edit.js"></script>
-    <script type="text/javascript" src="~/Scripts/Main/Main.View.js"></script>
-    <script type="text/javascript" src="~/Scripts/Main/Main.Page.js"></script>
-    <script type="text/javascript" src="~/Scripts/Main/Main.Interactive.js"></script>
-    <script type="text/javascript" src="~/Scripts/Main/Main.Annotations.js"></script>
-    <script type="text/javascript" src="~/Scripts/Main/Main.Preferences.js"></script>
-    <script type="text/javascript" src="~/Scripts/Converter/DocumentConverterFormats.js"></script>
-    <script type="text/javascript" src="~/Scripts/Converter/Dialogs/DocumentConverterDlg.js"></script>
-    <script type="text/javascript" src="~/Scripts/Converter/Dialogs/DocumentFormatOptionsDlg.js"></script>
-    <script type="text/javascript" src="~/Scripts/Converter/Dialogs/AdvancedPdfOptionsDlg.js"></script>
-    <script type="text/javascript" src="~/Scripts/Converter/Dialogs/SaveToDlg.js"></script>
-    <script type="text/javascript" src="~/Scripts/Dialogs/DocumentRedactionOptionsDlg.js"></script>
-    <script type="text/javascript" src="~/Scripts/Dialogs/OpenDocumentDlg.js"></script>
-    <script type="text/javascript" src="~/Scripts/Dialogs/ColorPicker.js"></script>
-    <script type="text/javascript" src="~/Scripts/Dialogs/PagesDlg.js"></script>
-    <script type="text/javascript" src="~/Scripts/Dialogs/PageRotationDlg.js"></script>
-    <script type="text/javascript" src="~/Scripts/Dialogs/DocumentPropertiesDlg.js"></script>
-    <script type="text/javascript" src="~/Scripts/Dialogs/ProcessingPagesDlg.js"></script>
-    <script type="text/javascript" src="~/Scripts/Dialogs/CustomRenderModeDlg.js"></script>
-    <script type="text/javascript" src="~/Scripts/Dialogs/InputDlg.js"></script>
-    <script type="text/javascript" src="~/Scripts/Dialogs/DocumentViewerOptionsDlg.js"></script>
-    <script type="text/javascript" src="~/Scripts/Dialogs/LinkValueDlg.js"></script>
-    <script type="text/javascript" src="~/Scripts/Dialogs/LoadingDlg.js"></script>
-    <script type="text/javascript" src="~/Scripts/Dialogs/PrintDlg.js"></script>
-
-    <script type="text/javascript" src="~/Scripts/Leadtools/Leadtools.Pdf.js"></script>
-    <script type="text/javascript" src="~/Scripts/Leadtools/Leadtools.Pdf.Worker.js"></script>
-    <script type="text/javascript" src="~/Scripts/Leadtools/Leadtools.Pdf.Compatibility.js"></script>
-
-    @*DriverHelper*@
-    <script type="text/javascript" src="~/Scripts/DriveHelper/DriveHelper.js"></script>
-    <script type="text/javascript" src="~/Scripts/DriveHelper/SharePointService.js"></script>
-    <script type="text/javascript" src="~/Scripts/DriveHelper/SharePointPickerDlg.js"></script>
+    <!-- bs-custom-file-input -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            bsCustomFileInput.init(); 0
+        });
+    </script>
 
     <script src="~/Scripts/Pages/SelectPattern.Main.js"></script>
 
+    @*  Leadtools .js files*@
+    <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.Controls.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.Annotations.Engine.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.Annotations.Designers.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.Annotations.Rendering.JavaScript.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.Annotations.Automation.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.Document.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.Document.Viewer.js"></script>
 
-    <script type="text/javascript">
-        //var documentUri = "@ViewBag.PDFPath";
-        //var documentUri = document.getElementById("hdPDFFile").value;
-    </script>
+    @* DocumentViewerDemo .js fies*@
+    <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.Demos.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.Demos.Annotations.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Main/CommandBinder.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Main/Main.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Main/Main.File.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Main/Main.Edit.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Main/Main.View.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Main/Main.Page.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Main/Main.Interactive.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Main/Main.Annotations.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Main/Main.Preferences.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Converter/DocumentConverterFormats.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Converter/Dialogs/DocumentConverterDlg.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Converter/Dialogs/DocumentFormatOptionsDlg.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Converter/Dialogs/AdvancedPdfOptionsDlg.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Converter/Dialogs/SaveToDlg.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Dialogs/DocumentRedactionOptionsDlg.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Dialogs/OpenDocumentDlg.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Dialogs/ColorPicker.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Dialogs/PagesDlg.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Dialogs/PageRotationDlg.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Dialogs/DocumentPropertiesDlg.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Dialogs/ProcessingPagesDlg.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Dialogs/CustomRenderModeDlg.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Dialogs/InputDlg.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Dialogs/DocumentViewerOptionsDlg.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Dialogs/LinkValueDlg.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Dialogs/LoadingDlg.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Dialogs/PrintDlg.js"></script>
+
+    <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.Pdf.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.Pdf.Worker.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.Pdf.Compatibility.js"></script>
+
+    @*DriverHelper*@
+    <script type="text/javascript" src="~/plugins/Leadtools/DriveHelper/DriveHelper.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/DriveHelper/SharePointService.js"></script>
+    <script type="text/javascript" src="~/plugins/Leadtools/DriveHelper/SharePointPickerDlg.js"></script>
+
 }
 

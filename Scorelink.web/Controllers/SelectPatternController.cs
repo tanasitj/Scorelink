@@ -14,29 +14,26 @@ namespace Scorelink.web.Controllers
     {
         //Fix code for Test.
         int iUserId = 1;
-        int iDocId = 1038;
+        int iDocId = 1047;
         //----------------//
 
-        DocumentInfoRepo docInfoRepo = new DocumentInfoRepo();
-        DocumentDetailRepo docDetRepo = new DocumentDetailRepo();
+        
         // GET: SelectPattern
-        public ActionResult Index()
+        public ActionResult Index(int docId, string pageType)
         {
-            var data = docDetRepo.Get(iDocId);
-            ViewBag.Id = data.DocId;
+            SelectPatternRepo selPatRepo = new SelectPatternRepo();
+            var data = selPatRepo.Get(docId, pageType);
+            ViewBag.Id = data.DocId.ToString();
             ViewBag.DocDetId = data.DocDetId;
             ViewBag.DocPageNo = data.DocPageNo;
-            ViewBag.PageFileName = data.PageFileName;
-            ViewBag.PagePath = data.PagePath;
-
-            var docInfo = docInfoRepo.Get(iDocId);
-            ViewBag.PDFPath = docInfo.FilePath;
+            ViewBag.PDFPath = data.PageUrl;
 
             return View("SelectPatternMain");
         }
 
         public JsonResult SavePattern(DocumentDetailModel item, string patternNo)
         {
+            DocumentDetailRepo docDetRepo = new DocumentDetailRepo();
             var data = docDetRepo.UpdatePatternNo(item.DocId, patternNo);
 
             return Json(data, JsonRequestBehavior.AllowGet);

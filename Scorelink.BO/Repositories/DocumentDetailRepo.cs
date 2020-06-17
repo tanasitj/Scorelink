@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.UI;
 using Scorelink.MO;
 using Scorelink.MO.DataModel;
 
@@ -43,7 +44,6 @@ namespace Scorelink.BO.Repositories
                 throw ex;
             }
         }
-
         public IEnumerable<DocumentDetailModel> GetList(int id)
         {
             ScorelinkEntities db = new ScorelinkEntities();
@@ -51,6 +51,37 @@ namespace Scorelink.BO.Repositories
             {
                 var query = (from doc in db.DocumentDetails
                              where doc.DocId == id
+                             select new DocumentDetailModel
+                             {
+                                 DocDetId = doc.DocDetId,
+                                 DocId = doc.DocId,
+                                 DocPageNo = doc.DocPageNo,
+                                 FootnoteNo = doc.FootnoteNo,
+                                 PageType = doc.PageType,
+                                 ScanStatus = doc.ScanStatus,
+                                 PageFileName = doc.PageFileName,
+                                 PagePath = doc.PagePath,
+                                 PageUrl = doc.PageUrl,
+                                 Selected = doc.Selected,
+                                 PatternNo = doc.PatternNo,
+                                 CreateBy = doc.CreateBy,
+                                 CreateDate = doc.CreateDate.ToString(),
+                                 UpdateDate = doc.UpdateDate.ToString()
+                             });
+                return query;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public IEnumerable<DocumentDetailModel> GetList(int id, string pageType)
+        {
+            ScorelinkEntities db = new ScorelinkEntities();
+            try
+            {
+                var query = (from doc in db.DocumentDetails
+                             where doc.DocId == id && doc.PageType == pageType
                              select new DocumentDetailModel
                              {
                                  DocDetId = doc.DocDetId,
@@ -129,7 +160,6 @@ namespace Scorelink.BO.Repositories
                 }
             }
         }
-
         public string UpdateScanStatus(DocumentDetailModel item)
         {
             using (ScorelinkEntities db = new ScorelinkEntities())
@@ -155,7 +185,6 @@ namespace Scorelink.BO.Repositories
                 }
             }
         }
-
         public string UpdatePatternNo(int docId, string patternNo)
         {
             using (ScorelinkEntities db = new ScorelinkEntities())
@@ -185,7 +214,6 @@ namespace Scorelink.BO.Repositories
                 }
             }
         }
-
         public string Add(DocumentDetailModel item)
         {
             using (ScorelinkEntities db = new ScorelinkEntities())
@@ -229,7 +257,6 @@ namespace Scorelink.BO.Repositories
                 }
             }
         }
-
         public string Delete(string id)
         {
             using (ScorelinkEntities db = new ScorelinkEntities())
