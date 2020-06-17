@@ -42,8 +42,8 @@ var ViewModel = function () {
         //    success: function (data) {
         //        unblockUI();
         //        $.redirect("/SelectPage/SelectPage", {
-        //            //'id': data.UserId()
-        //            'id': '1'
+        //            'id': data.UserId()
+        //            //'id': '1'
         //        }, "POST"); 
         //    }
         //});
@@ -147,8 +147,6 @@ var ViewModel = function () {
 
     function readURL(input) {
         if (input.files && input.files[0]) {
-            //if (!isImage(input.files[0])) return alert('Allow only IMAGE file!');//PNotification('Error', 'Allow only IMAGE file!', 'error');
-            //if (input.files[0].size > 2097152) return alert('Maximun file size 2 Mb!');//PNotification('Error', 'Maximun file size 2 Mb!', 'error');
 
             var reader = new FileReader();
 

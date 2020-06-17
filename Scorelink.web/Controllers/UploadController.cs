@@ -161,8 +161,10 @@ namespace Scorelink.web.Controllers
                     // RasterCodecsオブジェクトを初期化します。
                     var codecs = new Leadtools.Codecs.RasterCodecs();
                     // 水平および垂直方向の表示解像度（DPI）を設定します。
-                    codecs.Options.RasterizeDocument.Load.XResolution = 300;
-                    codecs.Options.RasterizeDocument.Load.YResolution = 300;
+                    //codecs.Options.RasterizeDocument.Load.XResolution = 300;
+                    //codecs.Options.RasterizeDocument.Load.YResolution = 300;
+                    codecs.Options.RasterizeDocument.Load.XResolution = 150;
+                    codecs.Options.RasterizeDocument.Load.YResolution = 150;
                     // ファイルに含まれているページ数を調べます。
                     Leadtools.Codecs.CodecsImageInfo info = codecs.GetInformation(path, true);
 
@@ -183,11 +185,17 @@ namespace Scorelink.web.Controllers
 
                         // ロードしたページをTifで保存します。
                         //string pageFileName = sTempFolder + Guid.NewGuid().ToString() + ".tif";
-                        string pageFileName = sTempFolder + Common.GenZero(pageNumber.ToString(), 4) + ".jpg";
+                        //string pageFileName = sTempFolder + Common.GenZero(pageNumber.ToString(), 4) + ".jpg";
                         //string pageFileName = sTempFolder + Common.GenZero(pageNumber.ToString(), 4) + ".tif";
-                        codecs.Save(image, pageFileName, Leadtools.RasterImageFormat.Jpeg, 24);
-                        //codecs.Save(image, pageFileName, Leadtools.RasterImageFormat.Tif, 24);
-                        image.Dispose();
+                        string pageFileName = sTempFolder + sTest + ".tif";
+                        //codecs.Save(image, pageFileName, Leadtools.RasterImageFormat.Jpeg, 24);
+                        codecs.Save(image, pageFileName, Leadtools.RasterImageFormat.Tif, 24, 1, -1, 1, Leadtools.Codecs.CodecsSavePageMode.Append);
+                        //image.Dispose();
+
+                        if(pageNumber == loopTo)
+                        {
+                            image.Dispose();
+                        }
                     }
 
                     codecs.Dispose();
