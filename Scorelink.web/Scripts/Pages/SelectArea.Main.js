@@ -38,6 +38,7 @@ var ViewModel = function () {
 
             var docId = $("#hdId").val();
             var docDetId = $("#hdDocDetId").val();
+            var pageType = $("#hdPageType").val();
             var pageFileName = $("#hdPageFileName").val();
 
             $.each(areas, function (id, area) {
@@ -49,8 +50,7 @@ var ViewModel = function () {
             var postData = {
                 'values': aArea,
                 'docId': docId,
-                'docDetId': docDetId,
-                'pageFileName': pageFileName
+                'docDetId': docDetId
             };
 
             $.ajax({

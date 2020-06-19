@@ -2267,6 +2267,10 @@ var HTML5Demos;
                 //var documentUri = "http://localhost/sample/OCR/tiff/";
                 //var documentUri = "https://demo.leadtools.com/images/pdf/leadtools.pdf";
                 var documentUri = document.getElementById("hdPDFFile").value;
+
+                //var documentUri = "http://localhost:52483/FileUploads/00000001/c06ac8c8-e26d-4b87-a86f-3e6d74578b3f.pdf";
+                //var documentUri = "http://localhost:52483/FileUploads/00000001/c06ac8c8-e26d-4b87-a86f-3e6d74578b3f/4915ee33-dd87-48d1-af7d-61d0b82bc5ac.tif";
+
                 var loadOptions = this.createLoadOptions(annotations, loadEmbeddedAnnotations, documentName, firstPage, lastPage);
                 lt.Document.DocumentFactory.loadFromUri(documentUri, loadOptions)
                     .fail(function (jqXHR, statusText, errorThrown) {

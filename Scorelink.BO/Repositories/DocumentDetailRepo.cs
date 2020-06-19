@@ -185,7 +185,7 @@ namespace Scorelink.BO.Repositories
                 }
             }
         }
-        public string UpdatePatternNo(int docId, string patternNo)
+        public string UpdatePatternNo(int docId, string pageType, string patternNo)
         {
             using (ScorelinkEntities db = new ScorelinkEntities())
             {
@@ -193,7 +193,7 @@ namespace Scorelink.BO.Repositories
                 {
                     try
                     {
-                        var docDet = db.DocumentDetails.Where(x => x.DocId == docId).ToList();
+                        var docDet = db.DocumentDetails.Where(x => x.DocId == docId && x.PageType == pageType).ToList();
 
                         foreach (DocumentDetail det in docDet)
                         {
