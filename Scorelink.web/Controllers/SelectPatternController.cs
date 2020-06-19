@@ -12,20 +12,18 @@ namespace Scorelink.web.Controllers
 
     public class SelectPatternController : Controller
     {
-        //Fix code for Test.
-        int iUserId = 1;
-        int iDocId = 1047;
-        //----------------//
+        DocumentInfoRepo docInfoRepo = new DocumentInfoRepo();
+        DocumentDetailRepo docDetailRepo = new DocumentDetailRepo();
 
-        
         // GET: SelectPattern
         public ActionResult Index(int docId, string pageType)
         {
-            SelectPatternRepo selPatRepo = new SelectPatternRepo();
-            var data = selPatRepo.Get(docId, pageType);
+            SelectPatternRepo docDet = new SelectPatternRepo();
+            var data = docDet.Get(docId, pageType);
             ViewBag.Id = data.DocId.ToString();
             ViewBag.DocDetId = data.DocDetId;
             ViewBag.DocPageNo = data.DocPageNo;
+            ViewBag.PageType = pageType;
             ViewBag.PDFPath = data.PageUrl;
 
             return View("SelectPatternMain");
@@ -33,10 +31,78 @@ namespace Scorelink.web.Controllers
 
         public JsonResult SavePattern(DocumentDetailModel item, string patternNo)
         {
-            DocumentDetailRepo docDetRepo = new DocumentDetailRepo();
-            var data = docDetRepo.UpdatePatternNo(item.DocId, patternNo);
+            var result = "";
+            try
+            {
+                //Get DocumentInfo data.
+                var docInfo = docInfoRepo.Get(item.DocId);
+                String sFolder = docInfo.FileUID;
+                String sPath = docInfo.FilePath;
+                //Save Folder for New File.
+                String sTempFolder = Consts.SLUserFlie + "\\FileUploads\\" + Common.GenZero(docInfo.CreateBy, 8) + "\\" + sFolder + "\\" + Common.GenZero(item.PageType, 5) + "\\";
+                
+                //Get DocumentDetail data.
+                var docDet = docDetailRepo.GetList(item.DocId, item.PageType);
+                //Get Leadtools License.
+                Common.GetLicenseLeadTool();
 
-            return Json(data, JsonRequestBehavior.AllowGet);
+                using (var documentConverter = new Leadtools.Document.Converter.DocumentConverter())
+                {
+                    var codecs = new Leadtools.Codecs.RasterCodecs();
+                    codecs.Options.RasterizeDocument.Load.XResolution = 150;
+                    codecs.Options.RasterizeDocument.Load.YResolution = 150;
+
+                    Leadtools.Codecs.CodecsImageInfo info = codecs.GetInformation(sPath, true);
+
+                    int iNum = 1;
+                    int iRow = docDet.Count();
+
+                    foreach (var doc in docDet)
+                    {
+                        //Get Page Number convert to integer.
+                        int iPage = Convert.ToInt32(doc.DocPageNo);
+                        //Get PageType for File Name.
+                        String sSavePath = sTempFolder + "\\" + Common.GenZero(doc.DocPageNo, 4) + ".jpg";
+                        //Check and Create Folder.
+                        Common.CreateDocFolder(sTempFolder);
+                        //Check for Delete File for Initail.
+                        if (System.IO.File.Exists(sSavePath))
+                        {
+                            System.IO.File.Delete(sSavePath);
+                        }
+
+                        Leadtools.RasterImage image = codecs.Load(sPath, 0, Leadtools.Codecs.CodecsLoadByteOrder.BgrOrGray, iPage, iPage);
+                        //Generate File.
+                        codecs.Save(image, sSavePath, Leadtools.RasterImageFormat.Jpeg, 24, 1, -1, 1, Leadtools.Codecs.CodecsSavePageMode.Append);
+                        //codecs.Save(image, sSavePath, Leadtools.RasterImageFormat.Jpeg, 24);
+                        //Check for Clear Temp.
+                        if (iNum == iRow)
+                        {
+                            image.Dispose();
+                        }
+                        else
+                        {
+                            iNum++;
+                        }
+                    }
+                }
+
+                //Update Pattern No.
+                DocumentDetailModel docDetMo = new DocumentDetailModel();
+                docDetMo.DocId = item.DocId;
+                docDetMo.PageType = item.PageType;
+                docDetMo.PatternNo = patternNo;
+                docDetMo.ScanStatus = "";
+                //Update.
+                SelectPatternRepo obj = new SelectPatternRepo();
+                result = obj.Update(docDetMo);
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message);
+            }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
     }
 }

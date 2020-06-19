@@ -22,6 +22,7 @@ namespace Scorelink.BO.Repositories
 
                         foreach (DocumentDetail det in docDet)
                         {
+                            det.ScanStatus = item.ScanStatus;
                             det.PagePath = item.PagePath;
                             det.PageUrl = item.PageUrl;
                             det.UpdateDate = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss"));

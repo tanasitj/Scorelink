@@ -15,63 +15,47 @@ namespace Scorelink.web.Controllers
     {
         //Fix code for Test.
         int iUserId = 1;
-        int iDocId = 1038;
         //----------------//
 
-        DocumentDetailRepo docDetRepo = new DocumentDetailRepo();
+        SelectAreaRepo doc = new SelectAreaRepo();
 
         // GET: SelectArea
-        public ActionResult Index()
-        {
-            var data = docDetRepo.Get(iDocId);
-            ViewBag.Id = data.DocId;
-            ViewBag.DocDetId = data.DocDetId;
-            ViewBag.DocPageNo = data.DocPageNo;
-            ViewBag.PageFileName = data.PageFileName;
-            ViewBag.PagePath = data.PagePath;
-
-            return View("SelectAreaMain");
-        }
-
-        public ActionResult SelectArea(DocumentDetailModel item)
+        public ActionResult Index(DocumentDetailModel item)
         {
             ViewBag.Id = item.DocId;
             ViewBag.PatternNo = item.PatternNo;
 
-            var data = docDetRepo.Get(iDocId);
-            ViewBag.DocDetId = data.DocDetId;
-            ViewBag.DocPageNo = data.DocPageNo;
-            ViewBag.PageFileName = data.PageFileName;
-            ViewBag.PagePath = data.PagePath;
+            //Get Document Info data.
+            var docInfo = doc.GetDocInfo(item.DocId);
+            //Get Document Detail data.
+            var docDet = doc.GetDocDet(item.DocId, item.PageType);
+            //Set Path for Image.
+            string sPagePath = Consts.sUrl + "/FileUploads/" + Common.GenZero(docInfo.CreateBy, 8) + "/" + docInfo.FileUID + "/" + Common.GenZero(docDet.PageType, 5) + "/" + Common.GenZero(docDet.DocPageNo, 4) + ".jpg";
+
+            ViewBag.DocDetId = docDet.DocDetId;
+            ViewBag.DocPageNo = docDet.DocPageNo;
+            ViewBag.PageType = docDet.PageType;
+            ViewBag.PageFileName = docDet.PageFileName;
+            ViewBag.PagePath = sPagePath;
 
             return View("SelectAreaMain");
         }
 
-        public JsonResult GetDocument(string id)
-        {
-            var iParam = Convert.ToInt32(id);
-            var data = docDetRepo.Get(iParam);
-            return Json(data, JsonRequestBehavior.AllowGet);
-        }
-
-        public JsonResult GetDocumentList(int filterId)
-        {
-            var list = docDetRepo.GetList(filterId).ToList();
-            return Json(list, JsonRequestBehavior.AllowGet);
-        }
-
-        public JsonResult SaveArea(List<String> values, int docId, int docDetId, string pageFileName)
+        public JsonResult SaveArea(List<String> values, int docId, int docDetId)
         {
             //Get File UID for Create Folder to Save Area.
             DocumentInfoRepo docInfoRepo = new DocumentInfoRepo();
             var docInfo = docInfoRepo.Get(docId);
 
-            var uploadNo = Common.GenZero(iUserId.ToString(), 8);
-            String sFrom = Consts.SLUserFlie + "\\FileUploads\\" + uploadNo + "\\" + docInfo.FileUID + "\\" + pageFileName + ".jpg";
+            //Get Document Detail data.
+            var docDet = doc.GetDocDet(docDetId);
+
+            String sFrom = Consts.SLUserFlie + "\\FileUploads\\" + Common.GenZero(docInfo.CreateBy, 8) + "\\" + docInfo.FileUID + "\\" + Common.GenZero(docDet.PageType,5) + "\\" + Common.GenZero(docDet.DocPageNo, 4) + ".jpg";
+            String sSaveFolder = Server.MapPath("..\\FileUploads\\" + Common.GenZero(docInfo.CreateBy, 8) + "\\" + docInfo.FileUID + "\\" + Common.GenZero(docDet.PageType, 5) + "\\" + Common.GenZero(docDet.DocPageNo, 4) + "\\");
+
             for (int i = 0; i < values.Count; i++)
             {
                 int iRunNo = i + 1;
-                String sSaveFolder = Server.MapPath("..\\FileUploads\\" + uploadNo + "\\" + docInfo.FileUID + "\\" + pageFileName + "\\");
                 String sSave = sSaveFolder + Common.GenZero(iRunNo.ToString(), 4) + ".tif";
                 String sCrop = values[i];
                 String[] aArea = sCrop.Split('|');
@@ -101,12 +85,12 @@ namespace Scorelink.web.Controllers
                         docAreaRepo.Add(docArea);
 
                         //Update ScanStatus table DocumentDetail
-                        DocumentDetailModel docDet = new DocumentDetailModel();
-                        docDet.DocDetId = docDetId;
-                        docDet.ScanStatus = "Y";
-                        docDet.UpdateDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                        DocumentDetailModel objDocDet = new DocumentDetailModel();
+                        objDocDet.DocDetId = docDetId;
+                        objDocDet.ScanStatus = "Y";
+                        objDocDet.UpdateDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
                         DocumentDetailRepo docDetRepo = new DocumentDetailRepo();
-                        docDetRepo.UpdateScanStatus(docDet);
+                        docDetRepo.UpdateScanStatus(objDocDet);
                     }
                 }
                 catch (Exception ex)
@@ -116,13 +100,14 @@ namespace Scorelink.web.Controllers
             }
 
             //Return Next Page Data
-            var data = docDetRepo.Get(docId);
+            var data = doc.GetDocDet(docId,docDet.PageType);
             if (data == null)
             {
                 return Json("", JsonRequestBehavior.AllowGet);
             }
             else
             {
+                data.PagePath = Consts.sUrl + "/FileUploads/" + Common.GenZero(docInfo.CreateBy, 8) + "/" + docInfo.FileUID + "/" + Common.GenZero(data.PageType, 5) + "/" + Common.GenZero(data.DocPageNo, 4) + ".jpg";
                 return Json(data, JsonRequestBehavior.AllowGet);
             }
         }

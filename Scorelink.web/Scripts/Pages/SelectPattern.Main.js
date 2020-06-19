@@ -2,6 +2,7 @@
     var self = this;
     self.DocId = ko.observable();
     self.DocPageNo = ko.observable();
+    self.PageType = ko.observable();
     self.PageFileName = ko.observable();
     self.PagePath = ko.observable();
     self.PatternNo = ko.observable();
@@ -32,6 +33,7 @@
                 DocDetId: $("#hdDocDetId").val(),
                 DocId: $("#hdId").val(),
                 DocPageNo: $("#hdDocPageNo").val(),
+                PageType: $("#hdPageType").val(),
                 PageFileName: $("#hdPageFileName").val(),
                 PagePath: $("#hdPagePath").val(),
                 //PatternNo: $("#rdPattern:checked").val(),
@@ -67,12 +69,13 @@
                 DocDetId: $("#hdDocDetId").val(),
                 DocId: $("#hdId").val(),
                 DocPageNo: $("#hdDocPageNo").val(),
+                PageType: $("#hdPageType").val(),
                 PageFileName: $("#hdPageFileName").val(),
                 PagePath: $("#hdPagePath").val(),
                 PatternNo: $("#rdPattern:checked").val()
             }
 
-            $.redirect("/SelectArea/SelectArea", {
+            $.redirect("/SelectArea/Index", {
                 item: arg
             }, "POST"); 
         };

@@ -16,7 +16,7 @@ namespace Scorelink.BO.Repositories
             try
             {
                 var data = (from doc in db.DocumentDetails
-                            where doc.DocId == docId && doc.PageType == sPageType && doc.ScanStatus != "Y"
+                            where doc.DocId == docId && doc.PageType == sPageType
                             select new DocumentDetailModel
                             {
                                 DocDetId = doc.DocDetId,
@@ -42,7 +42,6 @@ namespace Scorelink.BO.Repositories
                 throw ex;
             }
         }
-
         public IEnumerable<DocumentDetailModel> GetList(int id)
         {
             ScorelinkEntities db = new ScorelinkEntities();
@@ -72,6 +71,36 @@ namespace Scorelink.BO.Repositories
             catch (Exception ex)
             {
                 throw ex;
+            }
+        }
+        public string Update(DocumentDetailModel item)
+        {
+            using (ScorelinkEntities db = new ScorelinkEntities())
+            {
+                using (System.Data.Entity.DbContextTransaction dbTran = db.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var docDet = db.DocumentDetails.Where(x => x.DocId == item.DocId && x.PageType == item.PageType).ToList();
+
+                        foreach (DocumentDetail det in docDet)
+                        {
+                            det.PatternNo = item.PatternNo;
+                            det.ScanStatus = item.ScanStatus;
+                            det.UpdateDate = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss"));
+                        }
+
+                        db.SaveChanges();
+                        dbTran.Commit();
+
+                        return "OK";
+                    }
+                    catch (Exception ex)
+                    {
+                        dbTran.Rollback();
+                        return ex.ToString();
+                    }
+                }
             }
         }
     }
