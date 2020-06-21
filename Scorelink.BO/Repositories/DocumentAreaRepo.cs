@@ -47,18 +47,21 @@ namespace Scorelink.BO.Repositories
                 {
                     try
                     {
-                        var docDet = db.DocumentAreas.Where(x => x.DocDetId == item.DocDetId).First();
-                        docDet.AreaNo = item.AreaNo;
-                        docDet.DocId = item.DocId;
-                        docDet.DocDetId = item.DocDetId;
-                        docDet.AreaX = item.AreaX;
-                        docDet.AreaY = item.AreaY;
-                        docDet.AreaH = item.AreaH;
-                        docDet.AreaW = item.AreaW;
-                        docDet.AreaPath = item.AreaPath;
-                        docDet.CreateBy = item.CreateBy;
-                        docDet.CreateDate = DateTime.Parse(item.CreateDate);
-                        docDet.UpdateDate = DateTime.Parse(item.UpdateDate);
+                        var docArea = db.DocumentAreas.Where(x => x.AreaNo == item.AreaNo && x.DocDetId == item.DocDetId && x.DocPageNo == item.DocPageNo).First();
+                        //docArea.AreaNo = item.AreaNo;
+                        //docArea.DocId = item.DocId;
+                        //docArea.DocDetId = item.DocDetId;
+                        //docArea.DocPageNo = item.DocPageNo;
+                        docArea.PageType = item.PageType;
+                        docArea.AreaX = item.AreaX;
+                        docArea.AreaY = item.AreaY;
+                        docArea.AreaH = item.AreaH;
+                        docArea.AreaW = item.AreaW;
+                        docArea.AreaPath = item.AreaPath;
+                        docArea.AreaUrl = item.AreaUrl;
+                        docArea.CreateBy = item.CreateBy;
+                        docArea.CreateDate = DateTime.Parse(item.CreateDate);
+                        docArea.UpdateDate = DateTime.Parse(item.UpdateDate);
 
                         db.SaveChanges();
                         dbTran.Commit();
@@ -84,14 +87,17 @@ namespace Scorelink.BO.Repositories
                     {
                         var doc = new DocumentArea
                         {
-                            //AreaNo = item.AreaNo,
+                            AreaNo = item.AreaNo,
                             DocId = item.DocId,
                             DocDetId = item.DocDetId,
+                            DocPageNo = item.DocPageNo,
+                            PageType = item.PageType,
                             AreaX = item.AreaX,
                             AreaY = item.AreaY,
                             AreaH = item.AreaH,
                             AreaW = item.AreaW,
                             AreaPath = item.AreaPath,
+                            AreaUrl = item.AreaUrl,
                             CreateBy = item.CreateBy,
                             CreateDate = DateTime.Parse(item.CreateDate),
                             UpdateDate = DateTime.Parse(item.CreateDate)
@@ -136,6 +142,12 @@ namespace Scorelink.BO.Repositories
                     }
                 }
             }
+        }
+
+        public bool CheckDocumentArea(int AreaNo, int docDetId, string DocPageNo)
+        {
+            using (ScorelinkEntities db = new ScorelinkEntities())
+                return db.DocumentAreas.Where(x => x.AreaNo == AreaNo && x.DocDetId == docDetId && x.DocPageNo == DocPageNo).Any();
         }
     }
 }

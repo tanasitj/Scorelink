@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Scorelink.BO.Helper;
 using Scorelink.MO.DataModel;
 using Scorelink.BO.Repositories;
+using System.IO;
 
 namespace Scorelink.web.Controllers
 {
@@ -56,6 +57,14 @@ namespace Scorelink.web.Controllers
 
                     int iNum = 1;
                     int iRow = docDet.Count();
+                    //Check and Create Folder.
+                    Common.CreateDocFolder(sTempFolder);
+                    //Delete all file in Folder
+                    DirectoryInfo dir = new DirectoryInfo(sTempFolder);
+                    foreach (FileInfo file in dir.GetFiles())
+                    {
+                        file.Delete();
+                    }
 
                     foreach (var doc in docDet)
                     {
@@ -63,8 +72,6 @@ namespace Scorelink.web.Controllers
                         int iPage = Convert.ToInt32(doc.DocPageNo);
                         //Get PageType for File Name.
                         String sSavePath = sTempFolder + "\\" + Common.GenZero(doc.DocPageNo, 4) + ".jpg";
-                        //Check and Create Folder.
-                        Common.CreateDocFolder(sTempFolder);
                         //Check for Delete File for Initail.
                         if (System.IO.File.Exists(sSavePath))
                         {

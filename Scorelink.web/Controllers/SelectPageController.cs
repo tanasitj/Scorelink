@@ -110,9 +110,6 @@ namespace Scorelink.web.Controllers
             var result = "";
             try
             {
-                //Temp for Test.
-                int iUserId = 1;
-
                 //Get DocumentInfo data.
                 var docInfo = docInfoRepo.Get(docId);
                 String sFolder = docInfo.FileUID;
@@ -128,7 +125,6 @@ namespace Scorelink.web.Controllers
                 {
                     System.IO.File.Delete(sSavePath);
                 }
-
                 //Get DocumentDetail data.
                 var docDet = docDetailRepo.GetList(docId, pageType);
                 //Get Leadtools License.
@@ -162,14 +158,19 @@ namespace Scorelink.web.Controllers
                             iNum++;
                         }
                     }
+
+                    codecs.Dispose();
+                    documentConverter.Dispose();
+                    GC.Collect(0);
                 }
+
                 //Update Path to DocumentDetail.
                 DocumentDetailModel docDetail = new DocumentDetailModel();
                 docDetail.DocId = docId;
                 docDetail.PageType = pageType;
                 docDetail.ScanStatus = "";
                 docDetail.PagePath = sTempFolder + Common.GenZero(pageType, 5) + ".tif";
-                docDetail.PageUrl = Consts.sUrl + "/FileUploads/" + Common.GenZero(iUserId.ToString(), 8) + "/" + sFolder + "/" + Common.GenZero(pageType, 5) + ".tif";
+                docDetail.PageUrl = Consts.sUrl + "/FileUploads/" + Common.GenZero(docInfo.CreateBy, 8) + "/" + sFolder + "/" + Common.GenZero(pageType, 5) + ".tif";
                 SelectPageRepo pageRepo = new SelectPageRepo();
                 result = pageRepo.UpdatePathFile(docDetail);
             }

@@ -23,17 +23,15 @@
                 <div class="card">
                     <!-- HEAD -->
                     <div class="card-header bg-gradient-primary">
-                        <h3 class="card-title"><b><i class="far fa-object-ungroup"></i> Select Areas</b></h3>
+                        <h3 class="card-title"><b><i class="far fa-object-ungroup"></i> Select Areas </b></h3>
                     </div>
                     <div class="card-body">
                         <div class="form-group">
                             <div class="image-decorator">
-                                @*<img alt="" id="view" src="" />*@
-
                                 <table id="tab1" class="table table-bordered">
                                     <thead class="bg-gray-light">
                                         <tr>
-                                            <th></th>
+                                            <th>Page No. <label id="lbPageNo">@ViewBag.DocPageNo</label></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -56,13 +54,13 @@
             <div class="col-auto connectedSortable">
                 <div class="card">
                     <div class="card-header bg-gradient-primary">
-                        <h3 class="card-title"><b><i class="far fa-edit"></i> Pattern</b></h3>
+                        <h3 class="card-title"><b><i class="far fa-edit"></i> Pattern @ViewBag.PatternNo</b></h3>
                     </div>
-                    <div class="card-body">
-                        <img alt="Pattern" id="pattern" src="~/Content/img/Pattern/OCRArea_Pattern1n.png" />
+                    <div class="card-body text-center">
+                        <img alt="Pattern" id="pattern" src="" />
                         <hr>
-                        <button type="button" class="btn bg-gradient-success" id="btnSubmit" value="Submit">Execute OCR</button>
-                        <button type="button" class="btn bg-gradient-danger">Back</button>
+                        <button type="button" class="btn bg-gradient-success" id="btnSubmit" value="Submit">Save & Next</button>
+                        <button type="button" class="btn bg-gradient-danger" id="btnBack" value="Back">Exit</button>
                     </div>
                 </div>
             </div>

@@ -291,13 +291,22 @@ namespace Scorelink.BO.Repositories
                     {
                         if (docPageNo == "0") // Delete All Pages
                         {
+                            //-- Delete By Type Id --//
+                            //Delete Document Area.
+                            var area = db.DocumentAreas.Where(x => x.DocId.ToString() == docid && x.PageType.ToString() == pagetype);
+                            db.DocumentAreas.RemoveRange(area);
+                            //Delete Document Detail.
                             var doc = db.DocumentDetails.Where(x => x.DocId.ToString() == docid && x.PageType.ToString() == pagetype);
                             db.DocumentDetails.RemoveRange(doc);
                         }
                         else  
                         {
-                            var doc = db.DocumentDetails.Where(x => x.DocId.ToString() == docid 
-                            && x.PageType.ToString() == pagetype && x.DocPageNo.ToString() == docPageNo).First();
+                            //-- Delete By Page No. --//
+                            //Delete Document Area.
+                            var area = db.DocumentAreas.Where(x => x.DocId.ToString() == docid && x.PageType.ToString() == pagetype && x.DocPageNo.ToString() == docPageNo);
+                            db.DocumentAreas.RemoveRange(area);
+                            //Delete Document Detail.
+                            var doc = db.DocumentDetails.Where(x => x.DocId.ToString() == docid && x.PageType.ToString() == pagetype && x.DocPageNo.ToString() == docPageNo).First();
                             db.DocumentDetails.Remove(doc);
                         }                    
                         db.SaveChanges();
