@@ -19,16 +19,36 @@ var ViewModel = function () {
     var self = this;
     self.DocumentDetail = ko.observableArray();
     var sImgPath = $("#hdPagePath").val();
-
     $('img#view').attr("src", sImgPath);
+
+    var area1 = {};
+    var area2 = {};
+    var area3 = {};
+
+    setAreaValue($("#hdPatternNo").val());
+
     $('img#view').selectAreas({
+        allowSelect: true,
+        allowDelete: true,
         minSize: [10, 10],
         onChanged: debugQtyAreas,
-        width: 600
+        width: 600,
+        areas: [
+            area1,
+            area2,
+            area3,
+            ]
     });
 
     $(document).ready(function () {
         $('img#view').attr("src", sImgPath);
+
+        $('#btnBack').click(function () {
+            $.redirect("/SelectPage/SelectPage", {
+                'id': $("#hdId").val()
+            }, "POST");
+        });
+
         //---- New ----//
         $('#btnSubmit').click(function () {
             blockUI();
@@ -42,7 +62,14 @@ var ViewModel = function () {
             var pageFileName = $("#hdPageFileName").val();
 
             $.each(areas, function (id, area) {
-                aArea[a] = areaToSave(area);
+                //Check Pattern
+                if ($("#hdPatternNo").val() == "5") {
+                    if (a < 2) {
+                        aArea[a] = areaToSave(area);
+                    }
+                } else {
+                    aArea[a] = areaToSave(area);
+                }
                 a = a + 1;
             });
 
@@ -70,10 +97,16 @@ var ViewModel = function () {
                         $("#hdDocPageNo").val(data.DocPageNo);
                         $("#hdPageFileName").val(data.PageFileName);
                         $("#hdPagePath").val(data.PagePath);
-
+                        $("#hdPatternNo").val(data.PatternNo);
+                        $("#lbPageNo").text(data.DocPageNo);
                         $('img#view').attr("src", data.PagePath).width(600);
                         $('img#view').selectAreas('reset');
-
+                        //setAreaValue(data.PatternNo);
+                        $('img#view').selectAreas('add', area1);
+                        $('img#view').selectAreas('add', area2);
+                        if (data.PatternNo != "5") {
+                            $('img#view').selectAreas('add', area3);
+                        }
                     }
                 },
                 dataType: "json",
@@ -93,6 +126,39 @@ var ViewModel = function () {
     function debugQtyAreas(event, id, areas) {
         console.log(areas.length + " areas", arguments);
     };
+
+    function setAreaValue(patternNo) {
+        if (patternNo == "1") {
+            $('img#pattern').attr("src", "../Content/img/Pattern/OCRArea_Pattern1n.png");
+            area1 = { x: 78, y: 145, width: 122, height: 550, };
+            area2 = { x: 203, y: 145, width: 22, height: 550, };
+            area3 = { x: 228, y: 145, width: 78, height: 550, };
+        } else if (patternNo == "2") {
+            $('img#pattern').attr("src", "../Content/img/Pattern/OCRArea_Pattern2n.png");
+            area1 = { x: 78, y: 145, width: 122, height: 550, };
+            area2 = { x: 223, y: 145, width: 22, height: 550, };
+            area3 = { x: 248, y: 145, width: 78, height: 550, };
+        } else if (patternNo == "3") {
+            $('img#pattern').attr("src", "../Content/img/Pattern/OCRArea_Pattern3n.png");
+            area1 = { x: 78, y: 145, width: 122, height: 550, };
+            area2 = { x: 203, y: 145, width: 22, height: 550, };
+            area3 = { x: 248, y: 145, width: 78, height: 550, };
+        } else if (patternNo == "4") {
+            $('img#pattern').attr("src", "../Content/img/Pattern/OCRArea_Pattern4n.png");
+            area1 = { x: 78, y: 145, width: 122, height: 550, };
+            area2 = { x: 223, y: 145, width: 22, height: 550, };
+            area3 = { x: 268, y: 145, width: 78, height: 550, };
+        } else if (patternNo == "5") {
+            $('img#pattern').attr("src", "../Content/img/Pattern/OCRArea_Pattern5n.png");
+            area1 = { x: 78, y: 118, width: 450, height: 33, };
+            area2 = { x: 78, y: 180, width: 450, height: 510, };
+        } else {
+            $('img#pattern').attr("src", "../Content/img/Pattern/OCRArea_Pattern1n.png");
+            area1 = { x: 78, y: 145, width: 122, height: 550, };
+            area2 = { x: 203, y: 145, width: 22, height: 550, };
+            area3 = { x: 228, y: 145, width: 78, height: 550, };
+        }
+    }
 }
 
 var viewModel = new ViewModel();

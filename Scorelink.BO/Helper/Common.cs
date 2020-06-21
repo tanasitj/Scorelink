@@ -40,6 +40,22 @@ namespace Scorelink.BO.Helper
             }
         }
 
+        //Delete Before Create Folder
+        //Parameter : Path
+        public static void InitailDocFolder(string path)
+        {
+            bool folderExists = Directory.Exists(path);
+            if (!folderExists)
+            {
+                Directory.CreateDirectory(path);
+            }
+            else
+            {
+                Directory.Delete(path, true);
+                Directory.CreateDirectory(path);
+            }
+        }
+
         //Example   : Value 1 , Digit 3 = "001" | Value 10 , Digit 3 = "010"
         //Parameter : Value String , Digit Integer.
         //Return    : String.

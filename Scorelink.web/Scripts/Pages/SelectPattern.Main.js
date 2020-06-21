@@ -18,7 +18,14 @@
 
     $(document).ready(function () {
 
+        $('#btnBack').click(function () {
+            $.redirect("/SelectPage/SelectPage", {
+                'id': $("#hdId").val()
+            }, "POST");
+        });
+
         $('#btnSubmit').click(function () {
+            blockUI();
             $("#hdPatternNo").val($("#rdPattern:checked").val());
             $("#chkAccTitleAlphabet").is(":checked") ? $("#hdAccTitleAlphabet").val("Y") : $("#hdAccTitleAlphabet").val("");
             $("#chkAccTitleNumber").is(":checked") ? $("#hdAccTitleNumber").val("Y") : $("#hdAccTitleNumber").val("");
