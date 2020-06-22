@@ -34,8 +34,9 @@
     <div class="container-fluid">
         <!-- ROW 1 -->
         <div class="row">
-            <div class="col-auto connectedSortable">
-                <div class="card" style="width:970px">
+            <!-- COL 1 -->
+            <div class="col-lg-8 connectedSortable">
+                <div class="card">
                     <!-- HEAD -->
                     <div class="card-header bg-gradient-primary">
                         <h3 class="card-title"><b><i class="far fa-object-ungroup"></i> Select Pattern For Scan</b></h3>
@@ -80,13 +81,26 @@
                     </div>
                 </div>
             </div>
+            <!-- /COL 1 -->
+            <!-- COL 2 -->
+            <div class="col-lg-3">
+                <div class="card">
+                    <div class="card-header bg-gradient-success">
+                        <h3 class="card-title"><b><i class="far fa-edit"></i> Kind of financial statements</b></h3>
+                    </div>
+                    <div class="card-body text-center" style="height: 100px">
+                        <label id="lbPageType">@ViewBag.PageTypeName</label>
+                    </div>
+                </div>
+            </div>
+            <!-- /COL 2 -->
         </div>
         <!-- /ROW 1 -->
         <!-- ROW 2 -->
         <div class="row">
             <!-- COL 1 -->
-            <div class="col-auto connectedSortable">
-                <div class="card" style="width: 700px">
+            <div class="col-lg-8 connectedSortable">
+                <div class="card">
                     <!-- HEAD -->
                     <div class="card-header bg-gradient-primary">
                         <h3 class="card-title"><i class="far fa-object-ungroup"></i> Page Preview</h3>
@@ -1919,8 +1933,8 @@
             </div>
             <!-- /COL 1 -->
             <!-- COL 2 -->
-            <div class="col-auto connectedSortable">
-                <div class="card" style="width:250px">
+            <div class="col-lg-4 connectedSortable">
+                <div class="card">
                     <div class="card-header bg-gradient-primary">
                         <h3 class="card-title"><i class="far fa-edit"></i> Scan Setting</h3>
                     </div>
