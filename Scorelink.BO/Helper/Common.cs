@@ -56,6 +56,28 @@ namespace Scorelink.BO.Helper
             }
         }
 
+        //Delete Folder
+        //Parameter : Path
+        public static void DeleteFolder(string path)
+        {
+            bool folderExists = Directory.Exists(path);
+            if (folderExists)
+            {
+                Directory.Delete(path, true);
+            }
+        }
+
+        //Delete File
+        //Parameter : Path
+        public static void DeleteFile(string path)
+        {
+            bool fileExists = File.Exists(path);
+            if (fileExists)
+            {
+                File.Delete(path);
+            }
+        }
+
         //Example   : Value 1 , Digit 3 = "001" | Value 10 , Digit 3 = "010"
         //Parameter : Value String , Digit Integer.
         //Return    : String.

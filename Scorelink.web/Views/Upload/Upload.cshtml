@@ -45,8 +45,8 @@
                     <th style="width: 10px">No.</th>
                     <th>File Name</th>
                     <th>Upload Date</th>
-                    <th style="width: 150px">Delete</th>
                     <th style="width: 150px">Scan</th>
+                    <th style="width: 50px">Delete</th>
                 </tr>
             </thead>
             <tbody data-bind="foreach: DocumentInfo">
@@ -55,10 +55,10 @@
                     <td><span data-bind="text: FileName"></span></td>
                     <td class="text-center"><span data-bind="text: CreateDate"></span></td>
                     <td class="text-center">
-                        <button type="button" class="btn btn-block bg-gradient-danger" data-bind="click: $root.ClickDelete">Delete</button>
+                        <button type="button" class="btn btn-block bg-gradient-success" data-bind="click: $root.ClickScan" title="Scan">Scan</button>
                     </td>
                     <td class="text-center">
-                        <button type="button" class="btn btn-block bg-gradient-success" data-bind="click: $root.ClickScan">Scan</button>
+                        <button type="button" class="btn btn-bitbucket bg-gradient-danger" data-bind="click: $root.ClickDelete" title="Delete"><i class="fas fa-trash-alt"></i></button>
                     </td>
                 </tr>
             </tbody>

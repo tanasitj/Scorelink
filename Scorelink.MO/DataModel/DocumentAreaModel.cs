@@ -8,14 +8,18 @@ namespace Scorelink.MO.DataModel
 {
     public class DocumentAreaModel
     {
+        public int AreaId { get; set; }
         public int AreaNo { get; set; }
         public int DocId { get; set; }
         public int DocDetId { get; set; }
+        public string DocPageNo { get; set; }
+        public string PageType { get; set; }
         public string AreaX { get; set; }
         public string AreaY { get; set; }
         public string AreaH { get; set; }
         public string AreaW { get; set; }
         public string AreaPath { get; set; }
+        public string AreaUrl { get; set; }
         public string CreateBy { get; set; }
         public string CreateDate { get; set; }
         public string UpdateDate { get; set; }

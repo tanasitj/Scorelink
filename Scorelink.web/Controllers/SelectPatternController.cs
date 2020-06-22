@@ -19,6 +19,7 @@ namespace Scorelink.web.Controllers
         // GET: SelectPattern
         public ActionResult Index(int docId, string pageType)
         {
+            //Get Document Detail.
             SelectPatternRepo docDet = new SelectPatternRepo();
             var data = docDet.Get(docId, pageType);
             ViewBag.Id = data.DocId.ToString();
@@ -26,6 +27,14 @@ namespace Scorelink.web.Controllers
             ViewBag.DocPageNo = data.DocPageNo;
             ViewBag.PageType = pageType;
             ViewBag.PDFPath = data.PageUrl;
+
+
+            int iStmId = 0;
+            Int32.TryParse(pageType, out iStmId);
+
+            StatementTypeRepo stm = new StatementTypeRepo();
+            var stms = stm.Get(iStmId);
+            ViewBag.PageTypeName = stms.StatementName;
 
             return View("SelectPatternMain");
         }

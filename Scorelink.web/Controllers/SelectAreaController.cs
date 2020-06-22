@@ -107,6 +107,8 @@ namespace Scorelink.web.Controllers
                         DocumentDetailRepo docDetRepo = new DocumentDetailRepo();
                         docDetRepo.UpdateScanStatus(objDocDet);
                     }
+
+                    GC.Collect(0);
                 }
                 catch (Exception ex)
                 {

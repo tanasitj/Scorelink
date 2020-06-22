@@ -104,8 +104,15 @@ namespace Scorelink.BO.Repositories
                 {
                     try
                     {
-                        var user = db.DocumentInfo.Where(x => x.DocId.ToString() == id).First();
-                        db.DocumentInfo.Remove(user);
+                        //Delete Document Area.
+                        var area = db.DocumentAreas.Where(x => x.DocId.ToString() == id);
+                        db.DocumentAreas.RemoveRange(area);
+                        //Delete Document Detail.
+                        var docDet = db.DocumentDetails.Where(x => x.DocId.ToString() == id);
+                        db.DocumentDetails.RemoveRange(docDet);
+                        //Delete Document Info.
+                        var docInfo = db.DocumentInfo.Where(x => x.DocId.ToString() == id).First();
+                        db.DocumentInfo.Remove(docInfo);
 
                         db.SaveChanges();
                         dbTran.Commit();

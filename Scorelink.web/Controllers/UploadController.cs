@@ -101,7 +101,7 @@ namespace Scorelink.web.Controllers
             return Json(doc, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult DeleteDocumentInfo(string id,string filePath)
+        public JsonResult DeleteDocumentInfo(int id,string filePath)
         {
             var result = "";
 
@@ -111,8 +111,15 @@ namespace Scorelink.web.Controllers
                 {
                     if (System.IO.File.Exists(filePath))
                     {
-                        System.IO.File.Delete(filePath);
-                        result = docInfoRepo.Delete(id);
+                        //Get Document Info.
+                        var doc = docInfoRepo.Get(id);
+                        string sPath = Server.MapPath("..\\FileUploads\\" + Common.GenZero(doc.CreateBy,8) + "\\" + doc.FileUID + "\\");
+                        //Delete Folder.
+                        Common.DeleteFolder(sPath);
+                        //Delete File.
+                        Common.DeleteFile(filePath);
+                        //Delete All Data by DocId.
+                        result = docInfoRepo.Delete(id.ToString());
                     }
                 }
                 catch (Exception ex)
