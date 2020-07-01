@@ -38,7 +38,7 @@ namespace Scorelink.web.Controllers
                     string[] allKeys = Request.Files.AllKeys[0].Split('|');
                     var uploadNo = Common.GenZero(userId, 8);
                     string sUID = Guid.NewGuid().ToString();
-                    string folder = Consts.SLUserFlie + "\\FileUploads\\" + uploadNo;
+                    string folder = Consts.SLUserFlie + "\\FileUploads\\" + uploadNo + "\\" + sUID;
 
                     //  Get all files from Request object  
                     HttpFileCollectionBase files = Request.Files;
@@ -67,7 +67,7 @@ namespace Scorelink.web.Controllers
                         file.SaveAs(fname);
 
                         String sCreateDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
-                        String sFileUrl = Consts.sUrl + "/FileUploads/"+uploadNo+"/"+sUID+fi.Extension;
+                        String sFileUrl = Consts.sUrl + "/FileUploads/"+uploadNo + "/" + sUID + "/"+sUID+fi.Extension;
 
                         DocumentInfoModel doc = new DocumentInfoModel();
                         doc.FileUID = sUID;
@@ -101,31 +101,28 @@ namespace Scorelink.web.Controllers
             return Json(doc, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult DeleteDocumentInfo(int id,string filePath)
+        public JsonResult DeleteDocumentInfo(int id)
         {
             var result = "";
 
-            if (System.IO.File.Exists(filePath))
+            try
             {
-                try
+                //Get Document Info.
+                var doc = docInfoRepo.Get(id);
+                string sPath = Server.MapPath("..\\FileUploads\\" + Common.GenZero(doc.CreateBy, 8) + "\\" + doc.FileUID + "\\");
+
+                if (Directory.Exists(sPath))
                 {
-                    if (System.IO.File.Exists(filePath))
-                    {
-                        //Get Document Info.
-                        var doc = docInfoRepo.Get(id);
-                        string sPath = Server.MapPath("..\\FileUploads\\" + Common.GenZero(doc.CreateBy,8) + "\\" + doc.FileUID + "\\");
-                        //Delete Folder.
-                        Common.DeleteFolder(sPath);
-                        //Delete File.
-                        Common.DeleteFile(filePath);
-                        //Delete All Data by DocId.
-                        result = docInfoRepo.Delete(id.ToString());
-                    }
+                    //Delete Folder.
+                    DeleteDirectory(sPath);
+
+                    //Delete All Data by DocId.
+                    result = docInfoRepo.Delete(id.ToString());
                 }
-                catch (Exception ex)
-                {
-                    return Json(ex.Message);
-                }
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message);
             }
 
             return Json(result, JsonRequestBehavior.AllowGet);
@@ -218,6 +215,23 @@ namespace Scorelink.web.Controllers
             return true;
         }
 
-        
+        public static void DeleteDirectory(string target_dir)
+        {
+            string[] files = Directory.GetFiles(target_dir);
+            string[] dirs = Directory.GetDirectories(target_dir);
+
+            foreach (string file in files)
+            {
+                System.IO.File.SetAttributes(file, FileAttributes.Normal);
+                System.IO.File.Delete(file);
+            }
+
+            foreach (string dir in dirs)
+            {
+                DeleteDirectory(dir);
+            }
+
+            Directory.Delete(target_dir, false);
+        }
     }
 }

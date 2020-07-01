@@ -119,7 +119,7 @@ namespace Scorelink.web.Controllers
                 //Check and Create Folder.
                 Common.CreateDocFolder(sTempFolder);
                 //Get PageType for File Name.
-                String sSavePath = sTempFolder + Common.GenZero(pageType, 5) + ".tif";
+                String sSavePath = sTempFolder + "SL" + Common.GenZero(pageType, 5) + ".tif";
                 //Check for Delete File for Initail.
                 if (System.IO.File.Exists(sSavePath))
                 {
@@ -169,8 +169,8 @@ namespace Scorelink.web.Controllers
                 docDetail.DocId = docId;
                 docDetail.PageType = pageType;
                 docDetail.ScanStatus = "";
-                docDetail.PagePath = sTempFolder + Common.GenZero(pageType, 5) + ".tif";
-                docDetail.PageUrl = Consts.sUrl + "/FileUploads/" + Common.GenZero(docInfo.CreateBy, 8) + "/" + sFolder + "/" + Common.GenZero(pageType, 5) + ".tif";
+                docDetail.PagePath = sTempFolder + "SL" + Common.GenZero(pageType, 5) + ".tif";
+                docDetail.PageUrl = Consts.sUrl + "/FileUploads/" + Common.GenZero(docInfo.CreateBy, 8) + "/" + sFolder + "/" + "SL" + Common.GenZero(pageType, 5) + ".tif";
                 SelectPageRepo pageRepo = new SelectPageRepo();
                 result = pageRepo.UpdatePathFile(docDetail);
             }
