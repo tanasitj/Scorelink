@@ -61,12 +61,8 @@ var ViewModel = function () {
     }
 
     self.SubmitDeleteData = function () {
-        //alert(self.FilePath());
-
         var filter = {
-            //filterId: self.FilterUserId,
-            'id': self.DocId(),
-            'filePath': self.FilePath()
+            'id': self.DocId()
         }
 
         $.ajax({

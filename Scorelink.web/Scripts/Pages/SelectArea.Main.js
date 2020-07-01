@@ -51,7 +51,7 @@ var ViewModel = function () {
 
         //---- New ----//
         $('#btnSubmit').click(function () {
-            //blockUI();
+            blockUI();
             var a = 0;
             var aArea = new Array();
             var areas = $('img#view').selectAreas('relativeAreas');
@@ -87,7 +87,7 @@ var ViewModel = function () {
                 url: "/SelectArea/SaveArea",
                 data: JSON.stringify(postData),
                 success: function (data) {
-                    //unblockUI();
+                    unblockUI();
                     if (!data) {
                         window.location.href = '/Upload/Index';
                     } else {

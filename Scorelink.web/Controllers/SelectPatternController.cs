@@ -49,7 +49,7 @@ namespace Scorelink.web.Controllers
                 String sFolder = docInfo.FileUID;
                 String sPath = docInfo.FilePath;
                 //Save Folder for New File.
-                String sTempFolder = Consts.SLUserFlie + "\\FileUploads\\" + Common.GenZero(docInfo.CreateBy, 8) + "\\" + sFolder + "\\" + Common.GenZero(item.PageType, 5) + "\\";
+                String sTempFolder = Consts.SLUserFlie + "\\FileUploads\\" + Common.GenZero(docInfo.CreateBy, 8) + "\\" + sFolder + "\\";
                 
                 //Get DocumentDetail data.
                 var docDet = docDetailRepo.GetList(item.DocId, item.PageType);
@@ -69,18 +69,18 @@ namespace Scorelink.web.Controllers
                     //Check and Create Folder.
                     Common.CreateDocFolder(sTempFolder);
                     //Delete all file in Folder
-                    DirectoryInfo dir = new DirectoryInfo(sTempFolder);
-                    foreach (FileInfo file in dir.GetFiles())
-                    {
-                        file.Delete();
-                    }
+                    //DirectoryInfo dir = new DirectoryInfo(sTempFolder);
+                    //foreach (FileInfo file in dir.GetFiles())
+                    //{
+                    //    file.Delete();
+                    //}
 
                     foreach (var doc in docDet)
                     {
                         //Get Page Number convert to integer.
                         int iPage = Convert.ToInt32(doc.DocPageNo);
                         //Get PageType for File Name.
-                        String sSavePath = sTempFolder + "\\" + Common.GenZero(doc.DocPageNo, 4) + ".jpg";
+                        String sSavePath = sTempFolder + "\\" + "PG" + Common.GenZero(item.PageType, 5) + Common.GenZero(doc.DocPageNo, 4) + ".jpg";
                         //Check for Delete File for Initail.
                         if (System.IO.File.Exists(sSavePath))
                         {
