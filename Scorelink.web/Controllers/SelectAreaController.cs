@@ -74,7 +74,8 @@ namespace Scorelink.web.Controllers
                 PrepareImageMode FRPrepareImageMode = engine.CreatePrepareImageMode();
                 FRPrepareImageMode.AutoOverwriteResolution = true;
                 FRDocument FRDocument = engine.CreateFRDocument();
-                String sOCRFileName = "OCR" + Common.GenZero(docDet.PageType, 5) + Common.GenZero(docDet.DocPageNo, 4) + ".txt";
+                //String sOCRFileName = "OCR" + Common.GenZero(docDet.PageType, 5) + Common.GenZero(docDet.DocPageNo, 4) + ".txt";
+                String sOCRFileName = "OCR" + Common.GenZero(docDet.PageType, 5) + ".csv";
                 String sSaveOCR = sSaveFolder + sOCRFileName;
 
                 for (int i = 0; i < values.Count; i++)
@@ -139,10 +140,16 @@ namespace Scorelink.web.Controllers
 
                         //-- ABBY OCR Process --//
                         // Add image file to document
-                        FRDocument.AddImageFile(sSave, FRPrepareImageMode);
+                        //FRDocument.AddImageFile(sSave, FRPrepareImageMode);
+                        FRDocument.AddImageFile(sFrom, FRPrepareImageMode);
                         IRegion FRRegion = engine.CreateRegion();
-                        FRRegion.AddRect(0, 0, w, h);
-                        IBlock newBlock = FRDocument.Pages[0].Layout.Blocks.AddNew(FREngine.BlockTypeEnum.BT_Text, FRRegion);
+                        int left = x;
+                        int top = y;
+                        int right = x+w;
+                        int bottom = y+h;
+
+                        FRRegion.AddRect(left, top, right, bottom);
+                        IBlock newBlock = FRDocument.Pages[0].Layout.Blocks.AddNew(BlockTypeEnum.BT_Text, FRRegion);
                         // Set Dictionary
                         newBlock.GetAsTextBlock().RecognizerParams.TextLanguage = Common.GetTextLanguage(iRunNo, engine, "Thai", CustomDictionaryPass); //Common.GetLanguageDB(engine, "Thai", CustomDictionaryPass);//
                         // Specify horizontal writing
