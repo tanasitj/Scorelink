@@ -1,4 +1,4 @@
-﻿
+﻿      
 @{
    // ViewBag.Title = "PagePreview";
 }
@@ -27,6 +27,7 @@
 </head>
 
 <input type="hidden" id="hdId" value="@ViewBag.Id" />
+<input type="hidden" id="hdPagePath" value="@ViewBag.PagePath" />
 <input type="hidden" id="hdPDFFile" value="@ViewBag.FileUrl" />
 <input type="hidden" id="hdCreateBy" value="@ViewBag.CreateBy" />
 
@@ -1962,7 +1963,7 @@
                                     <button type="button" class="btn btn-block bg-gradient-success" data-bind="click: $root.ClickScan">Scan</button>
                                 </td>
                                 <td class="text-center">
-                                    <button type="button" class="btn btn-block bg-gradient-light" data-bind="click: $root.ClickScan_Edit">Scan/Edit</button>
+                                    <button type="button" class="btn btn-block bg-gradient-success" data-bind="click: $root.ClickScan_Edit">Scan/Edit</button>
                                 </td>
                                 <td class="text-center">
                                     <label><input type="checkbox" value="" disabled></label>
@@ -2030,7 +2031,7 @@
             type="text/javascript"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            bsCustomFileInput.init();0
+            bsCustomFileInput.init();
         });
     </script>
     <script src="~/Scripts/Pages/SelectPage.Index.js"></script>
