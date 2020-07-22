@@ -14,13 +14,14 @@ using FREngine;
 
 namespace ABBYEngine
 {
+
     // Class for loading/unloading FREngine.dll and initializing/deinitializing Engine.
     // Loading is performed in constructor, unloading in Dispose()
     // Throws exceptions when loading fails
     public class EngineLoader : IDisposable
     {
         // Load FineReader Engine with settings stored in SamplesConfig.cs
-        public EngineLoader()
+        public void LoadEngine()
         {
             string enginePath = Path.Combine( GetDllFolder(), "FREngine.dll" );
             string customerProjectId = GetCustomerProjectId();
