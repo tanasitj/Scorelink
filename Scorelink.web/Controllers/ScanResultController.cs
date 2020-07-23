@@ -19,31 +19,20 @@ namespace Scorelink.web.Controllers
         DocumentDetailRepo docDetailRepo = new DocumentDetailRepo();
         DocumentInfoRepo docInfoRepo = new DocumentInfoRepo();
         ResultModel objModel = new ResultModel();
-        public ActionResult Index(int id = 21,string get_values = "")
+        SelectAreaRepo doc = new SelectAreaRepo();
+        public ActionResult Index(int docId, int pageType)
         {
-            var data = docDetailRepo.Get(id);
-            ViewBag.Id = data.DocId;
-            ViewBag.PageFileName = data.PageFileName;
-            ViewBag.PagePath = data.PagePath;
-            ViewBag.PageUrl = data.PageUrl;
-            ViewBag.xcheck = get_values;
-            // ViewBag.CreateBy = data.CreateBy;
-
-            //string textboxValue = Request.Form["txtOne"];
-            //get_values = "check";
-            if (get_values == "check")
-            {
-                objModel.ScanEdit = CheckResult();
-                ViewData["Message"] = "check";
-            }
-            else
-            {
-                objModel.ScanEdit = MergeRow();
-            }
-
+            //Get Document Info data.
+            var docInfo = doc.GetDocInfo(docId);
+            //Get Document Detail data.
+            var docDet = doc.GetDocDet(docId,pageType.ToString());
+            string sPagePath = Consts.sUrl + "/FileUploads/" + Common.GenZero(docInfo.CreateBy, 8) + "/" + docInfo.FileUID + "/" + "SL" + Common.GenZero(docDet.DocPageNo, 5) + ".tif";
+            var data = docInfoRepo.Get(docId);
+            ViewBag.docId = data.DocId;
+            ViewBag.PageFileName = data.FileName;
+            ViewBag.PageUrl = sPagePath;
+            ViewBag.PageType = pageType;
             return View("ScanResult", objModel);
-            //return PartialView("~Views/ScanResult/ScanResult.cshtml",empobj);
-            //return View();
         }
         public ActionResult CheckData(int id)
         {
@@ -57,26 +46,26 @@ namespace Scorelink.web.Controllers
             return View("ScanResult",objModel);
             //return View();
         }
-        public List<DataResult> MergeRow()
+
+       public List<DataResult> MergeRow(int docId,string PageType)
         {
-            //string path = "C:/sample/OCR/Aftercommit.xlsx";
-            //string path = "D:/GitHub/ScoreLink/Scorelink.web/FileUploads/00000001/Fs0000_TmpMultiTFF.xlsx";
-            //FileInfo file = new FileInfo(path);
+            DocumentInfoRepo docInfoRepo = new DocumentInfoRepo();
+            var docInfo = docInfoRepo.Get(docId);
+            var docDet = doc.GetDocDet(docId, PageType);
             //=============================================================================
-            var lines = System.IO.File.ReadAllLines(@"D:\\GitHub\\ScoreLink\\Scorelink.web\\FileUploads\\00000001\\OCR00001.csv");
+            String sSaveFolder = Server.MapPath("..\\FileUploads\\" + Common.GenZero(docInfo.CreateBy, 8) + "\\" + docInfo.FileUID + "\\" + "OCR" + Common.GenZero(docDet.PageType, 5) + ".csv");
+            var lines = System.IO.File.ReadAllLines(@sSaveFolder);
             List<DataResult> objTempmodel = new List<DataResult>();
             foreach (var line in lines)
             {
                 string[] words = line.Split(',');
-                // List<DataResult> Developer = new List<DataResult>(line.Length);             
-
                 objTempmodel.Add(new DataResult
                 {
-                    Footnote_No = words[0],
+                    Footnote_No = "",
                     Divisions = DivisionStatus(),
-                    Digitized_Account_Title = words[1],
+                    Digitized_Account_Title = words[0],
                     Recovered = RecoveredStatus(),
-                    Amount = words[2],
+                    Amount = words[1],
                     Modified = "",
                     CLCTCD = ""
                 });
@@ -85,8 +74,6 @@ namespace Scorelink.web.Controllers
         }     
         public List<DataResult> CheckResult()
         {
-            // D:\\GitHub\\Scorelink\\Scorelink.web
-            //string folder = Consts.SLUserFlie + "\\FileUploads\\00000001\\Result.xlsx" + uploadNo;
             string path = "D:/GitHub/ScoreLink/Scorelink.web/FileUploads/00000001/Result.xlsx";
             FileInfo fileInfo = new FileInfo(path);
             //-------------------------------------------------------------------------          
@@ -95,7 +82,6 @@ namespace Scorelink.web.Controllers
             int rows = worksheet.Dimension.End.Row;
             int columns = worksheet.Dimension.Columns;
             List<DataResult> objTempmodel = new List<DataResult>();
-
             for (int i = 2; i <= rows; i++)
             {
                 objTempmodel.Add(new DataResult
@@ -144,9 +130,9 @@ namespace Scorelink.web.Controllers
             var resultobject = objModel.ScanEdit.ToList();
             return Json(resultobject);
         }
-        public JsonResult AssignGridMerge()
+        public JsonResult AssignGridMerge(int docId,string PageType)
         {
-            objModel.ScanEdit = MergeRow();
+            objModel.ScanEdit = MergeRow(docId,PageType);
             var resultobject = objModel.ScanEdit.ToList();
             return Json(resultobject,JsonRequestBehavior.AllowGet);
         }
