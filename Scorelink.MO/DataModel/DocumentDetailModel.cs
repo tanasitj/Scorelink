@@ -13,6 +13,7 @@ namespace Scorelink.MO.DataModel
         public string DocPageNo { get; set; }
         public string FootnoteNo { get; set; }
         public string PageType { get; set; }
+        public string PageTypeName { get; set; }
         public string ScanStatus { get; set; }
         public string PageFileName { get; set; }
         public string PagePath { get; set; }
