@@ -29,7 +29,6 @@ namespace Scorelink.web.Controllers
         }
         public ActionResult SelectPage(int id)
         {
-            //ViewBag.Id = id;
             var data = docInfoRepo.Get(id);
             ViewBag.Id = data.DocId;
             ViewBag.FileUID = data.FileUID;
@@ -59,7 +58,7 @@ namespace Scorelink.web.Controllers
                 docDetail.PageType = pageType;
                 docDetail.FootnoteNo = null;
                 docDetail.ScanStatus = null;
-                docDetail.PageFileName = Common.GenZero(pageType, 5);
+                docDetail.PageFileName = Common.GenZero(Convert.ToString(pageType), 5);
                 docDetail.PagePath = data_detail.FilePath;
                 docDetail.Selected = null;
                 docDetail.PatternNo = null;
@@ -178,8 +177,6 @@ namespace Scorelink.web.Controllers
             {
                 return Json(ex.Message);
             }
-
-
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 

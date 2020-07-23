@@ -91,9 +91,6 @@ var ViewModel = function () {
         });
         $("#BtnCancel").click(function () {
             $("#tbResult").find("td").removeClass("selected");
-            //$.redirect("/ScanResult/Index", {
-            //    'id': 21, 'get_values': "null"
-            //}, "POST");
             $.ajax({
                 url: "/ScanResult/AssignGridMerge",
                 type: "POST",
@@ -121,7 +118,7 @@ var ViewModel = function () {
         });
     });
     function ResultsToTable() {
-        $grid = $("#WebGrid").clone();
+        $grid = $("#tbResult").clone();
         $grid.find("input").remove();
         $grid.table2excel({
             exclude: ".noExl",
@@ -154,18 +151,23 @@ var ViewModel = function () {
         $(".Grid td:nth-child(4),th:nth-child(4)").hide();
         $(".Grid td:nth-child(7),th:nth-child(7)").hide();
         var row = $("#WebGrid tbody tr:last-child").clone(true);
-        $("#WebGrid tbody tr").remove();
+        $("#tbResult tbody tr").remove();
         $.each(model, function () {
             var financials = this;
             $("td", row).eq(0).html(financials.Footnote_No);
             $("td", row).eq(2).html(financials.Digitized_Account_Title);
             $("td", row).eq(4).html(financials.Amount);
             $("td", row).eq(5).html(financials.Modified);
-            $("#WebGrid").append(row);
-            row = $("#WebGrid tbody tr:last-child").clone(true);
+            $("#tbResult").append(row);
+            row = $("#tbResult tbody tr:last-child").clone(true);
         });
     };
     function LoadData() {
+
+        var filter = {
+            docId: $("#hddocId").val(),
+            pageType: $("#hdPageType").val()
+        }
         $("#BtnInsert").attr("disabled", true);
         $("#BtnDelete").attr("disabled", true);
         $.ajax({
@@ -173,7 +175,7 @@ var ViewModel = function () {
             cache: false,
             type: 'POST',
             contentType: 'application/json; charset=utf-8',
-            data: ko.toJSON(),
+            data: ko.toJSON(filter),
             success: function (data) {
                 self.ScanEdit([]);
                 ko.utils.arrayForEach(data, function (data) {

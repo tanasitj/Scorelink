@@ -118,7 +118,8 @@ namespace Scorelink.BO.Repositories
                                  DocId = doc.DocId,
                                  DocPageNo = doc.PageNo,
                                  FootnoteNo = doc.FootnoteNo,
-                                 PageType = doc.StatementName
+                                 PageType = doc.StatementId.ToString(),
+                                 PageTypeName = doc.StatementName
                              });
                 return query;
             }
