@@ -19,14 +19,14 @@ namespace Scorelink.web.Controllers
         DocumentDetailRepo docDetailRepo = new DocumentDetailRepo();
         DocumentInfoRepo docInfoRepo = new DocumentInfoRepo();
         ResultModel objModel = new ResultModel();
-        SelectAreaRepo doc = new SelectAreaRepo();
+        ScanEditRepo GetField = new ScanEditRepo();
         public ActionResult Index(int docId, int pageType)
         {
             //Get Document Info data.
-            var docInfo = doc.GetDocInfo(docId);
+            var Info = GetField.GetInfo(docId);
             //Get Document Detail data.
-            var docDet = doc.GetDocDet(docId,pageType.ToString());
-            string sPagePath = Consts.sUrl + "/FileUploads/" + Common.GenZero(docInfo.CreateBy, 8) + "/" + docInfo.FileUID + "/" + "SL" + Common.GenZero(docDet.DocPageNo, 5) + ".tif";
+            var Details = GetField.GetDetails(docId,pageType.ToString());
+            string sPagePath = Consts.sUrl + "/FileUploads/" + Common.GenZero(Info.CreateBy, 8) + "/" + Info.FileUID + "/" + "SL" + Common.GenZero(Details.DocPageNo, 5) + ".tif";
             var data = docInfoRepo.Get(docId);
             ViewBag.docId = data.DocId;
             ViewBag.PageFileName = data.FileName;
@@ -50,15 +50,15 @@ namespace Scorelink.web.Controllers
        public List<DataResult> MergeRow(int docId,string PageType)
         {
             DocumentInfoRepo docInfoRepo = new DocumentInfoRepo();
-            var docInfo = docInfoRepo.Get(docId);
-            var docDet = doc.GetDocDet(docId, PageType);
+            var info = docInfoRepo.Get(docId);
+            var details = GetField.GetDetails(docId, PageType);
             //=============================================================================
-            String sSaveFolder = Server.MapPath("..\\FileUploads\\" + Common.GenZero(docInfo.CreateBy, 8) + "\\" + docInfo.FileUID + "\\" + "OCR" + Common.GenZero(docDet.PageType, 5) + ".csv");
+            String sSaveFolder = Server.MapPath("..\\FileUploads\\" + Common.GenZero(info.CreateBy, 8) + "\\" + info.FileUID + "\\" + "OCR" + Common.GenZero(details.PageType, 5) + ".csv");
             var lines = System.IO.File.ReadAllLines(@sSaveFolder);
             List<DataResult> objTempmodel = new List<DataResult>();
             foreach (var line in lines)
             {
-                string[] words = line.Split(',');
+                string[] words = line.Split('"');
                 objTempmodel.Add(new DataResult
                 {
                     Footnote_No = "",
