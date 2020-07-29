@@ -26,11 +26,11 @@ var ViewModel = function () {
     var footnote2;
     var digitize_account;
     $(document).ready(function () {
-        $("#tbResult").chromatable({
-            width: "700px",
-            height: "630px",
-            scrolling: "yes"
-        });
+        //$("#tbResult").chromatable({
+        //    width: "700px",
+        //    height: "630px",
+        //    scrolling: "yes"
+        //});
         $("#tbResult tbody tr").on("click", function (event) {          
             tr = $(this).closest("tr").find("td").addClass("selected");
             footnote = $(this).closest("tr").find('td:eq(0)').text();
