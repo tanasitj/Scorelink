@@ -26,11 +26,11 @@ var ViewModel = function () {
     var footnote2;
     var digitize_account;
     $(document).ready(function () {
-        //$("#tbResult").chromatable({
-        //    width: "700px",
-        //    height: "630px",
-        //    scrolling: "yes"
-        //});
+        $("#tbResult").chromatable({
+            width: "700px",
+            height: "630px",
+            scrolling: "yes"
+        });
         $("#tbResult tbody tr").on("click", function (event) {          
             tr = $(this).closest("tr").find("td").addClass("selected");
             footnote = $(this).closest("tr").find('td:eq(0)').text();
@@ -53,7 +53,7 @@ var ViewModel = function () {
             $("#Commit").attr("disabled", true);
         });
         $("#BtnMerge").click(function () {
-            var footnote2 = $('table > tbody > tr').eq(row_index).find('td:eq(0)').text() + "," + footnote;
+            var footnote2 = $('table > tbody > tr').eq(row_index).find('td:eq(0)').text() + footnote;
             var digitize_account2 = $('table > tbody > tr').eq(row_index).find('td:eq(2)').text() + " " + digitize_account;
             var amount2 = $('table > tbody > tr').eq(row_index).find('td:eq(4)').text() + amount;
             tr.remove();
