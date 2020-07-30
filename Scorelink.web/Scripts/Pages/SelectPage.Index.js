@@ -76,17 +76,9 @@ var ViewModel = function () {
             case "Delete_specific_page": page_no = $("#page_delete").val(); break;
             default:
         }
-        var Type_Page;
-        switch (self.PageType) {
-            case "Income Statement": Type_Page = '1'; break;
-            case "Balance Sheet": Type_Page = '2'; break;
-            case "Cash Flow": Type_Page = '3'; break;
-            case "Footnotes": Type_Page = '4'; break;
-            default:
-        }
         var filter = {
             'docId': self.DocId,
-            'pageType': Type_Page,
+            'pageType': self.PageType,
             'docPageno': page_no
         }
         $.ajax({
