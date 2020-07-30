@@ -438,7 +438,12 @@ namespace Scorelink.BO.Helper
 
                 foreach (var file in dir.EnumerateFiles(namePattearn))
                 {
-                    file.Delete();
+                    using (var stream = File.Open(file.FullName, FileMode.Open, FileAccess.Write, FileShare.Read))
+                    {
+                        stream.Close();
+                        stream.Dispose();
+                        file.Delete();
+                    }
                 }
 
                 return true;
