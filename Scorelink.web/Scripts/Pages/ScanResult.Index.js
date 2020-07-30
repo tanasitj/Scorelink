@@ -53,7 +53,7 @@ var ViewModel = function () {
             $("#Commit").attr("disabled", true);
         });
         $("#BtnMerge").click(function () {
-            var footnote2 = $('table > tbody > tr').eq(row_index).find('td:eq(0)').text() + "," + footnote;
+            var footnote2 = $('table > tbody > tr').eq(row_index).find('td:eq(0)').text() + footnote;
             var digitize_account2 = $('table > tbody > tr').eq(row_index).find('td:eq(2)').text() + " " + digitize_account;
             var amount2 = $('table > tbody > tr').eq(row_index).find('td:eq(4)').text() + amount;
             tr.remove();
