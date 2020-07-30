@@ -10,6 +10,7 @@ using Scorelink.BO.Repositories;
 using System.IO;
 using OfficeOpenXml;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
+using System.Text.RegularExpressions;
 
 namespace Scorelink.web.Controllers
 {
@@ -58,14 +59,15 @@ namespace Scorelink.web.Controllers
             List<DataResult> objTempmodel = new List<DataResult>();
             foreach (var line in lines)
             {
-                string[] words = line.Split('"');
+                Regex csv_file = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
+                string[] words = csv_file.Split(line);
                 objTempmodel.Add(new DataResult
                 {
-                    Footnote_No = "",
+                    Footnote_No = words[1].Trim(new Char[] {'"'}),
                     Divisions = DivisionStatus(),
-                    Digitized_Account_Title = words[0],
+                    Digitized_Account_Title = words[0].Trim(new Char[] {'"'}),
                     Recovered = RecoveredStatus(),
-                    Amount = words[1],
+                    Amount = words[2].Trim(new Char[] {'"'}),
                     Modified = "",
                     CLCTCD = ""
                 });
