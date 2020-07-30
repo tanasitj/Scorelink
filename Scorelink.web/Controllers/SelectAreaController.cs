@@ -11,6 +11,7 @@ using Leadtools.Document;
 using System.IO;
 using ABBYEngine;
 using FREngine;
+using NLog.Internal;
 
 namespace Scorelink.web.Controllers
 {
@@ -75,8 +76,12 @@ namespace Scorelink.web.Controllers
                 FRPrepareImageMode.AutoOverwriteResolution = true;
                 FRDocument FRDocument = engine.CreateFRDocument();
                 //String sOCRFileName = "OCR" + Common.GenZero(docDet.PageType, 5) + Common.GenZero(docDet.DocPageNo, 4) + ".txt";
-                String sOCRFileName = "OCR" + Common.GenZero(docDet.PageType, 5) + ".csv";
+                String sOCRFileName = "OCR" + Common.GenZero(docDet.PageType, 5) + Common.GenZero(docDet.DocPageNo, 4) + ".csv";
+                String sOCRAllFileName = "RST" + Common.GenZero(docDet.PageType, 5) + ".csv";
+                //Save OCR per page name
                 String sSaveOCR = sSaveFolder + sOCRFileName;
+                //Save OCR all page name
+                String sSaveOCRAll = sSaveFolder + sOCRAllFileName;
 
                 for (int i = 0; i < values.Count; i++)
                 {
@@ -171,12 +176,57 @@ namespace Scorelink.web.Controllers
                 FRDocument.Close();
                 FRDocument = default;
 
+                //Save per page
                 string csvFileName = sSaveOCR;
                 using (var sw = new StreamWriter(csvFileName, false, System.Text.Encoding.GetEncoding("UTF-16")))
                 {
                     sw.Write(csvData);
                     sw.Close();
                 }
+
+
+                //Save all page
+                const int chunkSize = 2 * 1024; // 2KB
+                string[] inputFiles = Directory.GetFiles(sSaveFolder, "OCR" + Common.GenZero(docDet.PageType, 5) + "?????.csv");
+
+                if (System.IO.File.Exists(sSaveOCRAll))
+                {
+                    using (var output = System.IO.File.Create(sSaveOCRAll))
+                    {
+                        foreach (var file in inputFiles)
+                        {
+                            using (var input = System.IO.File.OpenRead(file))
+                            {
+                                var buffer = new byte[chunkSize];
+                                int bytesRead;
+                                while ((bytesRead = input.Read(buffer, 0, buffer.Length)) > 0)
+                                {
+                                    output.Write(buffer, 0, bytesRead);
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    using (var output = System.IO.File.Create(sSaveOCRAll))
+                    {
+                        foreach (var file in inputFiles)
+                        {
+                            using (var input = System.IO.File.OpenRead(file))
+                            {
+                                var buffer = new byte[chunkSize];
+                                int bytesRead;
+                                while ((bytesRead = input.Read(buffer, 0, buffer.Length)) > 0)
+                                {
+                                    output.Write(buffer, 0, bytesRead);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                
             }
             catch (Exception ex)
             {

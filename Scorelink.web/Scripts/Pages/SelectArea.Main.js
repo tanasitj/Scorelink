@@ -29,7 +29,7 @@ var ViewModel = function () {
 
     $('img#view').selectAreas({
         allowSelect: true,
-        allowDelete: true,
+        allowDelete: false,
         minSize: [10, 10],
         onChanged: debugQtyAreas,
         width: 600,
@@ -89,22 +89,39 @@ var ViewModel = function () {
                 success: function (data) {
                     unblockUI();
                     if (!data) {
-                        window.location.href = '/Upload/Index';
+                        //window.location.href = '/Upload/Index';
+                        $.redirect("/SelectPage/SelectPage", {
+                            'id': $("#hdId").val()
+                        }, "POST");
                     } else {
-                        $("#hdId").val(data.DocId);
-                        $("#hdDocDetId").val(data.DocDetId);
-                        $("#hdDocPageNo").val(data.DocPageNo);
-                        $("#hdPageFileName").val(data.PageFileName);
-                        $("#hdPagePath").val(data.PagePath);
-                        $("#hdPatternNo").val(data.PatternNo);
-                        $("#lbPageNo").text(data.DocPageNo);
-                        $('img#view').attr("src", data.PagePath).width(600);
-                        $('img#view').selectAreas('reset');
-                        $('img#view').selectAreas('add', area1);
-                        $('img#view').selectAreas('add', area2);
-                        if (data.PatternNo != "5") {
-                            $('img#view').selectAreas('add', area3);
+                        //$("#hdId").val(data.DocId);
+                        //$("#hdDocDetId").val(data.DocDetId);
+                        //$("#hdDocPageNo").val(data.DocPageNo);
+                        //$("#hdPageFileName").val(data.PageFileName);
+                        //$("#hdPagePath").val(data.PagePath);
+                        //$("#hdPatternNo").val(data.PatternNo);
+                        //$("#lbPageNo").text(data.DocPageNo);
+                        //$('img#view').attr("src", data.PagePath).width(600);
+                        ////$('img#view').selectAreas('reset');
+                        //$('img#view').selectAreas('add', area1);
+                        //$('img#view').selectAreas('add', area2);
+                        //if (data.PatternNo != "5") {
+                        //    $('img#view').selectAreas('add', area3);
+                        //}
+
+                        var arg = {
+                            DocDetId: data.DocDetId,
+                            DocId: data.DocId,
+                            DocPageNo: data.DocPageNo,
+                            PageType: data.PageType,
+                            PageFileName: data.PageFileName,
+                            PagePath: data.PagePath,
+                            PatternNo: data.PatternNo
                         }
+
+                        $.redirect("/SelectArea/Index", {
+                            item: arg
+                        }, "POST"); 
                     }
                 },
                 dataType: "json",

@@ -426,5 +426,30 @@ namespace Scorelink.BO.Helper
                 return Math.Ceiling(dValue * dCoef) / dCoef;
             }
         }
-    }
+
+        //Delete all file in folder expect name pattern.
+        //Parameter : folder String ex. C:\\Temp\\ , name string ex. test*.txt .
+        //Return    : Boolean.
+        public static bool DeleteAllFile(string folder, string namePattearn)
+        {
+            try
+            {
+                var dir = new DirectoryInfo(folder);
+
+                foreach (var file in dir.EnumerateFiles(namePattearn))
+                {
+                    file.Delete();
+                }
+
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        
+}
 }
