@@ -28,7 +28,7 @@ var ViewModel = function () {
     setAreaValue($("#hdPatternNo").val());
 
     $('img#view').selectAreas({
-        allowSelect: true,
+        allowSelect: false,
         allowDelete: false,
         minSize: [10, 10],
         onChanged: debugQtyAreas,
