@@ -76,11 +76,15 @@
             .Footnote {
                 width: 120px;
             }
-
+            .Divisions{
+                width: 140px;
+            }
             .AccountTitle {
                 width: 360px;
             }
-
+            .Recovered{
+                width: 150px;
+            }
             .Amount {
                 width: 150px
             }
@@ -89,9 +93,9 @@
                 width: 150px;
             }
 
-            .Grid td:nth-child(2), th:nth-child(2),
-            .Grid td:nth-child(4), th:nth-child(4),
-            .Grid td:nth-child(7), th:nth-child(7) {
+            .Grid td:nth-child(3), th:nth-child(3),
+            .Grid td:nth-child(5), th:nth-child(5),
+            .Grid td:nth-child(8), th:nth-child(8) {
                 display: none
             }
 
@@ -101,10 +105,25 @@
             .Grid {
                 border-bottom: 0px;
                 /*height: 300px;*/
-                display: block;
+/*                display: block;*/
                 overflow: auto;
                 border-bottom: 1px solid #CCC;
             }
+            .css-row {
+                cursor: pointer;
+                background-color: #E0EEEE;
+                font-weight: normal;
+            }
+            .row_selected {
+                color: blue;
+                cursor: pointer;
+                font-weight: normal;
+                background-color: #fff;
+            }
+            .rowOnCheck {
+                background-color: red;
+            }
+
         </style>
         <style>
 
@@ -1988,6 +2007,7 @@
                     <table id="tbResult" class="Grid">
                         <thead class="bg-gray-light">
                             <tr class="text-center">
+                                <th style="width: 80px">No</th>
                                 <th style="width: 120px">Footnote</th>
                                 <th style="width: 170px">Divisions</th>
                                 <th style="width: 360px">Digitized Account</th>
@@ -1999,8 +2019,13 @@
                         </thead>
                         <tbody data-bind="foreach: ScanEdit">
                             <tr>
+                                <td></td>
                                 <td class="text-center"><span data-bind="text: Footnote_No"></span></td>
                                 <td class="text-center"><span data-bind="text: Divisions"></span></td>
+                                @*<td>
+                                <select data-bind="option: ScanEdit,value:Divisions" class="dropdown">
+                                </select>
+                                </td>*@
                                 <td class="text-center"><span data-bind="text: Digitized_Account_Title"></span></td>
                                 <td class="text-center"><span data-bind="text: Recovered"></span></td>
                                 <td class="text-center"><span data-bind="text: Amount"></span></td>
@@ -2010,7 +2035,7 @@
                         </tbody>
                     </table>        
                 </div>
-            </div>
+            </div>                          
         </div>
     </div>
     <div class="row">

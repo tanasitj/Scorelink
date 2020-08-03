@@ -27,7 +27,7 @@ namespace Scorelink.web.Controllers
             var Info = GetField.GetInfo(docId);
             //Get Document Detail data.
             var Details = GetField.GetDetails(docId,pageType.ToString());
-            string sPagePath = Consts.sUrl + "/FileUploads/" + Common.GenZero(Info.CreateBy, 8) + "/" + Info.FileUID + "/" + "SL" + Common.GenZero(Details.DocPageNo, 5) + ".tif";
+            string sPagePath = Consts.sUrl + "/FileUploads/" + Common.GenZero(Info.CreateBy, 8) + "/" + Info.FileUID + "/" + "SL" + Common.GenZero(Details.PageType, 5) + ".tif";
             var data = docInfoRepo.Get(docId);
             ViewBag.docId = data.DocId;
             ViewBag.PageFileName = data.FileName;
@@ -54,7 +54,7 @@ namespace Scorelink.web.Controllers
             var info = docInfoRepo.Get(docId);
             var details = GetField.GetDetails(docId, PageType);
             //=============================================================================
-            String sSaveFolder = Server.MapPath("..\\FileUploads\\" + Common.GenZero(info.CreateBy, 8) + "\\" + info.FileUID + "\\" + "OCR" + Common.GenZero(details.PageType, 5) + ".csv");
+            String sSaveFolder = Server.MapPath("..\\FileUploads\\" + Common.GenZero(info.CreateBy, 8) + "\\" + info.FileUID + "\\" + "RST" + Common.GenZero(details.PageType, 5) + ".csv");
             var lines = System.IO.File.ReadAllLines(@sSaveFolder);
             List<DataResult> objTempmodel = new List<DataResult>();
             foreach (var line in lines)
