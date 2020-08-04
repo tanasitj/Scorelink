@@ -116,5 +116,345 @@ namespace Scorelink.BO.Helper
                 file.DeletePages(2, -1, destinationFileName);
             }
         }
-    }
+
+        public static FREngine.ITextLanguage GetLanguageDB(FREngine.IEngine engine, string LanguageWord, string CustomDictionaryPass)
+        {
+
+            // Create new TextLanguage object
+            FREngine.ILanguageDatabase LanguageDatabase;
+            LanguageDatabase = engine.CreateLanguageDatabase();
+            FREngine.ITextLanguage TextLanguage;
+            TextLanguage = LanguageDatabase.CreateTextLanguage();
+
+            // Copy all attributes from predefined Target language
+            FREngine.ITextLanguage TargetLanguage;
+            TargetLanguage = engine.PredefinedLanguages.Find(LanguageWord).TextLanguage;
+            // ChinesePRC English  Japanese
+            TextLanguage.CopyFrom(TargetLanguage);
+            TextLanguage.InternalName = "FSFTextLanguage";
+
+            // Bind new dictionary to first (and single) BaseLanguage object within TextLanguage
+            FREngine.IBaseLanguage BaseLanguage;
+            BaseLanguage = TextLanguage.BaseLanguages[0];
+
+            // Change internal dictionary name to user-defined
+            BaseLanguage.InternalName = "FSFBaseLanguage";
+
+            // set custom dictinary for base language
+            SetDictionary(BaseLanguage, engine, CustomDictionaryPass);
+
+            return TextLanguage;
+        }
+
+        private static void SetDictionary(FREngine.IBaseLanguage BaseLanguage, FREngine.IEngine engine, string CustomDictionaryPass)
+        {
+
+            // カスタム辞書がない場合は何もしない
+            if (System.IO.File.Exists(CustomDictionaryPass) == false)
+                return;
+
+            FREngine.IDictionaryDescription DictionaryDescription;
+
+            // Create dictionary file
+            MakeDictionary(engine, CustomDictionaryPass);    // カスタムの辞書ファイル作成するときはここのコメント部分を参考にする
+
+            // ' Get collection of dictionary descriptions and remove all items
+            FREngine.IDictionaryDescriptions DictionaryDescriptions;
+            DictionaryDescriptions = BaseLanguage.DictionaryDescriptions;
+            // DictionaryDescriptions.DeleteAll()						’サンプルではPredefine辞書を削除している
+
+            // Create user dictionary description and add it to the collection
+            DictionaryDescription = DictionaryDescriptions.AddNew(FREngine.DictionaryTypeEnum.DT_UserDictionary);
+
+            FREngine.UserDictionaryDescription UserDictionaryDescription;
+            UserDictionaryDescription = DictionaryDescription.GetAsUserDictionaryDescription();
+
+            UserDictionaryDescription.FileName = CustomDictionaryPass;
+        }
+
+        private static void MakeDictionary(FREngine.IEngine engine, string CustomDictionaryPass)
+        {
+            // Create new dictionary
+            FREngine.ILanguageDatabase LanguageDatabase;
+            LanguageDatabase = engine.CreateLanguageDatabase();
+            FREngine.IDictionary Dictionary;
+            // すでに出来上がっている辞書ファイルでDictionaryを作成
+            Dictionary = LanguageDatabase.OpenExistingDictionary(CustomDictionaryPass, FREngine.LanguageIdEnum.LI_EnglishUnitedStates);    // LI_Thaiに変えるとエラー出る
+            Dictionary.Name = "FSFUserDictionary";
+        }
+
+        public struct OCRResult
+        {
+            public string Value;
+            public int Top;
+            public int Bottom;
+        }
+
+        public static FREngine.ITextLanguage GetTextLanguage(int flg, FREngine.IEngine engine, string LanguageWord, string CustomDictionaryPass)
+        {
+            FREngine.ILanguageDatabase FRLanguageDatabase = engine.CreateLanguageDatabase();
+            FREngine.ITextLanguage FRTextLanguage = FRLanguageDatabase.CreateTextLanguage();
+            switch (flg)
+            {
+                case 1:
+                    {
+                        FRTextLanguage = GetLanguageDB(engine, LanguageWord, CustomDictionaryPass);
+                        FRTextLanguage.LetterSet[FREngine.TextLanguageLetterSetEnum.TLLS_ProhibitedLetters] = "^©¬®°±—‘’‛“”•′™■□▲△►▻▼▽◄◅◊◎◦★☆♦✓❖";
+                        break;
+                    }
+
+                case 2:
+                    {
+                        FREngine.IBaseLanguages FRBaseLanguages = FRTextLanguage.BaseLanguages;
+                        FREngine.IBaseLanguage FRBaseLanguage = FRBaseLanguages.AddNew();
+                        FRBaseLanguage.LetterSet[FREngine.BaseLanguageLetterSetEnum.BLLS_Alphabet] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz()-0123456789-+,.:()/%$'&";
+
+                        //FRTextLanguage = GetLanguageDB(engine, LanguageWord, CustomDictionaryPass);
+                        //FRTextLanguage.LetterSet[FREngine.TextLanguageLetterSetEnum.TLLS_ProhibitedLetters] = "^©¬®°±—‘’‛“”•′™■□▲△►▻▼▽◄◅◊◎◦★☆♦✓❖";
+                        break;
+                    }
+
+                case 3:
+                    {
+                        FREngine.IBaseLanguages FRBaseLanguages = FRTextLanguage.BaseLanguages;
+                        FREngine.IBaseLanguage FRBaseLanguage = FRBaseLanguages.AddNew();
+                        FRBaseLanguage.LetterSet[FREngine.BaseLanguageLetterSetEnum.BLLS_Alphabet] = "()-.,0123456789";
+
+                        //FRTextLanguage = GetLanguageDB(engine, LanguageWord, CustomDictionaryPass);
+                        //FRTextLanguage.LetterSet[FREngine.TextLanguageLetterSetEnum.TLLS_ProhibitedLetters] = "^©¬®°±—‘’‛“”•′™■□▲△►▻▼▽◄◅◊◎◦★☆♦✓❖";
+                        break;
+                    }
+            }
+
+            return FRTextLanguage;
+        }
+
+        public static List<List<OCRResult>> GetOCRResult(FREngine.IEngine Engine, FREngine.FRDocument FRDocument)
+        {
+            var dicResult = new List<List<OCRResult>>();
+
+            // ************************************************************************
+            // Get OCR result
+            // ************************************************************************
+            for (int cnt = 0, loopTo = FRDocument.Pages[0].Layout.Blocks.Count - 1; cnt <= loopTo; cnt++)
+            {
+                var dicInfo = new List<OCRResult>();
+                FREngine.ITextBlock FRTextBlock = FRDocument.Pages[0].Layout.Blocks[cnt].GetAsTextBlock();
+                if (FRTextBlock is null)
+                    continue;
+                FREngine.IParagraphs Paragraphs = FRTextBlock.Text.Paragraphs;
+                for (int cnt2 = 0, loopTo1 = Paragraphs.Count - 1; cnt2 <= loopTo1; cnt2++)
+                {
+                    var result = new OCRResult();
+                    long wTop = 0;
+                    long wBottom = 0;
+                    int charCnt = 0;
+                    FREngine.ICharParams FRCharparams = Engine.CreateCharParams();
+                    var loopTo2 = Paragraphs[cnt2].Length - 1;
+                    for (int ichar = 0; ichar <= loopTo2; ichar++)
+                    {
+                        Paragraphs[cnt2].GetCharParams(ichar, FRCharparams);
+                        string character = "";
+                        character = Paragraphs[cnt2].Text.Substring(ichar, 1);
+                        result.Value += character;
+                        if (FRCharparams.Top != 0)
+                        {
+                            wTop += FRCharparams.Top;
+                            wBottom += FRCharparams.Bottom;
+                            charCnt += 1;
+                        }
+
+                        // Convert to hexadecimal
+                        var data = Encoding.UTF8.GetBytes(result.Value);
+                        string hexText = BitConverter.ToString(data);
+                        if (hexText.IndexOf("-E2-80-A8") >= 0)
+                        {
+                            // 改行コード(L SEP)が含まれている場合、単語を区切る
+                            hexText = hexText.Replace("-E2-80-A8", "");
+                            var hexChars = hexText.Split('-');
+                            byte[] decData;
+                            decData = new byte[(hexChars.Count())];
+                            for (int i = 0, loopTo3 = hexChars.Count() - 1; i <= loopTo3; i++)
+                                decData[i] = Convert.ToByte(hexChars[i], 16);
+                            result.Value = System.Text.Encoding.UTF8.GetString(decData);  // UTF8のバイト列からstringに変換
+                            //result.Value = result.Value.Replace(Constants.vbLf, "");
+                            result.Value = result.Value.Replace("\n", "");
+                            //result.Value = result.Value.Replace(Constants.vbTab, "");
+                            result.Value = result.Value.Replace("\t", "");
+                            result.Top = unchecked((int)wTop / charCnt);
+                            result.Bottom = unchecked((int)wBottom / charCnt);
+                            dicInfo.Add(result);
+
+                            // 初期化
+                            result = new OCRResult();
+                            wTop = 0;
+                            wBottom = 0;
+                            charCnt = 0;
+                        }
+                    }
+
+                    if (charCnt > 0)
+                    {
+                        result.Value = result.Value.Replace("\n", "");
+                        result.Value = result.Value.Replace("\t", "");
+                        //result.Top = Conversions.ToInteger(wTop / (double)charCnt);
+                        //result.Bottom = Conversions.ToInteger(wBottom / (double)charCnt);
+                        result.Top = unchecked((int)wTop / charCnt);
+                        result.Bottom = unchecked((int)wBottom / charCnt);
+                        dicInfo.Add(result);
+                    }
+                }
+
+                dicResult.Add(dicInfo);
+            }
+
+            return dicResult;
+        }
+
+        public static string EditOCRResult(List<List<OCRResult>> dicResult)
+        {
+            string ret = "";
+
+            // ************************************************************************
+            // OCR結果を編集
+            // ************************************************************************
+            // 各列の行数の合計を取得
+            int sumRow = 0;
+            for (int colIdx = 0, loopTo = dicResult.Count - 1; colIdx <= loopTo; colIdx++)
+            {
+                {
+                    var withBlock = dicResult[colIdx];
+                    sumRow += withBlock.Count;
+                }
+            }
+            // 全ての列の行がなくなるまで繰り返す
+            while (sumRow != 0)
+            {
+                int minTop = 0;
+                int minBottom = 0;
+
+                // 各列の一番上の行の一番高いTopとBottomを取得
+                for (int colIdx = 0, loopTo1 = dicResult.Count - 1; colIdx <= loopTo1; colIdx++)
+                {
+                    if (dicResult[colIdx].Count == 0)
+                        continue;
+                    minTop = dicResult[colIdx][0].Top;
+                    minBottom = dicResult[colIdx][0].Bottom;
+                    break;
+                }
+
+                for (int colIdx = 0, loopTo2 = dicResult.Count - 1; colIdx <= loopTo2; colIdx++)
+                {
+                    if (dicResult[colIdx].Count == 0)
+                        continue;
+                    if (minTop > dicResult[colIdx][0].Top)
+                    {
+                        minTop = dicResult[colIdx][0].Top;
+                        minBottom = dicResult[colIdx][0].Bottom;
+                    }
+                }
+
+                // 一番高いTopとBottomに近い行を出力
+                for (int colIdx = 0, loopTo3 = dicResult.Count - 1; colIdx <= loopTo3; colIdx++)
+                {
+                    if (dicResult[colIdx].Count == 0)
+                    {
+                        if (colIdx != dicResult.Count - 1)
+                            ret = ret + "\"" + "\"" + ",";
+                        continue;
+                    }
+
+                    {
+                        var withBlock1 = dicResult[colIdx];
+
+                        /// For rowidx As Integer = 0 To .Count - 1
+                        int rowidx = 0;
+                        // todo:暫定
+                        // Dim rat As Double = System.Math.Abs(100 - (System.Math.Abs(100 - (.Item(rowidx).Top / minTop) * 100) + System.Math.Abs(100 - (.Item(rowidx).Bottom / minBottom) * 100)))
+                        /// Dim rat As Double = 100 - (System.Math.Abs(100 - (.Item(rowidx).Top / minTop) * 100) + System.Math.Abs(100 - (.Item(rowidx).Bottom / minBottom) * 100))
+
+                        double rat = 0;
+                        if (Math.Abs(Math.Max(withBlock1[rowidx].Bottom, minBottom) - Math.Min(withBlock1[rowidx].Top, minTop)) != 0)
+                        {
+                            rat = (Math.Min(withBlock1[rowidx].Bottom, minBottom) - Math.Max(withBlock1[rowidx].Top, minTop)) / (double)(Math.Max(withBlock1[rowidx].Bottom, minBottom) - Math.Min(withBlock1[rowidx].Top, minTop)) * 100;
+                        }
+
+                        rat = ToRoundDown(rat, 0);
+                        /// If rat >= 95 And rat <= 100 Then
+                        if (rat >= 10)
+                        {
+                            ret = ret + "\"" + withBlock1[rowidx].Value + "\"";
+                            minTop = (minTop + withBlock1[rowidx].Top) / 2;
+                            minBottom = (minBottom + withBlock1[rowidx].Bottom) / 2;
+
+                            // 出力した行は削除する
+                            withBlock1.Remove(withBlock1[rowidx]);
+                            /// Exit For
+                        }
+                        /// Next
+
+                        if (colIdx != dicResult.Count - 1)
+                            ret = ret + ",";
+                    }
+                }
+
+                ret = ret + "\r\n";
+
+                // 各列の行数の合計を再取得
+                sumRow = 0;
+                for (int colIdx = 0, loopTo4 = dicResult.Count - 1; colIdx <= loopTo4; colIdx++)
+                {
+                    {
+                        var withBlock2 = dicResult[colIdx];
+                        sumRow += withBlock2.Count;
+                    }
+                }
+            }
+
+            return ret;
+        }
+
+        public static double ToRoundDown(double dValue, int iDigits)
+        {
+            double dCoef = Math.Pow(10, iDigits);
+            if (dValue > 0)
+            {
+                return Math.Floor(dValue * dCoef) / dCoef;
+            }
+            else
+            {
+                return Math.Ceiling(dValue * dCoef) / dCoef;
+            }
+        }
+
+        //Delete all file in folder expect name pattern.
+        //Parameter : folder String ex. C:\\Temp\\ , name string ex. test*.txt .
+        //Return    : Boolean.
+        public static bool DeleteAllFile(string folder, string namePattearn)
+        {
+            try
+            {
+                var dir = new DirectoryInfo(folder);
+
+                foreach (var file in dir.EnumerateFiles(namePattearn))
+                {
+                    using (var stream = File.Open(file.FullName, FileMode.Open, FileAccess.Write, FileShare.Read))
+                    {
+                        stream.Close();
+                        stream.Dispose();
+                        file.Delete();
+                    }
+                }
+
+                return true;
+
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        
+}
 }

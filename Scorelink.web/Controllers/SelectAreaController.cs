@@ -10,13 +10,13 @@ using Scorelink.MO.DataModel;
 using Leadtools.Document;
 using System.IO;
 using ABBYEngine;
+using FREngine;
+using NLog.Internal;
 
 namespace Scorelink.web.Controllers
 {
     public class SelectAreaController : Controller
     {
-        //ABBY Load Engine
-        EngineLoader engineLoader = null;
 
         //Fix code for Test.
         int iUserId = 1;
@@ -55,25 +55,45 @@ namespace Scorelink.web.Controllers
             var docDet = doc.GetDocDet(docDetId);
             //Set Path
             String sFrom = Consts.SLUserFlie + "\\FileUploads\\" + Common.GenZero(docInfo.CreateBy, 8) + "\\" + docInfo.FileUID + "\\" + "PG" + Common.GenZero(docDet.PageType,5) + Common.GenZero(docDet.DocPageNo, 4) + ".jpg";
+            String sFromTif = Consts.SLUserFlie + "\\FileUploads\\" + Common.GenZero(docInfo.CreateBy, 8) + "\\" + docInfo.FileUID + "\\" + "PG" + Common.GenZero(docDet.PageType, 5) + Common.GenZero(docDet.DocPageNo, 4) + ".tif";
             String sSaveFolder = Server.MapPath("..\\FileUploads\\" + Common.GenZero(docInfo.CreateBy, 8) + "\\" + docInfo.FileUID + "\\");
             String sUrlPath = Consts.sUrl + "/FileUploads/" + Common.GenZero(docInfo.CreateBy, 8) + "/" + docInfo.FileUID + "/";
-            //Initail Document Folder.
-            //Common.InitailDocFolder(sSaveFolder);
 
-            for (int i = 0; i < values.Count; i++)
+            //ABBY Load Engine
+            EngineLoader engineLoader = new EngineLoader();
+            IEngine engine = default;
+
+            String sLanguageFolder = Server.MapPath("..\\Language\\");
+            String sLanguageFile = "th_ABBYY.dic";
+            String CustomDictionaryPass = sLanguageFolder + sLanguageFile;
+
+            engineLoader.LoadEngine();
+            engine = engineLoader.Engine;
+
+            try
             {
-                int iRunNo = i + 1;
-                String sFileName = "AR" + Common.GenZero(docDet.PageType, 5) + Common.GenZero(docDet.DocPageNo, 4) + Common.GenZero(iRunNo.ToString(), 4) + ".tif";
-                String sOCRFileName = "OCR" + Common.GenZero(docDet.PageType, 5) + Common.GenZero(docDet.DocPageNo, 4) + Common.GenZero(iRunNo.ToString(), 4) + ".txt";
-                String sSave = sSaveFolder + sFileName;
-                String sSaveUrl = sUrlPath + sFileName;
+                PrepareImageMode FRPrepareImageMode = engine.CreatePrepareImageMode();
+                FRPrepareImageMode.AutoOverwriteResolution = true;
+                FRDocument FRDocument = engine.CreateFRDocument();
+                //String sOCRFileName = "OCR" + Common.GenZero(docDet.PageType, 5) + Common.GenZero(docDet.DocPageNo, 4) + ".txt";
+                String sOCRFileName = "OCR" + Common.GenZero(docDet.PageType, 5) + Common.GenZero(docDet.DocPageNo, 4) + ".csv";
+                String sOCRAllFileName = "RST" + Common.GenZero(docDet.PageType, 5) + ".csv";
+                //Save OCR per page name
                 String sSaveOCR = sSaveFolder + sOCRFileName;
-                String sCrop = values[i];
-                String[] aArea = sCrop.Split('|');
-                int x, y, w, h;
+                //Save OCR all page name
+                String sSaveOCRAll = sSaveFolder + sOCRAllFileName;
 
-                try 
+                for (int i = 0; i < values.Count; i++)
                 {
+                    int iRunNo = i + 1;
+                    String sFileName = "AR" + Common.GenZero(docDet.PageType, 5) + Common.GenZero(docDet.DocPageNo, 4) + Common.GenZero(iRunNo.ToString(), 4) + ".tif";
+                    String sSave = sSaveFolder + sFileName;
+                    String sSaveUrl = sUrlPath + sFileName;
+                    String sCrop = values[i];
+                    String[] aArea = sCrop.Split('|');
+                    int x, y, w, h;
+
+
                     //Check for Delete File for Initail.
                     if (System.IO.File.Exists(sSave))
                     {
@@ -83,7 +103,7 @@ namespace Scorelink.web.Controllers
                     if (Int32.TryParse(aArea[1], out x) && Int32.TryParse(aArea[2], out y) && Int32.TryParse(aArea[3], out w) && Int32.TryParse(aArea[4], out h))
                     {
                         cropImage(Image.FromFile(sFrom), new Rectangle(x, y, w, h)).Save(sSave, ImageFormat.Tiff);
-                        
+
                         //Insert or Update table DocumentArea
                         DocumentAreaModel docArea = new DocumentAreaModel();
                         docArea.AreaNo = iRunNo;
@@ -102,7 +122,7 @@ namespace Scorelink.web.Controllers
                         docArea.UpdateDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
 
                         //OCR process by ABBY
-                        processImageABBY(sSave, sSaveOCR);
+                        //processImageABBY(sSave, sSaveOCR, h, w);
 
                         //Check Existing Data before Update or Insert data.
                         DocumentAreaRepo docAreaRepo = new DocumentAreaRepo();
@@ -122,14 +142,100 @@ namespace Scorelink.web.Controllers
                         objDocDet.UpdateDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
                         DocumentDetailRepo docDetRepo = new DocumentDetailRepo();
                         docDetRepo.UpdateScanStatus(objDocDet);
-                    }
 
-                    GC.Collect(0);
+                        //-- ABBY OCR Process --//
+                        // Add image file to document
+                        //FRDocument.AddImageFile(sSave, FRPrepareImageMode);
+                        FRDocument.AddImageFile(sFrom, FRPrepareImageMode);
+                        IRegion FRRegion = engine.CreateRegion();
+                        int left = x;
+                        int top = y;
+                        int right = x+w;
+                        int bottom = y+h;
+
+                        FRRegion.AddRect(left, top, right, bottom);
+                        IBlock newBlock = FRDocument.Pages[0].Layout.Blocks.AddNew(BlockTypeEnum.BT_Text, FRRegion);
+                        // Set Dictionary
+                        newBlock.GetAsTextBlock().RecognizerParams.TextLanguage = Common.GetTextLanguage(iRunNo, engine, "Thai", CustomDictionaryPass); //Common.GetLanguageDB(engine, "Thai", CustomDictionaryPass);//
+                        // Specify horizontal writing
+                        ITextOrientation wTextOrientation = engine.CreateTextOrientation();
+                        wTextOrientation.ReadingType = ReadingTypeEnum.TRT_LinesBased;
+                        newBlock.GetAsTextBlock().TextOrientation = wTextOrientation;
+                        //----------------------//
+                    }
                 }
-                catch (Exception ex)
+                // Recognize document
+                FRDocument.Recognize();
+                // Get OCR result
+                var dicResult = new List<List<Common.OCRResult>>();
+                string csvData;
+                dicResult = Common.GetOCRResult(engine, FRDocument);
+                csvData = Common.EditOCRResult(dicResult);
+
+                // Close document
+                FRDocument.Close();
+                FRDocument = default;
+
+                //Save per page
+                string csvFileName = sSaveOCR;
+                using (var sw = new StreamWriter(csvFileName, false, System.Text.Encoding.GetEncoding("UTF-16")))
                 {
-                    return Json(ex.Message);
+                    sw.Write(csvData);
+                    sw.Close();
                 }
+
+
+                //Save all page
+                const int chunkSize = 2 * 1024; // 2KB
+                string[] inputFiles = Directory.GetFiles(sSaveFolder, "OCR" + Common.GenZero(docDet.PageType, 5) + "?????.csv");
+
+                if (System.IO.File.Exists(sSaveOCRAll))
+                {
+                    using (var output = System.IO.File.Create(sSaveOCRAll))
+                    {
+                        foreach (var file in inputFiles)
+                        {
+                            using (var input = System.IO.File.OpenRead(file))
+                            {
+                                var buffer = new byte[chunkSize];
+                                int bytesRead;
+                                while ((bytesRead = input.Read(buffer, 0, buffer.Length)) > 0)
+                                {
+                                    output.Write(buffer, 0, bytesRead);
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    using (var output = System.IO.File.Create(sSaveOCRAll))
+                    {
+                        foreach (var file in inputFiles)
+                        {
+                            using (var input = System.IO.File.OpenRead(file))
+                            {
+                                var buffer = new byte[chunkSize];
+                                int bytesRead;
+                                while ((bytesRead = input.Read(buffer, 0, buffer.Length)) > 0)
+                                {
+                                    output.Write(buffer, 0, bytesRead);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message);
+            }
+            finally
+            {
+                GC.Collect(0);
+                engineLoader.Dispose();
             }
 
             //Return Next Page Data
@@ -154,41 +260,69 @@ namespace Scorelink.web.Controllers
             return (Image)(bmpCrop);
         }
 
-        private void processImageABBY(string imagePath, string resultPath)
+        private void processImageABBY(string imagePath, string resultPath, int H, int W)
         {
-            loadEngine();
 
-            // Create document
-            FREngine.FRDocument document = engineLoader.Engine.CreateFRDocument();
+            //ABBY Load Engine
+            EngineLoader engineLoader = new EngineLoader();
+            IEngine engine = default;
+
+            String sLanguageFolder = Server.MapPath("..\\Language\\");
+            String sLanguageFile = "th_ABBYY.dic";
+
+            // Load ABBY Engine.
+            engineLoader.LoadEngine();
+            engine = engineLoader.Engine;
+
+            PrepareImageMode FRPrepareImageMode = engine.CreatePrepareImageMode();
+            FRPrepareImageMode.AutoOverwriteResolution = true;
+            FRDocument FRDocument = engine.CreateFRDocument();
 
             try
             {
+                String CustomDictionaryPass = sLanguageFolder + sLanguageFile;
+
                 // Add image file to document
-                document.AddImageFile(imagePath, null, null);
+                FRDocument.AddImageFile(imagePath, FRPrepareImageMode);
+
+                IRegion FRRegion = engine.CreateRegion();
+                FRRegion.AddRect(0, 0, W, H);
+                IBlock newBlock = FRDocument.Pages[0].Layout.Blocks.AddNew(FREngine.BlockTypeEnum.BT_Text, FRRegion);
+
+                newBlock.GetAsTextBlock().RecognizerParams.TextLanguage = Common.GetLanguageDB(engine, "Thai", CustomDictionaryPass);
+
+                ITextOrientation wTextOrientation = engine.CreateTextOrientation();
+                wTextOrientation.ReadingType = ReadingTypeEnum.TRT_LinesBased;
+                newBlock.GetAsTextBlock().TextOrientation = wTextOrientation;
 
                 // Recognize document
-                document.Process(null);
+                FRDocument.Recognize();
 
-                // Save results to rtf with default parameters
-                document.Export(resultPath, FREngine.FileExportFormatEnum.FEF_TextUnicodeDefaults, null);
+                // Get OCR result
+                var dicResult = new List<List<Common.OCRResult>>();
+                string csvData;
 
+                dicResult = Common.GetOCRResult(engine, FRDocument);
+                csvData = Common.EditOCRResult(dicResult);
+
+                // Close document
+                FRDocument.Close();
+                FRDocument = default;
+
+                string csvFileName = resultPath;
+                using (var sw = new StreamWriter(csvFileName, false, System.Text.Encoding.GetEncoding("UTF-16")))
+                {
+                    sw.Write(csvData);
+                    sw.Close();
+                }
             }
             catch (Exception ex)
             {
-                
+                System.Console.WriteLine(ex);
             }
             finally
             {
-                // Close document
-                document.Close();
-            }
-        }
-
-        private void loadEngine()
-        {
-            if (engineLoader == null)
-            {
-                engineLoader = new ABBYEngine.EngineLoader();
+                engineLoader.Dispose();
             }
         }
     }

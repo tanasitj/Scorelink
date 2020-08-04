@@ -59,8 +59,8 @@ namespace Scorelink.web.Controllers
                 using (var documentConverter = new Leadtools.Document.Converter.DocumentConverter())
                 {
                     var codecs = new Leadtools.Codecs.RasterCodecs();
-                    codecs.Options.RasterizeDocument.Load.XResolution = 150;
-                    codecs.Options.RasterizeDocument.Load.YResolution = 150;
+                    codecs.Options.RasterizeDocument.Load.XResolution = 800;
+                    codecs.Options.RasterizeDocument.Load.YResolution = 800;
 
                     Leadtools.Codecs.CodecsImageInfo info = codecs.GetInformation(sPath, true);
 
@@ -81,15 +81,24 @@ namespace Scorelink.web.Controllers
                         int iPage = Convert.ToInt32(doc.DocPageNo);
                         //Get PageType for File Name.
                         String sSavePath = sTempFolder + "\\" + "PG" + Common.GenZero(item.PageType, 5) + Common.GenZero(doc.DocPageNo, 4) + ".jpg";
+                        //String sSavePathTif = sTempFolder + "\\" + "PG" + Common.GenZero(item.PageType, 5) + Common.GenZero(doc.DocPageNo, 4) + ".tif";
                         //Check for Delete File for Initail.
-                        if (System.IO.File.Exists(sSavePath))
+                        if (iNum == 1)
                         {
-                            System.IO.File.Delete(sSavePath);
+                            //Delete Old Area Select files.
+                            Common.DeleteAllFile(sTempFolder, "AR" + Common.GenZero(item.PageType, 5) + "*.tif");
+                            //Delete Old Page Select files.
+                            Common.DeleteAllFile(sTempFolder, "PG" + Common.GenZero(item.PageType, 5) + "*.jpg");
+                            //Delete Old OCR Result files.
+                            Common.DeleteAllFile(sTempFolder, "OCR" + Common.GenZero(item.PageType, 5) + "*.csv");
+                            //Delete Old OCR Merge Result files.
+                            Common.DeleteAllFile(sTempFolder, "RST" + Common.GenZero(item.PageType, 5) + ".csv");
                         }
 
                         Leadtools.RasterImage image = codecs.Load(sPath, 0, Leadtools.Codecs.CodecsLoadByteOrder.BgrOrGray, iPage, iPage);
                         //Generate File.
                         codecs.Save(image, sSavePath, Leadtools.RasterImageFormat.Jpeg, 24, 1, -1, 1, Leadtools.Codecs.CodecsSavePageMode.Append);
+                        //codecs.Save(image, sSavePathTif, Leadtools.RasterImageFormat.Tif, 24, 1, -1, 1, Leadtools.Codecs.CodecsSavePageMode.Append);
                         //codecs.Save(image, sSavePath, Leadtools.RasterImageFormat.Jpeg, 24);
                         //Check for Clear Temp.
                         if (iNum == iRow)

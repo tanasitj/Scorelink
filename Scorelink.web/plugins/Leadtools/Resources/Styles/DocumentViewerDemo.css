@@ -374,10 +374,10 @@
 }
 
 #thumbnailsControl, #bookmarksControl {
-   width: 150px;
+   width: 50px;
    background-color: #D4D6DB;
    z-index: 1;
-   position: fixed;
+   position: relative;
    left: 39px;
    -webkit-box-shadow: 5px 4px 5px -5px #333;
    box-shadow: 5px 4px 5px -5px #333;
@@ -392,13 +392,14 @@
    }
 
 #thumbnails, #bookmarks {
-   overflow: hidden;
-   top: 158px;
-   left: 5px;
-   right: 5px;
-   bottom: 5px;
-   position: absolute !important;
-   border: 1px solid darkgray;
+    overflow: hidden;
+    width:100px;
+    top: -44px;
+    left: -290px;
+    right: 5px;
+    bottom: 5px;
+    position: absolute !important;
+    border: 1px solid darkgray;
 }
 
 #thumbnails {

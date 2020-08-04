@@ -1,9 +1,10 @@
-﻿function DocDetailModel(DocId, DocPageNo, FootnoteNo, PageType, UserId, date) {
+﻿function DocDetailModel(DocId, DocPageNo, FootnoteNo, PageType,PageTypeName,UserId, date) {
     var self = this;
     self.DocId = ko.observable(DocId);
     self.DocPageNo = ko.observable(DocPageNo);
     self.FootnoteNo = ko.observable(FootnoteNo);
     self.PageType = ko.observable(PageType);
+    self.PageTypeName = ko.observable(PageTypeName);
     self.CreateBy = ko.observable(UserId);
     self.CreateDate = ko.observable(date);
 }
@@ -14,6 +15,7 @@ var ViewModel = function () {
     self.DocPageNo = ko.observable();
     self.FootnoteNo = ko.observable();
     self.PageType = ko.observable();
+    self.PageTypeName = ko.observable();
     GetDoclist();
 
     $(document).ready(function () {
@@ -74,17 +76,9 @@ var ViewModel = function () {
             case "Delete_specific_page": page_no = $("#page_delete").val(); break;
             default:
         }
-        var Type_Page;
-        switch (self.PageType) {
-            case "Income Statement": Type_Page = '1'; break;
-            case "Balance Sheet": Type_Page = '2'; break;
-            case "Cash Flow": Type_Page = '3'; break;
-            case "Footnotes": Type_Page = '4'; break;
-            default:
-        }
         var filter = {
             'docId': self.DocId,
-            'pageType': Type_Page,
+            'pageType': self.PageType,
             'docPageno': page_no
         }
         $.ajax({
@@ -100,18 +94,11 @@ var ViewModel = function () {
         });
     }
     self.ClickScan = function (data, event) {
-        var Type_Page;
-        switch (data.PageType()) {
-            case "Income Statement": Type_Page = '1'; break;
-            case "Balance Sheet": Type_Page = '2'; break;
-            case "Cash Flow": Type_Page = '3'; break;
-            case "Footnotes": Type_Page = '4'; break;
-            default:
-        }
+        var Type_Page = data.PageType();
         var DocId = data.DocId();
         var filter = {
             'docId': data.DocId(),
-            'pageType': Type_Page
+            'pageType': data.PageType()
         }
         blockUI();
         $.ajax({
@@ -133,11 +120,14 @@ var ViewModel = function () {
             'pageType': pageType
         }, "POST");
     }
-
-    self.ClickScan_Edit = function () {
+    
+    self.ClickScan_Edit = function (data, event) {
         $.redirect("/ScanResult/Index", {
-            
-        })
+            'docId': data.DocId(),
+            'pageType': data.PageType()
+        }, "POST");
+       
+        //wait input parameter docId and page type ***********************
     }
     function GetDoclist() {
         var filter = {
@@ -159,7 +149,8 @@ var ViewModel = function () {
                             data.DocId,
                             data.DocPageNo,
                             data.FootnoteNo,
-                            data.PageType
+                            data.PageType,
+                            data.PageTypeName
                         )
                     );
                 });
