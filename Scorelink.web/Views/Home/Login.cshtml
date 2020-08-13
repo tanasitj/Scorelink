@@ -14,11 +14,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/Content/css/font-awesome.min.css">
     <link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- icheck bootstrap -->
     <link rel="stylesheet" href="~/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+
+    <link rel="stylesheet" href="~/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
     <link href="~/Content/css/AdminLTE.min.css" rel="stylesheet" />
@@ -29,8 +32,8 @@
     <div class="login-box">
         <div class="login-logo">
             <a href="~/Home/Login">
-            <b>SCORELINK </b>
-            System
+                <b>SCORELINK </b>
+                System
             </a>
         </div>
         <!-- /.login-logo -->
@@ -57,23 +60,23 @@
                 </div>
                 <div class="row">
                     <div class="col-8">
-                        <div class="icheck-primary">
-                            <input type="checkbox" id="remember">
-                            <label for="remember">
-                                Remember Me
-                            </label>
-                        </div>
+                        @*<div class="icheck-primary">
+                                <input type="checkbox" id="remember">
+                                <label for="remember">
+                                    Remember Me
+                                </label>
+                            </div>*@
                     </div>
                     <!-- /.col -->
                     <div class="col-4">
-                        <button id="btnLogIn" class="btn bg-gradient-success btn-block">Sign In</button>
+                        <button id="btnLogIn" class="btn bg-gradient-success btn-block" data-bind="click: $root.ClickLogin">Sign In</button>
                     </div>
                     <!-- /.col -->
                 </div>
                 @*</form>*@
 
                 <p class="mb-1">
-                    <a href="~/Home/ForgotPassword">I forgot my password</a>
+                    @*<a href="~/Home/ForgotPassword">I forgot my password</a>*@
                 </p>
                 <p class="mb-0">
                     <a href="~/Home/Register" class="text-center" id="lkRegis">Register a new membership</a>
@@ -82,7 +85,10 @@
             <!-- /.login-card-body -->
         </div>
     </div>
-
+    <input type="text" id="hdIP" value="" />
+    <input type="text" id="hdIPc" value="@ViewBag.IP" />
+    <input type="text" id="hdCPUc" value="@ViewBag.CPU" />
+    <input type="text" id="hdSessionc" value="@ViewBag.Session" />
     <!-- /.login-box -->
     <!-- jQuery -->
     <script src="~/plugins/jquery/jquery.min.js"></script>
@@ -90,10 +96,16 @@
     <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- AdminLTE App -->
     <script src="~/dist/js/adminlte.min.js"></script>
-
-    <script src="~/Scripts/Main.js"></script>
+    <script src="~/Content/js/plugins/jquery.blockUI/jquery.blockUI.js"></script>
+    <script src="~/Content/js/plugins/knockout/knockout-3.4.2.js"></script>
+    <script src="~/Scripts/Support.js"></script>
     <script src="~/Scripts/Pages/Home.Login.js"></script>
-
+    <script type="text/javascript">
+        $.getJSON("https://api.ipify.org/?format=json", function (e) {
+            //alert(e.ip);
+            $("#hdIP").val(e.ip)
+        });
+    </script>
 
 </body>
 </html>

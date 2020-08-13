@@ -14,20 +14,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- icheck bootstrap -->
-    <link rel="stylesheet" href="../../plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <link rel="stylesheet" href="~/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <link rel="stylesheet" href="~/Content/css/pnotify.custom.min.css">
 </head>
 <body class="hold-transition register-page">
     <div class="register-box">
         <div class="register-logo">
-            <a href="../../index2.html"><b>SCORELINK </b>System</a>
+            <a href="../../index.html"><b>SCORELINK </b>System</a>
         </div>
 
         <div class="card">
@@ -35,7 +36,7 @@
                 <p class="login-box-msg">Register a new membership</p>
 
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Full name">
+                    <input type="text" id="Name" class="form-control" placeholder="Name">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-user"></span>
@@ -43,7 +44,15 @@
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="email" class="form-control" placeholder="Email">
+                    <input type="text" id="Surname" class="form-control" placeholder="Surname">
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-user"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="email" id="Email" class="form-control" placeholder="Email">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-envelope"></span>
@@ -51,7 +60,7 @@
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Company">
+                    <input type="text" id="Company" class="form-control" placeholder="Company">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-building"></span>
@@ -59,10 +68,10 @@
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    <textarea class="form-control" rows="3" placeholder="Address"></textarea>
+                    <textarea id="Address" class="form-control" rows="3" placeholder="Address"></textarea>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Telephone Number">
+                    <input type="text" id="Telephone" class="form-control" placeholder="Telephone Number">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-phone"></span>
@@ -70,7 +79,7 @@
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="password" class="form-control" placeholder="Password">
+                    <input type="password" id="Password" class="form-control" placeholder="Password">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>
@@ -78,7 +87,7 @@
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="password" class="form-control" placeholder="Retype password">
+                    <input type="password" id="RePassword" class="form-control" placeholder="Retype password">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>
@@ -106,17 +115,20 @@
             <!-- /.form-box -->
         </div><!-- /.card -->
     </div>
-        <!-- /.register-box -->
-        <!-- jQuery -->
+    <!-- /.register-box -->
+    <!-- jQuery -->
+    <script src="~/Content/js/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="~/Content/js/plugins/bootstrap/bootstrap.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/dist/js/adminlte.min.js"></script>
 
-        <script src="~/Content/js/plugins/jquery/jquery-3.3.1.js"></script>
-        <script src="~/Content/js/plugins/jquery/jquery.min.js"></script>
-        <!-- Bootstrap 4 -->
-        <script src="~/Content/js/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <!-- AdminLTE App -->
-        <script src="~/dist/js/adminlte.min.js"></script>
+    <script src="~/Content/js/plugins/jquery.blockUI/jquery.blockUI.js"></script>
+    <script src="~/Content/js/plugins/pnotify/pnotify.custom.min.js"></script>
+    <script src="~/Content/js/plugins/knockout/knockout-3.4.2.js"></script>
 
-        <script src="~/Scripts/Pages/Home.Register.js"></script>
- 
+    <script src="~/Scripts/Support.js"></script>
+    <script src="~/Scripts/Pages/Home.Register.js"></script>
+
 </body>
 </html>
