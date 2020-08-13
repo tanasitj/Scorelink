@@ -1,9 +1,10 @@
-﻿function ScanEditModel(Footnote_No, Divisions, Digitized_Account_Title, Recovered, Amount, Modified, CLCTCD) {
+﻿function ScanEditModel(Footnote_No, Divisions, Digitized_Account_Title, Recovered,Standard_Title, Amount, Modified, CLCTCD) {
     var self = this;
     self.Footnote_No = ko.observable(Footnote_No);
     self.Divisions = ko.observable(Divisions);
     self.Digitized_Account_Title = ko.observable(Digitized_Account_Title);
     self.Recovered = ko.observable(Recovered);
+    self.Standard_Title = ko.observable(Standard_Title);
     self.Amount = ko.observable(Amount);
     self.Modified = ko.observable(Modified);
     self.CLCTCD = ko.observable(CLCTCD);
@@ -15,6 +16,7 @@ var ViewModel = function () {
     self.Divisions = ko.observable();
     self.Digitized_Account_Title = ko.observable();
     self.Recovered = ko.observable();
+    self.Standard_Title = ko.observable();
     self.Amount = ko.observable();
     self.Modified = ko.observable();
     self.CLCTCD = ko.observable();
@@ -42,8 +44,8 @@ var ViewModel = function () {
             //tr = $(this).closest("tr").find("td").addClass("selected");
             footnote = $(this).closest("tr").find('td:eq(1)').text();
             digitize_account = $(this).closest("tr").find('td:eq(3)').text();
-            amount = $(this).closest("tr").find('td:eq(5)').text();
-            modified = $(this).closest("tr").find('td:eq(6)').text();   
+            amount = $(this).closest("tr").find('td:eq(6)').text();
+            modified = $(this).closest("tr").find('td:eq(7)').text();   
         });
         $('td').click(function () {
             row_index = $(this).parent().index();
@@ -52,7 +54,7 @@ var ViewModel = function () {
        
         // Insert Row
         $("#BtnInsert").click(function () {
-            $('#tbResult').append('<tr><td>text</td><td>text</td><td>text</td><td>text</td><td>text</td><td>text</td><td>text</td></tr>');
+            $('#tbResult').append('<tr><td>text</td><td>text</td><td>text</td><td>text</td><td>text</td><td>text</td><td>text</td><td>text</td></tr>');
             $('#Table tbody:last').append(newRow);
             $("#BtnCheck").attr("disabled", true);
             $("#BtnMerge").attr("disabled", true);
@@ -70,19 +72,19 @@ var ViewModel = function () {
                 footnote2 = $('table > tbody > tr').eq(row_index).find('td:eq(1)').text() + footnote;
             }
             var digitize_account2 = $('table > tbody > tr').eq(row_index).find('td:eq(3)').text() + " " + digitize_account;
-            var amount2 = $('table > tbody > tr').eq(row_index).find('td:eq(5)').text();
+            var amount2 = $('table > tbody > tr').eq(row_index).find('td:eq(6)').text();
             if ((amount2 != "") && (amount != "")) {
                 alert("Cannot merge row please check data");
                 $('table > tbody > tr').removeClass("rowOnCheck");
                 return false;
             }
             else {
-                amount2 = $('table > tbody > tr').eq(row_index).find('td:eq(5)').text() + amount;
+                amount2 = $('table > tbody > tr').eq(row_index).find('td:eq(6)').text() + amount;
             }
             tr.remove();
             document.getElementById("tbResult").deleteRow(row_index);
             var html =
-                "<tr><td></td><td>" + footnote2 + "</td><td></td><td>" + digitize_account2 + "</td><td></td><td>"
+                "<tr><td></td><td>" + footnote2 + "</td><td></td><td>" + digitize_account2 + "</td><td></td><td></td><td>"
                 + amount2 + "</td><td>*</td><td></td></tr>";
             
             $('table > tbody > tr').eq(row_index).after(html);
@@ -99,7 +101,7 @@ var ViewModel = function () {
                 pageType: $("#hdPageType").val()
             }
             $.ajax({
-                url: "/ScanResult/AssignGridMerge",
+                url: "/ScanResult/AssignGrid",
                 cash: false,
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
@@ -270,7 +272,7 @@ var ViewModel = function () {
                 }
                 // Create column header
                 element.find("thead tr th").each(function () {
-                    if (!$(this).hasClass("NoExport"))
+                    if (!$(this).hasClass("text"))
                         tab_text = tab_text + "<td bgcolor='#87AFC6'>" +
                             $(this)[0].innerHTML + "</td>";
                 });
@@ -353,7 +355,7 @@ var ViewModel = function () {
         var model = response;
         $(".Grid td:nth-child(3),th:nth-child(3)").toggle();
         $(".Grid td:nth-child(5),th:nth-child(5)").toggle();
-        $(".Grid td:nth-child(8),th:nth-child(8)").toggle();
+        $(".Grid td:nth-child(9),th:nth-child(9)").toggle();
         var row = $("#tbResult tbody tr:last-child").clone(true);
         $("#tbResult tbody tr").remove();
         $.each(model, function () {
@@ -373,9 +375,10 @@ var ViewModel = function () {
                  <option value="Normal">indent sales</option>\n\
                 <option value="High">other direct costs</option></select>');
             $("td", row).eq(4).css("background-color", "#ffd800");
-            $("td", row).eq(5).html(financials.Amount);
-            $("td", row).eq(6).html(financials.Modified);
-            $("td", row).eq(7).html(financials.CLCTCD);
+            $("td", row).eq(5).html(financials.Standard_Title);
+            $("td", row).eq(6).html(financials.Amount);
+            $("td", row).eq(7).html(financials.Modified);
+            $("td", row).eq(8).html(financials.CLCTCD);
             $("#tbResult").append(row);
             row = $("#tbResult tbody tr:last-child").clone(true);
         });
@@ -387,7 +390,8 @@ var ViewModel = function () {
         var model = response;
         $(".Grid td:nth-child(2),th:nth-child(2)").hide();
         $(".Grid td:nth-child(4),th:nth-child(4)").hide();
-        $(".Grid td:nth-child(7),th:nth-child(7)").hide();
+        $(".Grid td:nth-child(5),th:nth-child(5)").hide();
+        $(".Grid td:nth-child(8),th:nth-child(8)").hide();
         var row = $("#tbResult tbody tr:last-child").clone(true);
         $("#tbResult tbody tr").remove();
         $.each(model, function () {
@@ -396,9 +400,10 @@ var ViewModel = function () {
             $("td", row).eq(2).html(financials.Divisions);
             $("td", row).eq(3).html(financials.Digitized_Account_Title);
             $("td", row).eq(4).html(financials.Recovered);
-            $("td", row).eq(5).html(financials.Amount);
-            $("td", row).eq(6).html(financials.Modified);
-            $("td", row).eq(7).html(financials.CLCTCD);
+            $("td", row).eq(5).html(financials.Standard_Title);
+            $("td", row).eq(6).html(financials.Amount);
+            $("td", row).eq(7).html(financials.Modified);
+            $("td", row).eq(8).html(financials.CLCTCD);
             $("#tbResult").append(row);
             row = $("#tbResult tbody tr:last-child").clone(true);
         });
@@ -415,7 +420,7 @@ var ViewModel = function () {
         $("#BtnInsert").attr("disabled", true);
         $("#BtnDelete").attr("disabled", true);
         $.ajax({
-            url: '/ScanResult/AssignGridMerge',
+            url: '/ScanResult/AssignGrid',
             cache: false,
             type: 'POST',
             contentType: 'application/json; charset=utf-8',
@@ -429,6 +434,7 @@ var ViewModel = function () {
                             data.Divisions,
                             data.Digitized_Account_Title,
                             data.Recovered,
+                            data.Standard_Title,
                             data.Amount,
                             data.Modified,
                             data.CLCTCD

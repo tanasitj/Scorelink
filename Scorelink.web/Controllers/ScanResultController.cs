@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Data;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Scorelink.BO.Helper;
 using Scorelink.MO.DataModel;
@@ -10,18 +8,11 @@ using Scorelink.BO.Repositories;
 using System.IO;
 using Spire.Xls;
 using OfficeOpenXml;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 using System.Text.RegularExpressions;
-using System.Runtime.InteropServices;
-using Microsoft;
-using System.Globalization;
-using System.Threading;
 using System.Text;
 using System.Drawing;
-using System.Windows.Forms;
-using System.Threading.Tasks;
-using System.Web.Helpers;
-using Microsoft.Ajax.Utilities;
+
+
 
 namespace Scorelink.web.Controllers
 {
@@ -48,7 +39,7 @@ namespace Scorelink.web.Controllers
             ViewBag.PageTypeName = pageTypeName;
             return View("ScanResult", objModel);
         }
-       public List<DataResult> MergeRow(int docId,string PageType)
+       public List<DataResult> Grid_Row(int docId,string PageType)
         {
             DocumentInfoRepo docInfoRepo = new DocumentInfoRepo();
             var info = docInfoRepo.Get(docId);
@@ -67,6 +58,7 @@ namespace Scorelink.web.Controllers
                     Divisions = DivisionStatus(),
                     Digitized_Account_Title = words[0].Trim(new Char[] {'"'}),
                     Recovered = RecoveredStatus(),
+                    Standard_Title = "",
                     Amount = words[2].Trim(new Char[] {'"'}),
                     Modified = "",
                     CLCTCD = ""
@@ -96,7 +88,7 @@ namespace Scorelink.web.Controllers
             List<string> files = new List<string>();
             files.Add(@"Tmp001");
             files.Add(@"Tmp002");
-            //files.Add(@"Tmp003");
+            //Call Procedure create file
             Create_Temp_Files(files, FolderPath);
             CombineFiles(files, FolderPath);
             return Json("Success fully");
@@ -174,9 +166,9 @@ namespace Scorelink.web.Controllers
             SelectList objinfo = new SelectList(status, "ID", "StatusName");
             return objinfo;
         }
-        public JsonResult AssignGridMerge(int docId,string PageType)
+        public JsonResult AssignGrid(int docId,string PageType)
         {
-            objModel.ScanEdit = MergeRow(docId,PageType);
+            objModel.ScanEdit = Grid_Row(docId,PageType);
             var resultobject = objModel.ScanEdit.ToList();
             return Json(resultobject,JsonRequestBehavior.AllowGet);
         }
