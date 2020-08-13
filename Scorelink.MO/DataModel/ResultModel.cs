@@ -21,6 +21,7 @@ namespace Scorelink.MO.DataModel
         public string Digitized_Account_Title { get; set; }
         public SelectList Recovered { get; set; }
         //public string Recovered { get; set; }
+        public string Standard_Title {get; set;}
         public string Amount { get; set; }
         public string Modified { get; set; }
         public string CLCTCD { get; set; }
