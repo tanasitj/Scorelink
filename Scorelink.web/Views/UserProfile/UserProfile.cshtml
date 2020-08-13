@@ -1,4 +1,7 @@
 ﻿<!-- About Me Box -->
+
+<input type="hidden" id="hdUserId" value="@ViewBag.UserId" />
+
 <div class="hold-transition card card-info">
     <div class="card-header bg-gradient-info">
         <h3 class="card-title"><b>Profile</b></h3>
@@ -8,47 +11,49 @@
         <strong><i class="fas fa-address-card mr-1"></i>Full Name</strong>
 
         <p class="text-muted">
-            Tanasit Jarutnuntipat
+            @ViewBag.Name @ViewBag.Surname
         </p>
 
         <hr>
 
         <strong><i class="fas fa-envelope mr-1"></i> E-mail</strong>
 
-        <p class="text-muted">tanasit@mfec.co.th</p>
+        <p class="text-muted">@ViewBag.Email</p>
 
         <hr>
 
         <strong><i class="fas fa-building mr-1"></i> Company</strong>
 
-        <p class="text-muted">MFEC</p>
+        <p class="text-muted">@ViewBag.Company</p>
 
         <hr>
 
-        <strong><i class="fas fa-address-book mr-1"></i> Address</strong>
+        @*<strong><i class="fas fa-address-book mr-1"></i> Address</strong>
 
-        <p class="text-muted">Thailand</p>
+            <p class="text-muted">Thailand</p>
 
-        <hr>
+            <hr>*@
 
         <strong><i class="fas fa-phone mr-1"></i> Telephone</strong>
 
-        <p class="text-muted">0899272208</p>
+        <p class="text-muted">@ViewBag.Telephone</p>
 
         <hr>
 
         <strong><i class="fas fa-registered mr-1"></i> Register Date</strong>
 
-        <p class="text-muted">01/01/2020</p>
+        <p class="text-muted">@ViewBag.RegisterDate</p>
 
         <hr>
 
         <strong><i class="fas fa-calendar-times mr-1"></i> Expire Date</strong>
 
-        <p class="text-muted">01/01/2021</p>
+        <p class="text-muted">@ViewBag.ExpireDate</p>
 
     </div>
     <!-- /.card-body -->
 </div>
 <!-- /.card -->
-
+@section scripts{
+    <script src="~/Scripts/Pages/Home.UserProfile.js"></script>
+}

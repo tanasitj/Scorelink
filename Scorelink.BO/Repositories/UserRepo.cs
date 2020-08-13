@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Scorelink.BO.Helper;
 using Scorelink.MO;
 using Scorelink.MO.DataModel;
 
@@ -23,16 +24,16 @@ namespace Scorelink.BO.Repositories
                             UserName = item.UserName,
                             Name = item.Name,
                             Surname = item.Surname,
-                            Password = item.Password,
+                            Password = Common.EncryptText(item.Password),
                             Email = item.Email,
                             Company = item.Company,
                             Telephone = item.Telephone,
-                            Status = item.Status,
-                            Admin = item.Admin,
-                            RegisterDate = DateTime.Parse(item.RegisterDate),
-                            ExpireDate = DateTime.Parse(item.ExpireDate),
-                            UpdateBy = item.UpdateBy,
-                            UpdateDate = DateTime.Parse(item.UpdateDate)
+                            Status = "A",
+                            Admin = "N",
+                            RegisterDate = DateTime.Now,
+                            ExpireDate = DateTime.Now,
+                            UpdateBy = "System",
+                            UpdateDate = DateTime.Now,
                         };
 
                         db.Users.Add(user);
@@ -50,6 +51,46 @@ namespace Scorelink.BO.Repositories
                         return ex.ToString();
                     }
                 }
+            }
+        }
+
+        public bool CheckLogIn(string username, string password)
+        {
+            using (ScorelinkEntities db = new ScorelinkEntities())
+                return db.Users.Where(x => x.UserName == username && x.Password == password).Any();
+            
+        }
+
+        public UserModel Get(string username)
+        {
+            ScorelinkEntities db = new ScorelinkEntities();
+            try
+            {
+                var data = (from user in db.Users
+                            where user.UserName == username
+                            select new UserModel
+                            {
+                                UserId = user.UserId,
+                                UserName = user.UserName,
+                                Name = user.Name,
+                                Surname = user.Surname,
+                                Password = user.Password,
+                                Email = user.Email,
+                                Company = user.Company,
+                                Telephone = user.Telephone,
+                                Status = user.Status,
+                                Admin = user.Admin,
+                                RegisterDate = user.RegisterDate.ToString(),
+                                ExpireDate = user.ExpireDate.ToString(),
+                                UpdateBy = user.UpdateBy,
+                                UpdateDate = user.UpdateDate.ToString()
+                            }).FirstOrDefault();
+
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
     }

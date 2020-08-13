@@ -26,28 +26,6 @@ var ViewModel = function () {
     }
 
     self.ClickScan = function (data, event) {
-        //alert(data.FileName + data.FilePath);
-        //var filter = {
-        //    //filterId: self.FilterUserId,
-        //    'path': data.FilePath(),
-        //    'folder': data.FileUID()
-        //}
-        //blockUI();
-        //$.ajax({
-        //    url: '/Upload/ScanDocumentInfo',
-        //    cache: false,
-        //    type: 'POST',
-        //    contentType: 'application/json; charset=utf-8',
-        //    data: ko.toJSON(filter),
-        //    success: function (data) {
-        //        unblockUI();
-        //        $.redirect("/SelectPage/SelectPage", {
-        //            'id': data.UserId()
-        //            //'id': '1'
-        //        }, "POST"); 
-        //    }
-        //});
-
         $.redirect("/SelectPage/SelectPage", {
             'id': data.DocId()
         }, "POST");
