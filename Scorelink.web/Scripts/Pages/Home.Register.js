@@ -27,6 +27,7 @@ var ViewModel = function () {
                 Password: $("#Password").val(),
                 Email: $("#Email").val(),
                 Company: $("#Company").val(),
+                Address: $("#Address").val(),
                 Telephone: $("#Telephone").val()
             }
 

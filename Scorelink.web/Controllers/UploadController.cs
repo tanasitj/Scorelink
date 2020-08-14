@@ -23,8 +23,31 @@ namespace Scorelink.web.Controllers
         // GET: Upload
         public ActionResult Index()
         {
-            ViewBag.Id = "";
-            ViewBag.UserId = "1";
+            //ViewBag.Id = "";
+            //ViewBag.UserId = "1";
+
+            if (Session["UserId"] == null)
+            {
+                Response.Redirect("/Home/Index");
+            }
+            else
+            {
+                ViewBag.UserId = Session["UserId"].ToString();
+                int iUserId = 0;
+                Int32.TryParse(Session["UserId"].ToString(), out iUserId);
+
+                //Get User Info.
+                UserRepo userRepo = new UserRepo();
+                var userDB = userRepo.Get(iUserId);
+                ViewBag.Name = userDB.Name;
+                ViewBag.Surname = userDB.Surname;
+
+                //Check and Update online date time.
+                OnlineUserRepo onlineRepo = new OnlineUserRepo();
+                var online = onlineRepo.Get(iUserId);
+                onlineRepo.CheckTimeOut(online);
+            }
+
             return View("Upload");
         }
 

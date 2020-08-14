@@ -27,6 +27,7 @@ namespace Scorelink.BO.Repositories
                             Password = Common.EncryptText(item.Password),
                             Email = item.Email,
                             Company = item.Company,
+                            Address = item.Address,
                             Telephone = item.Telephone,
                             Status = "A",
                             Admin = "N",
@@ -77,6 +78,41 @@ namespace Scorelink.BO.Repositories
                                 Password = user.Password,
                                 Email = user.Email,
                                 Company = user.Company,
+                                Address = user.Address,
+                                Telephone = user.Telephone,
+                                Status = user.Status,
+                                Admin = user.Admin,
+                                RegisterDate = user.RegisterDate.ToString(),
+                                ExpireDate = user.ExpireDate.ToString(),
+                                UpdateBy = user.UpdateBy,
+                                UpdateDate = user.UpdateDate.ToString()
+                            }).FirstOrDefault();
+
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public UserModel Get(int userid)
+        {
+            ScorelinkEntities db = new ScorelinkEntities();
+            try
+            {
+                var data = (from user in db.Users
+                            where user.UserId == userid
+                            select new UserModel
+                            {
+                                UserId = user.UserId,
+                                UserName = user.UserName,
+                                Name = user.Name,
+                                Surname = user.Surname,
+                                Password = user.Password,
+                                Email = user.Email,
+                                Company = user.Company,
+                                Address = user.Address,
                                 Telephone = user.Telephone,
                                 Status = user.Status,
                                 Admin = user.Admin,
