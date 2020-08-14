@@ -76,7 +76,7 @@ namespace Scorelink.BO.Repositories
             }
         }
 
-        public string Delete(OnlineUserModel item)
+        public string Delete(int userid)
         {
             using (ScorelinkEntities db = new ScorelinkEntities())
             {
@@ -84,7 +84,7 @@ namespace Scorelink.BO.Repositories
                 {
                     try
                     {
-                        var online = db.OnlineUsers.Where(x => x.UserId == item.UserId).First();
+                        var online = db.OnlineUsers.Where(x => x.UserId == userid).First();
                         db.OnlineUsers.Remove(online);
 
                         db.SaveChanges();
