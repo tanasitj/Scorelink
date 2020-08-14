@@ -56,6 +56,7 @@ namespace Scorelink.web.Controllers
                     Session["Surname"] = userDB.Surname;
                     Session["Email"] = userDB.Email;
                     Session["Company"] = userDB.Company;
+                    Session["Address"] = userDB.Address;
                     Session["Telephone"] = userDB.Telephone;
                     Session["RegisterDate"] = userDB.RegisterDate;
                     Session["ExpireDate"] = userDB.ExpireDate;

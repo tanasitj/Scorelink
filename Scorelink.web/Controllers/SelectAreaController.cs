@@ -17,31 +17,47 @@ namespace Scorelink.web.Controllers
 {
     public class SelectAreaController : Controller
     {
-
-        //Fix code for Test.
-        int iUserId = 1;
-        //----------------//
-
         SelectAreaRepo doc = new SelectAreaRepo();
 
         // GET: SelectArea
         public ActionResult Index(DocumentDetailModel item)
         {
-            ViewBag.Id = item.DocId;
-            ViewBag.PatternNo = item.PatternNo;
-            //Get Document Info data.
-            var docInfo = doc.GetDocInfo(item.DocId);
-            //Get Document Detail data.
-            var docDet = doc.GetDocDet(item.DocId, item.PageType);
-            //Set Path for Image.
-            string sPagePath = Consts.sUrl + "/FileUploads/" + Common.GenZero(docInfo.CreateBy, 8) + "/" + docInfo.FileUID + "/" + "PG" + Common.GenZero(docDet.PageType, 5) + Common.GenZero(docDet.DocPageNo, 4) + ".jpg";
+            if (Session["UserId"] == null)
+            {
+                Response.Redirect("/Home/Index");
+            }
+            else
+            {
+                ViewBag.UserId = Session["UserId"].ToString();
+                int iUserId = 0;
+                Int32.TryParse(Session["UserId"].ToString(), out iUserId);
 
-            ViewBag.DocDetId = docDet.DocDetId;
-            ViewBag.DocPageNo = docDet.DocPageNo;
-            ViewBag.PageType = docDet.PageType;
-            ViewBag.PageFileName = docDet.PageFileName;
-            ViewBag.PagePath = sPagePath;
+                //Get User Info.
+                UserRepo userRepo = new UserRepo();
+                var userDB = userRepo.Get(iUserId);
+                ViewBag.Name = userDB.Name;
+                ViewBag.Surname = userDB.Surname;
 
+                //Check and Update online date time.
+                OnlineUserRepo onlineRepo = new OnlineUserRepo();
+                var online = onlineRepo.Get(iUserId);
+                onlineRepo.CheckTimeOut(online);
+
+                ViewBag.Id = item.DocId;
+                ViewBag.PatternNo = item.PatternNo;
+                //Get Document Info data.
+                var docInfo = doc.GetDocInfo(item.DocId);
+                //Get Document Detail data.
+                var docDet = doc.GetDocDet(item.DocId, item.PageType);
+                //Set Path for Image.
+                string sPagePath = Consts.sUrl + "/FileUploads/" + Common.GenZero(docInfo.CreateBy, 8) + "/" + docInfo.FileUID + "/" + "PG" + Common.GenZero(docDet.PageType, 5) + Common.GenZero(docDet.DocPageNo, 4) + ".jpg";
+
+                ViewBag.DocDetId = docDet.DocDetId;
+                ViewBag.DocPageNo = docDet.DocPageNo;
+                ViewBag.PageType = docDet.PageType;
+                ViewBag.PageFileName = docDet.PageFileName;
+                ViewBag.PagePath = sPagePath;
+            }
             return View("SelectAreaMain");
         }
 
@@ -117,7 +133,7 @@ namespace Scorelink.web.Controllers
                         docArea.AreaW = w.ToString();
                         docArea.AreaPath = sSave;
                         docArea.AreaUrl = sSaveUrl;
-                        docArea.CreateBy = iUserId.ToString();
+                        docArea.CreateBy = docInfo.CreateBy;
                         docArea.CreateDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
                         docArea.UpdateDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
 

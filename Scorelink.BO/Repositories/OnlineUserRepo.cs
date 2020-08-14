@@ -101,6 +101,31 @@ namespace Scorelink.BO.Repositories
             }
         }
 
+        public OnlineUserModel Get(int userid)
+        {
+            ScorelinkEntities db = new ScorelinkEntities();
+            try
+            {
+                var data = (from online in db.OnlineUsers
+                            where online.UserId == userid
+                            select new OnlineUserModel
+                            {
+                                UserId = online.UserId ?? default(int),
+                                IPAddress = online.IPAddress,
+                                SessionId = online.SessionId,
+                                MACAddress = online.MACAddress,
+                                CPUNO = online.CPUNO,
+                                OnlineUpdate = online.OnlineUpdate.ToString()
+                            }).FirstOrDefault();
+
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public bool CheckTimeOut(OnlineUserModel item)
         {
             try

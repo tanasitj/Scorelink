@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Scorelink.BO.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -19,13 +20,21 @@ namespace Scorelink.web.Controllers
             else
             {
                 ViewBag.UserId = Session["UserId"].ToString();
-                ViewBag.Name = Session["Name"].ToString();
-                ViewBag.Surname = Session["Surname"].ToString();
-                ViewBag.Email = Session["Email"].ToString();
-                ViewBag.Company = Session["Company"].ToString();
-                ViewBag.Telephone = Session["Telephone"].ToString();
-                ViewBag.RegisterDate = Session["RegisterDate"].ToString();
-                ViewBag.ExpireDate = Session["ExpireDate"].ToString();
+
+                int iUserId = 0;
+                Int32.TryParse(Session["UserId"].ToString(), out iUserId);
+
+                UserRepo userRepo = new UserRepo();
+                var userDB = userRepo.Get(iUserId);
+
+                ViewBag.Name = userDB.Name;
+                ViewBag.Surname = userDB.Surname;
+                ViewBag.Email = userDB.Email;
+                ViewBag.Company = userDB.Company;
+                ViewBag.Address = userDB.Address;
+                ViewBag.Telephone = userDB.Telephone;
+                ViewBag.RegisterDate = userDB.RegisterDate;
+                ViewBag.ExpireDate = userDB.ExpireDate;
             }
 
             return View("UserProfile");
