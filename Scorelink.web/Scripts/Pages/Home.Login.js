@@ -13,7 +13,7 @@
     self.ClickLogin = function () {
         blockUI();
         var arg = {
-            IPAddress: $("#hdIP").val(),
+            IPAddress: $("#hdIPc").val(),
             SessionId: $("#hdSessionc").val(),
             MACAddress: "",
             CPUNO: $("#hdCPUc").val()

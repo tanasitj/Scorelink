@@ -73,9 +73,11 @@ namespace Scorelink.web.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult Logout(string user)
+        public ActionResult Logout(int userid)
         {
             OnlineUserRepo onlineRepo = new OnlineUserRepo();
+            onlineRepo.Delete(userid);
+
             ViewBag.IP = GetIPAddress();
             ViewBag.CPU = GetCPUID();
             ViewBag.Session = Session.SessionID;
