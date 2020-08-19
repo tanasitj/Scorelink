@@ -40,6 +40,8 @@ namespace Scorelink.BO.Repositories
                     catch (Exception ex)
                     {
                         dbTran.Rollback();
+                        Logger Err = new Logger();
+                        Err.ErrorLog(ex.ToString());
                         return ex.ToString();
                     }
                 }
@@ -70,6 +72,8 @@ namespace Scorelink.BO.Repositories
                     catch (Exception ex)
                     {
                         dbTran.Rollback();
+                        Logger Err = new Logger();
+                        Err.ErrorLog(ex.ToString());
                         return ex.ToString();
                     }
                 }
@@ -95,6 +99,8 @@ namespace Scorelink.BO.Repositories
                     catch (Exception ex)
                     {
                         dbTran.Rollback();
+                        Logger Err = new Logger();
+                        Err.ErrorLog(ex.ToString());
                         return ex.ToString();
                     }
                 }
@@ -122,6 +128,8 @@ namespace Scorelink.BO.Repositories
             }
             catch (Exception ex)
             {
+                Logger Err = new Logger();
+                Err.ErrorLog(ex.ToString());
                 throw ex;
             }
         }
@@ -156,6 +164,8 @@ namespace Scorelink.BO.Repositories
             }
             catch (Exception ex)
             {
+                Logger Err = new Logger();
+                Err.ErrorLog(ex.ToString());
                 throw ex;
             }
         }
@@ -180,6 +190,8 @@ namespace Scorelink.BO.Repositories
             }
             catch (Exception ex)
             {
+                Logger Err = new Logger();
+                Err.ErrorLog(ex.ToString());
                 throw ex;
             }
         }
@@ -206,6 +218,8 @@ namespace Scorelink.BO.Repositories
             }
             catch (Exception ex)
             {
+                Logger Err = new Logger();
+                Err.ErrorLog(ex.ToString());
                 throw ex;
             }
         }
