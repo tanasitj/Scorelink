@@ -38,7 +38,7 @@ namespace Scorelink.web.Controllers
                     int iUserId = 0;
                     Int32.TryParse(Session["UserId"].ToString(), out iUserId);
 
-                    iUserId = 0;
+                    //iUserId = 0;
 
                     //Get User Info.
                     UserRepo userRepo = new UserRepo();
