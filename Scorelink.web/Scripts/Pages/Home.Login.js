@@ -11,6 +11,16 @@
     //});
 
     self.ClickLogin = function () {
+        var sEmail = $("#txtUser").val();
+
+        if (!isEmail(sEmail)) {
+            alert("User is not correct format.");
+        } else {
+            Login();
+        }
+    }
+
+    function Login() {
         blockUI();
         var arg = {
             IPAddress: $("#hdIPc").val(),
@@ -43,6 +53,11 @@
                 }
             }
         });
+    }
+
+    function isEmail(email) {
+        var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        return regex.test(email);
     }
 
 }

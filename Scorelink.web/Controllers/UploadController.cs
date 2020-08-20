@@ -100,7 +100,7 @@ namespace Scorelink.web.Controllers
                         file.SaveAs(fname);
 
                         String sCreateDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
-                        String sFileUrl = Consts.sUrl + "/FileUploads/"+uploadNo + "/" + sUID + "/"+sUID+fi.Extension;
+                        String sFileUrl = Common.getConstTxt("sUrl") + "/FileUploads/"+uploadNo + "/" + sUID + "/"+sUID+fi.Extension;
 
                         DocumentInfoModel doc = new DocumentInfoModel();
                         doc.FileUID = sUID;

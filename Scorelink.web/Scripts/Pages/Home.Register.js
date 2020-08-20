@@ -19,7 +19,21 @@ var ViewModel = function () {
     $(document).ready(function () {
 
         $("#btnRegister").click(function () {
+            var sEmail = $("#Email").val();
+            var sPass = $("#Password").val();
+            var sRePass = $("#RePassword").val();
 
+            if (!isEmail(sEmail)) {
+                alert("Email is not correct format.");
+            } else if (sPass != sRePass) {
+                alert("Please retype password again.");
+            } else {
+                SaveRegister();
+            }
+        });
+
+
+        function SaveRegister() {
             var arg = {
                 UserName: $("#Email").val(),
                 Name: $("#Name").val(),
@@ -49,9 +63,12 @@ var ViewModel = function () {
                     }
                 }
             })
+        }
 
-        });
-
+        function isEmail(email) {
+            var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+            return regex.test(email);
+        }
     });
 
 }
