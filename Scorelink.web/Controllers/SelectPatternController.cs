@@ -70,7 +70,7 @@ namespace Scorelink.web.Controllers
                 String sFolder = docInfo.FileUID;
                 String sPath = docInfo.FilePath;
                 //Save Folder for New File.
-                String sTempFolder = Consts.SLUserFlie + "\\FileUploads\\" + Common.GenZero(docInfo.CreateBy, 8) + "\\" + sFolder + "\\";
+                String sTempFolder = Common.getConstTxt("SLUserFlie") + Common.GenZero(docInfo.CreateBy, 8) + "\\" + sFolder + "\\";
                 
                 //Get DocumentDetail data.
                 var docDet = docDetailRepo.GetList(item.DocId, item.PageType);

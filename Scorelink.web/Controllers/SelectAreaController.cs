@@ -50,7 +50,7 @@ namespace Scorelink.web.Controllers
                 //Get Document Detail data.
                 var docDet = doc.GetDocDet(item.DocId, item.PageType);
                 //Set Path for Image.
-                string sPagePath = Consts.sUrl + "/FileUploads/" + Common.GenZero(docInfo.CreateBy, 8) + "/" + docInfo.FileUID + "/" + "PG" + Common.GenZero(docDet.PageType, 5) + Common.GenZero(docDet.DocPageNo, 4) + ".jpg";
+                string sPagePath = Common.getConstTxt("sUrl") + "/FileUploads/" + Common.GenZero(docInfo.CreateBy, 8) + "/" + docInfo.FileUID + "/" + "PG" + Common.GenZero(docDet.PageType, 5) + Common.GenZero(docDet.DocPageNo, 4) + ".jpg";
 
                 ViewBag.DocDetId = docDet.DocDetId;
                 ViewBag.DocPageNo = docDet.DocPageNo;
@@ -70,10 +70,10 @@ namespace Scorelink.web.Controllers
             //Get Document Detail data.
             var docDet = doc.GetDocDet(docDetId);
             //Set Path
-            String sFrom = Consts.SLUserFlie + "\\FileUploads\\" + Common.GenZero(docInfo.CreateBy, 8) + "\\" + docInfo.FileUID + "\\" + "PG" + Common.GenZero(docDet.PageType,5) + Common.GenZero(docDet.DocPageNo, 4) + ".jpg";
-            String sFromTif = Consts.SLUserFlie + "\\FileUploads\\" + Common.GenZero(docInfo.CreateBy, 8) + "\\" + docInfo.FileUID + "\\" + "PG" + Common.GenZero(docDet.PageType, 5) + Common.GenZero(docDet.DocPageNo, 4) + ".tif";
+            String sFrom = Common.getConstTxt("SLUserFlie") + Common.GenZero(docInfo.CreateBy, 8) + "\\" + docInfo.FileUID + "\\" + "PG" + Common.GenZero(docDet.PageType,5) + Common.GenZero(docDet.DocPageNo, 4) + ".jpg";
+            String sFromTif = Common.getConstTxt("SLUserFlie") + Common.GenZero(docInfo.CreateBy, 8) + "\\" + docInfo.FileUID + "\\" + "PG" + Common.GenZero(docDet.PageType, 5) + Common.GenZero(docDet.DocPageNo, 4) + ".tif";
             String sSaveFolder = Server.MapPath("..\\FileUploads\\" + Common.GenZero(docInfo.CreateBy, 8) + "\\" + docInfo.FileUID + "\\");
-            String sUrlPath = Consts.sUrl + "/FileUploads/" + Common.GenZero(docInfo.CreateBy, 8) + "/" + docInfo.FileUID + "/";
+            String sUrlPath = Common.getConstTxt("sUrl") + "/FileUploads/" + Common.GenZero(docInfo.CreateBy, 8) + "/" + docInfo.FileUID + "/";
 
             //ABBY Load Engine
             EngineLoader engineLoader = new EngineLoader();
@@ -262,7 +262,7 @@ namespace Scorelink.web.Controllers
             }
             else
             {
-                data.PagePath = Consts.sUrl + "/FileUploads/" + Common.GenZero(docInfo.CreateBy, 8) + "/" + docInfo.FileUID + "/" + "PG" + Common.GenZero(data.PageType, 5) + Common.GenZero(data.DocPageNo, 4) + ".jpg";
+                data.PagePath = Common.getConstTxt("sUrl") + "/FileUploads/" + Common.GenZero(docInfo.CreateBy, 8) + "/" + docInfo.FileUID + "/" + "PG" + Common.GenZero(data.PageType, 5) + Common.GenZero(data.DocPageNo, 4) + ".jpg";
                 return Json(data, JsonRequestBehavior.AllowGet);
             }
         }
