@@ -7,64 +7,96 @@
     //Layout = null;
 
 }
-<head>
-    <title>KnockoutJS foreach binding</title>
-    <meta charset="utf-8" />
-    <title id="demoTitle">LEADTOOLS Document Viewer Demo</title>
-    <link rel="shortcut icon" type="image/x-icon" href="~/plugins/Leadtools/Resources/Images/favicon.ico" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=IE8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0" />
+    <head>
+        <title>KnockoutJS foreach binding</title>
+        <meta charset="utf-8" />
+        <title id="demoTitle">LEADTOOLS Document Viewer Demo</title>
+        <link rel="shortcut icon" type="image/x-icon" href="~/plugins/Leadtools/Resources/Images/favicon.ico" />
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=IE8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <link href="css/style.css" rel="stylesheet" type="text/css" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
-    <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/DocumentViewerDemo.css" type="text/css" />
-    <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/Toolbars.css" type="text/css" />
-    <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/ImageViewerStyles.css" type="text/css" />
-    <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/ImageViewerThumbnailStyles.css" type="text/css" />
-    <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/Sidebar.css" type="text/css" />
-    <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/Table.css" type="text/css" />
-    <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/Dialogs.css" type="text/css" />
-    <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/Icons.css" type="text/css" />
-    <style type="text/css">
-        body {
-            font-family: Arial;
-            font-size: 10pt;
-        }
+        <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/DocumentViewerDemo.css" type="text/css" />
+        <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/Toolbars.css" type="text/css" />
+        <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/ImageViewerStyles.css" type="text/css" />
+        <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/ImageViewerThumbnailStyles.css" type="text/css" />
+        <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/Sidebar.css" type="text/css" />
+        <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/Table.css" type="text/css" />
+        <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/Dialogs.css" type="text/css" />
+        <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/Icons.css" type="text/css" />
+        <link rel="stylesheet" href="~/plugins/css/ediTable.min.css" />
+        <script src="~/plugins/jquery/jquery.min.js"></script>
+        <script src="~/plugins/jquery/ediTable.min.js"></script>
 
-        .Grid {
-            border: 1px solid #ccc;
-            border-collapse: collapse;
-        }
-
-            .Grid th {
-                /*background-color: #F7F7F7;*/
-                background-color: #ffffff;
-                font-weight: bold;
-                color: #333;
-                /*padding: 0px;*/
-                /*position: absolute;*/
-                top: expression(this.offsetParent.scrollTop);
+        <style type="text/css">
+            * {
+                box-sizing: border-box;
             }
 
-            .Grid th, .Grid td {
-                padding: 5px;
-                border: 2px solid #ccc;
-                /* width: 500px;*/
-                text-align: center;
-                /*margin-top: 0px;*/
+            body {
+                font-family: Arial;
+                font-size: 14pt;
             }
 
-            .Grid, .Grid table td {
-                border: 0px solid #ccc;
+            table {
+                border-collapse: collapse;
+                background: white;
+                table-layout: fixed;
+                width: 100%;
             }
 
-                .Grid th a, .Grid th a:visited {
-                    color: #330;
+            th, td {
+                padding: 8px 16px;
+                border: 1px solid #ddd;
+                width: 160px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .pane {
+                background: #eee;
+            }
+
+            .pane-hScroll {
+                overflow: auto;
+                width: auto;
+                /*            background: green;*/
+            }
+
+            .pane-vScroll {
+                overflow-y: auto;
+                overflow-x: hidden;
+                height: 600px;
+                /*            background: red;*/
+            }
+            .Grid td:nth-child(3), th:nth-child(3),
+            .Grid td:nth-child(5), th:nth-child(5),
+            .Grid td:nth-child(6), th:nth-child(6),
+            .Grid td:nth-child(9), th:nth-child(9) {
+                display: none
+            }
+            .Grid {
+                border: solid 1px;
+                width: 100%
+            }
+
+                .Grid td {
+                    border: solid 1px;
                 }
 
+                .Grid .cellEditing {
+                    padding: 0;
+                }
+
+                    .Grid .cellEditing input[type=text] {
+                        width: 100%;
+                        border: 0;
+                        background-color: rgb(255,253,210);
+                    }
                 .Grid td {
                     cursor: pointer;
                 }
@@ -73,93 +105,43 @@
                     background-color: skyblue;
                 }
 
-        .Footnote {
-            width: 120px;
-        }
+            .row_selected {
+                color: blue;
+                cursor: pointer;
+                font-weight: normal;
+                background-color: skyblue;
+            }
+        </style>
+        @*<style>
+            .blogdesire-wrapper {
+                margin: 20px auto;
+                padding: 20px;
+                box-shadow: 0 0 15px 0 rgba(0,0,0,.3);
+                text-align: center;
+                width: 100vw;
+                max-width: 400px;
+            }
 
-        /* .Divisions {
-                width: 140px;
-            }*/
+            td, th {
+                border-bottom: 1px solid rgba(0,0,0,.3);
+                padding: 15px;
+            }
 
-        .AccountTitle {
-            width: 360px;
-        }
+            button {
+                border: none;
+                padding: 10px 20px;
+                border-radius: 4px;
+                color: white;
+                background: orangered;
+                margin-top: 20px;
+            }
+        </style>*@
 
-        /* .Recovered {
-                width: 150px;
-            }*/
+        <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-        .Amount {
-            width: 150px
-        }
-
-        .Modified {
-            width: 150px;
-        }
-
-        .Grid td:nth-child(3), th:nth-child(3),
-        .Grid td:nth-child(5), th:nth-child(5),
-        .Grid td:nth-child(6), th:nth-child(6),
-        .Grid td:nth-child(9), th:nth-child(9) {
-            display: none
-        }
-
-        .containBody {
-        }
-
-        .Grid {
-            border-bottom: 0px;
-            /*height: 300px;*/
-            /*                display: block;*/
-            overflow: auto;
-            border-bottom: 1px solid #CCC;
-        }
-
-        .css-row {
-            cursor: pointer;
-            background-color: #E0EEEE;
-            font-weight: normal;
-        }
-        .row_selected {
-            cursor: pointer;
-            font-weight: normal;
-            background-color: skyblue;
-            cursor: pointer;
-            font-weight: normal;
-            background-color: #fff;
-        }
-
-    </style>
-    <style>
-        .blogdesire-wrapper {
-            margin: 20px auto;
-            padding: 20px;
-            box-shadow: 0 0 15px 0 rgba(0,0,0,.3);
-            text-align: center;
-            width: 100vw;
-            max-width: 400px;
-        }
-
-        td, th {
-            border-bottom: 1px solid rgba(0,0,0,.3);
-            padding: 15px;
-        }
-
-        button {
-            border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
-            color: white;
-            background: orangered;
-            margin-top: 20px;
-        }
-    </style>
-    <script src="//code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-
-</head>
+    </head>
 <input type="hidden" id="hddocId" value="@ViewBag.docId" />
 <input type="hidden" id="hdTempPath" value="@ViewBag.TempPath" />
 <input type="hidden" id="hdPDFFile" value="@ViewBag.PageUrl" />
@@ -2008,44 +1990,49 @@
             <div class="col-lg-6">
                 <div class="card" style="height:700px">
                     <div class="card-header bg-gradient-primary">
-                        <h3 class="card-title"><b><i class="far fa-edit"></i>Scan Resul</b></h3>
+                        <h3 class="card-title"><b><i class="far fa-edit"></i>Scan Result</b></h3>
                     </div>
-                    <div id="dvData" class="card-body">
-                        <table id="tbResult" class="Grid" export-excel-filename="New Document">
-                            <thead class="bg-gray-light">
-                                <tr>
-                                    <th style="width: 80px">No</th>
-                                    <th style="width: 120px">Footnote</th>
-                                    <th style="width: 170px">Divisions</th>
-                                    <th style="width: 360px">Digitized Account</th>
-                                    <th style="width: 150px">Recovered</th>
-                                    <th style="width: 150px">Standard Title</th>
-                                    <th style="width: 150px">Amount</th>
-                                    <th style="width: 150px">Modified</th>
-                                    <th style="width: 150px">CLCTCD</th>
-                                </tr>
-                            </thead>
-                            <tbody data-bind="foreach: ScanEdit">
-                                <tr>
-                                    <td class="text"></td>
-                                    <td class="text-center"><span data-bind="text: Footnote_No"></span></td>
-                                    <td class="dropdown"><span data-bind="text: Divisions"></span></td>
-                                    <td class="text-center"><span data-bind="text: Digitized_Account_Title"></span></td>
-                                    <td class="dropdown"><span data-bind="text: Recovered"></span></td>
-                                    <td class="text-center"><span data-bind="text: Standard_Title"></span></td>
-                                    <td class="text-center"><span data-bind="text: Amount"></span></td>
-                                    <td class="text-center"><span data-bind="text: Modified"></span></td>
-                                    <td class="text-center"><span data-bind="text: CLCTCD"></span></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div id="dvData" class="pane pane--table1">
+                        <div class="pane-hScroll">
+                            <table id="tbResult1" class="Grid">
+                                <thead class="bg-gray-light">
+                                    <tr>
+                                        <th class="text" style="width: 70px">No</th>
+                                        <th class="text-center" style="width: 120px">Footnote</th>
+                                        <th class="text-center" style="width: 170px">Divisions</th>
+                                        <th class="text-center" style="width: 330px">Digitized Account</th>
+                                        <th class="text-center" style="width: 310px">Recovered</th>
+                                        <th class="text-center" style="width: 250px">Standard Title</th>
+                                        <th class="text-center" style="width: 190px">Amount</th>
+                                        <th class="text-center" style="width: 120px">Modified</th>
+                                        <th class="text-center" style="width: 120px">CLCTCD</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <div class="pane-vScroll">
+                                <table id="tbResult2" class="Grid">
+                                    <tbody data-bind="foreach: ScanEdit">
+                                        <tr>
+                                            <td class="text" style="width: 70px"></td>
+                                            <td class="text-center" style="width: 120px"><span data-bind="text: Footnote_No"></span></td>
+                                            <td class="dropdown" style="width: 170px"><span data-bind="text: Divisions"></span></td>
+                                            <td class="text-left" style="width: 330px"><span data-bind="text: Digitized_Account_Title"></span></td>
+                                            <td class="dropdown" style="width: 310px"><span data-bind="text: Recovered"></span></td>
+                                            <td class="text-center" style="width: 250px"><span data-bind="text: Standard_Title"></span></td>
+                                            <td class="text-right" style="width: 190px"><span data-bind="text: Amount"></span></td>
+                                            <td class="text-center" style="width: 120px"><span data-bind="text: Modified"></span></td>
+                                            <td class="text-center" style="width: 120px"><span data-bind="text: CLCTCD"></span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-lg-6">
-
             </div>
             <div class="col-lg-6">
                 <input type="button" class="btn btn-default pull-right" id="BtnCancel" name="BtnCancel" value="Cancel" />
@@ -2056,14 +2043,12 @@
                 <input type="button" class="btn btn-default pull-right" id="BtnDelete" name="BtnDelete" value="Delete Row" />
                 <input type="button" class="btn btn-default pull-right" id="BtnInsert" name="BtnInsert" value="Insert Row" />
                 <input type="button" class="btn btn-default pull-right" id="BtnBack" name="BtnBack" value="Back" />
-
                 <br />
             </div>
         </div>
     </div>
 </body>
 @section scripts{
-    <script type="text/javascript" src="~/plugins/jquery/jquery.chromatable.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.1.0.js"
             type="text/javascript"></script>
     <script type="text/javascript">
@@ -2071,7 +2056,8 @@
             bsCustomFileInput.init();
         });
     </script>
-    <script src="csvExport.js"></script>
+    @*<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>*@
+    <script src="https://catswhocode.com/demos/editable-table/mindmup-editabletable.js"></script>
     <script src="~/Scripts/Pages/ScanResult.Index.js"></script>
     @*  Leadtools .js files*@
     <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.js"></script>

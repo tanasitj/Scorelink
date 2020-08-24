@@ -57,7 +57,7 @@ namespace Scorelink.web.Controllers
                     Footnote_No = words[1].Trim(new Char[] {'"'}),
                     Divisions = DivisionStatus(),
                     Digitized_Account_Title = words[0].Trim(new Char[] {'"'}),
-                    Recovered = RecoveredStatus(),
+                    Recovered = "",//RecoveredStatus(),
                     Standard_Title = "",
                     Amount = words[2].Trim(new Char[] {'"'}),
                     Modified = "",
@@ -118,7 +118,8 @@ namespace Scorelink.web.Controllers
                 sheet.SetColumnWidth(2, 15);
                 sheet.SetColumnWidth(3, 30);
                 sheet.SetColumnWidth(4, 30);
-                sheet.SetColumnWidth(5, 20);
+                sheet.SetColumnWidth(5, 30);
+                sheet.SetColumnWidth(6, 20);
                 workbook.SaveToFile(FolderPath.ToString() + files[i].ToString() + ".xlsx", ExcelVersion.Version2010);
             }
         }
