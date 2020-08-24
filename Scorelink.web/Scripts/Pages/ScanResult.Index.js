@@ -29,65 +29,70 @@ var ViewModel = function () {
     var digitize_account;
     var lastSelected;
     $(document).ready(function () {
-        $("#tbResult").chromatable({
-            width: "Auto",
-            height: "630px",
-            scrolling: "yes"
+        //set scroll bar
+        $('.pane-hScroll').scroll(function () {
+            $('.pane-vScroll').width($('.pane-hScroll').width() + $('.pane-hScroll').scrollLeft());
         });
         // get row number
-        $('#tbResult tbody tr').each(function (row_num) {
+        $('#tbResult2 tbody tr').each(function (row_num) {
             $(this).children("td:eq(0)").html(row_num + 1);
         });
-
-        $("#tbResult tbody tr").on("click", function (event) { 
+        //set value row selected
+        $("#tbResult2 tbody tr").on("click", function (event) { 
             tr = $(this).closest("tr").find("td").toggleClass("row_selected");
-            //tr = $(this).closest("tr").find("td").addClass("selected");
+           // tr = $(this).closest("tr").find("td").addClass("selected");
             footnote = $(this).closest("tr").find('td:eq(1)').text();
             digitize_account = $(this).closest("tr").find('td:eq(3)').text();
             amount = $(this).closest("tr").find('td:eq(6)').text();
             modified = $(this).closest("tr").find('td:eq(7)').text();   
         });
+        var row_start = $("#tbResult2 tbody tr:last-child").clone(true);
+        //set index column selected
         $('td').click(function () {
             row_index = $(this).parent().index();
-            var col_index = $(this).index();
+            //var col_index = $(this).index();     
         });
-       
         // Insert Row
         $("#BtnInsert").click(function () {
-            $('#tbResult').append('<tr><td>text</td><td>text</td><td>text</td><td>text</td><td>text</td><td>text</td><td>text</td><td>text</td></tr>');
-            $('#Table tbody:last').append(newRow);
+            var row = $("#tbResult2 tbody tr:last-child").clone(true);
+            $("td", row).eq(1).html("");
+            //$("td", row).eq(2).html("");
+            $("td", row).eq(3).html("");
+            $("td", row).eq(6).html("");
+            $("#tbResult2").append(row);
             $("#BtnCheck").attr("disabled", true);
             $("#BtnMerge").attr("disabled", true);
             $("#BtnExport").attr("disabled", true);
             $("#BtnDelete").attr("disabled", true);
             $("#Commit").attr("disabled", true);
+            run_rownumber();
         });
         $("#BtnMerge").click(function () {
-
-            var footnote2 = $('table > tbody > tr').eq(row_index).find('td:eq(1)').text();
+            //set value row selected
+            var footnote2 = $('#tbResult2 > tbody > tr').eq(row_index).find('td:eq(1)').text();
             if ((footnote2 != "") && (footnote != "")) {
-                footnote2 = $('table > tbody > tr').eq(row_index).find('td:eq(1)').text() + "," + footnote;
+                footnote2 = $('#tbResult2 > tbody > tr').eq(row_index).find('td:eq(1)').text() + "," + footnote;
             }
             else {
-                footnote2 = $('table > tbody > tr').eq(row_index).find('td:eq(1)').text() + footnote;
+                footnote2 = $('#tbResult2 > tbody > tr').eq(row_index).find('td:eq(1)').text() + footnote;
             }
-            var digitize_account2 = $('table > tbody > tr').eq(row_index).find('td:eq(3)').text() + " " + digitize_account;
-            var amount2 = $('table > tbody > tr').eq(row_index).find('td:eq(6)').text();
+            var digitize_account2 = $('#tbResult2 > tbody > tr').eq(row_index).find('td:eq(3)').text() + " " + digitize_account;
+            var amount2 = $('#tbResult2 > tbody > tr').eq(row_index).find('td:eq(6)').text();
             if ((amount2 != "") && (amount != "")) {
                 alert("Cannot merge row please check data");
-                $('table > tbody > tr').removeClass("rowOnCheck");
+                $('#tbResult2 > tbody > tr').removeClass("rowOnCheck");
                 return false;
             }
             else {
-                amount2 = $('table > tbody > tr').eq(row_index).find('td:eq(6)').text() + amount;
+                amount2 = $('#tbResult2 > tbody > tr').eq(row_index).find('td:eq(6)').text() + amount;
             }
             tr.remove();
-            document.getElementById("tbResult").deleteRow(row_index);
+            document.getElementById("tbResult2").deleteRow(row_index);
             var html =
                 "<tr><td></td><td>" + footnote2 + "</td><td></td><td>" + digitize_account2 + "</td><td></td><td></td><td>"
                 + amount2 + "</td><td>*</td><td></td></tr>";
             
-            $('table > tbody > tr').eq(row_index).after(html);
+            $('#tbResult2 > tbody > tr').eq(row_index).after(html);
 
            // $("#tbResult").find("td").removeClass("selected");
         });
@@ -114,10 +119,14 @@ var ViewModel = function () {
                     alert(response.d);
                 }
             });
+            //set enable button
             $("#BtnCheck").attr("disabled", true);
             $("#BtnMerge").attr("disabled", true);
             $("#BtnInsert").attr("disabled", false);
             $("#BtnDelete").attr("disabled", false);
+            $("#BtnCommit").attr("disabled", false);
+            //var type_event = "insert";
+            edit_value();
         });
 
         $("#BtnCancel").click(function () {
@@ -125,9 +134,9 @@ var ViewModel = function () {
                 docId: $("#hddocId").val(),
                 pageType: $("#hdPageType").val()
             }
-            $("#tbResult").find("td").removeClass("selected");
+            $("#tbResult2").find("td").removeClass("selected");
             $.ajax({
-                url: "/ScanResult/AssignGridMerge",
+                url: "/ScanResult/AssignGrid",
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
                 data: ko.toJSON(filter),
@@ -140,11 +149,14 @@ var ViewModel = function () {
                 }
             });
             //$("#BtnCheck").removeattr("disabled");
+            //var row = $("#tbResult1 thead tr:last-child").clone(true);
+            //$("#tbResult2 tbody tr").remove();
+            //$("#tbResult1 thead tr").remove();
+            //LoadData();
             $("#BtnCheck").attr("disabled", false);
             $("#BtnMerge").attr("disabled", false);
             $("#BtnInsert").attr("disabled", true);
             $("#BtnDelete").attr("disabled", true);
-
         });
         $("#BtnBack").click(function () {
             $.redirect("/SelectPage/SelectPage", {
@@ -152,11 +164,11 @@ var ViewModel = function () {
             }, "POST");
         });
         $("#BtnCommit").click(function () {
-
-            var $table = $("#tbResult");
+            var table1 = $("#tbResult1");
+            var table2 = $("#tbResult2");
             var filename = "Tmp" + "00" + $("#hdPageType").val() + ".csv";
-            var sheetname = $("#hdPageTypeName").val();
-            var csv_data = exportTableToCSV($table, filename);
+            //var sheetname = $("#hdPageTypeName").val();
+            var csv_data = exportTableToCSV(table1,table2, filename);
             var temp_data = {
                 docId: $("#hddocId").val(),
                 csv_file: csv_data,
@@ -178,21 +190,22 @@ var ViewModel = function () {
             });
        });
         $("#BtnExport").click(function () {
-            var table = $("#tbResult");
+            var table1 = $("#tbResult1");
+            var table2 = $("#tbResult2");
             var filename = "Result";
             var sheetname = $("#hdPageTypeName").val();
-            ExportHTMLTableToExcel(table, sheetname, filename);
+            ExportHTMLTableToExcel(table1,table2, sheetname, filename);
         });
     });
-    function exportTableToCSV($table, filename) {
+    function exportTableToCSV(table1,table2, filename) {
         var tab_text = "";
         var final_text = "";
         filename = isNullOrUndefinedWithEmpty(filename) ? "Result_data" : filename;
-        var index = $table.find("tbody tr").length;
+        var index = table2.find("tbody tr").length;
         if (Number(index) > 0) {
-            $.each($table, function (index, item) {
+            $.each(table1, function (index, item) {
                 var element = $(item);
-                var headertext = $("#" + element[0].id).closest
+                var headertext = table1.closest
                     (":has(label.HeaderLabel)").find('label').text().trim();
                 if (headertext == "") {
                     tab_text = "";
@@ -202,22 +215,21 @@ var ViewModel = function () {
                 }
                 // Create column header
                 element.find("thead tr th").each(function () {
-                    if (!$(this).hasClass("NoExport"))
-                        //tab_text = tab_text +
-                        //    $(this)[0].innerHTML + "</td>";
-                    var txt = $(this).text();
-                    if (txt.indexOf(',') == 0 || txt.indexOf('\"') == 0 || txt.indexOf('\n') == 0) {
-                        txt = "\"" + txt.replace(/\"/g, "\"\"") + "\"";
+                    if ($(this).hasClass("text-center")) {
+                        var txt = $(this).text();
+                        if (txt.indexOf(',') == 0 || txt.indexOf('\"') == 0 || txt.indexOf('\n') == 0) {
+                            txt = "\"" + txt.replace(/\"/g, "\"\"") + "\"";
+                        }
+                        tab_text += txt + ",";
                     }
-                    tab_text += txt + ",";
                 });
                 tab_text += '\n';
                 // Create body column
-                element.find(" tbody tr").each(function () {
+                table2.find("tbody tr").each(function () {
                     
                     $(this).find("td").each(function () {
                         
-                        if ($(this).hasClass("text-center")) {
+                        if ($(this).hasClass("text-center") || $(this).hasClass("text-left") || $(this).hasClass("text-right")) {
                            // tab_text += ",";
                             var txt = $(this).text();
                             if (txt.indexOf(',') >= 0 || txt.indexOf('\"') >= 0 || txt.indexOf('\n') >= 0) {
@@ -254,15 +266,16 @@ var ViewModel = function () {
         return tab_text;
     }
 
-    function ExportHTMLTableToExcel(table,sheetName,filename) {
+    function ExportHTMLTableToExcel(table1,table2,sheetName,filename) {
         var tab_text = ""
         var final_text = "";
         filename = isNullOrUndefinedWithEmpty(filename) ? "Result_data" : filename;
-        var index = table.find("tbody tr").length;
+        var index = table2.find("tbody tr").length;
+        //read data from tbody of table
         if (Number(index) > 0) {
-            $.each(table, function (index, item) {
+            $.each(table1, function (index, item) {
                 var element = $(item);
-                var headertext = $("#" + element[0].id).closest
+                var headertext = table1.closest
                     (":has(label.HeaderLabel)").find('label').text().trim();
                 if (headertext == "") {
                     tab_text = "<table border='2px'><tr>";
@@ -279,7 +292,7 @@ var ViewModel = function () {
                 //Close column header
                 tab_text = tab_text + "</tr>";
                 // Create body column
-                element.find(" tbody tr").each(function () {
+                table2.find(" tbody tr").each(function () {
                     tab_text = tab_text + "<tr>";
                     $(this).find("td").each(function () {
                         if ($(this).hasClass("text-center")) {
@@ -322,17 +335,14 @@ var ViewModel = function () {
             }
             else  //other browser not tested on IE 11
             {
-                //----------------------------------------------------------------
-                //if (!table.nodeType)
-                //    table = document.getElementById(table);
-                var ctx = { worksheet: sheetName || 'Worksheet', table: table.innerHTML };
+                var ctx = { worksheet: sheetName || 'Worksheet', table: table1.innerHTML };
                 var anchor = document.createElement('a');
                 //var base64file = "base64," + $.base64.encode(final_text);
                 anchor.setAttribute('href', 'data:application/vnd.ms-excel,' +  encodeURIComponent(final_text));
                 //anchor.setAttribute('href', 'data:application/vnd.ms-excel,' + 'filename =' + $filename.excel, + base64file)
                   
                 //-----------------------------------------------------------------
-                anchor.setAttribute('download', filename);
+                anchor.setAttribute('download', sheetName);
                 //anchor.style.display = 'none';
                 document.body.appendChild(anchor);
                 anchor.click();
@@ -356,8 +366,8 @@ var ViewModel = function () {
         $(".Grid td:nth-child(3),th:nth-child(3)").toggle();
         $(".Grid td:nth-child(5),th:nth-child(5)").toggle();
         $(".Grid td:nth-child(9),th:nth-child(9)").toggle();
-        var row = $("#tbResult tbody tr:last-child").clone(true);
-        $("#tbResult tbody tr").remove();
+        var row = $("#tbResult2 tbody tr:last-child").clone(true);
+        $("#tbResult2 tbody tr").remove();
         $.each(model, function () {
             var financials = this;
             $("td", row).eq(1).html(financials.Footnote_No);
@@ -367,58 +377,92 @@ var ViewModel = function () {
                 <option value="High">Major2</option></select>');
             $("td", row).eq(3).html(financials.Digitized_Account_Title);
             $("td", row).eq(3).css("background-color", "#ffd800");
+            //var post_data = {
+            //    docId: $("#hddocId").val(),
+            //    account_title: financials.Digitized_Account_Title
+            //}
+            //$.ajax({
+            //    url: "/ResultDict/AssignGrid",
+            //    cash: false,
+            //    type: "POST",
+            //    contentType: "application/json; charset=utf-8",
+            //    data: ko.toJSON(post_data),
+            //    success: function (data) {
+            //       // goxxx();
+            //    }
+            //});
             $("td", row).eq(4).html('<select class="form-control input-sm">\n\
-                <option value = "Low">direct costs</option>\n\
-                <option value="Normal">gain on investment</option>\n\
-                 <option value="Normal">increase in other receivables</option>\n\
-                 <option value="Normal">state subsidy</option>\n\
-                 <option value="Normal">indent sales</option>\n\
-                <option value="High">other direct costs</option></select>');
+                <option value = "1">งบแสดงฐานะการเงิน</option>\n\
+                <option value="2">สินทรัพย์</option>\n\
+                 <option value="3">สินทรัพย์หมุนเวียน</option>\n\
+                 <option value="4">เงินสดและรายการเทียบเท่าเงินสด</option>\n\
+                 <option value="5">ลูกหนี้การค้าและลูกหนี้หมุนเวียนอื่น</option>\n\
+                <option value="6">ลูกหนี้การค้า</option>\n\
+                <option value="7">เงินให้กู้ยืมระยะสั้น</option>\n\
+                <option value="8">สินค้าคงเหลือ</option>\n\
+                <option value="9">สินทรัพย์ภาษีเงินได้ของงวดปัจจุบัน</option>\n\
+                <option value="10">สินทรัพย์ทางการเงินหมุนเวียนอื่น</option>\n\
+                <option value="11">สินทรัพย์หมุนเวียนอื่น</option>\n\
+                <option value="12">เจ้าหนี้การค้าและเจ้าหนี้หมุนเรียนอื่น</option>\n\
+                <option value="13">เจ้าหนี้การค้า</option>\n\
+                <option value="14">เจ้าหนี้อื่น</option>\n\
+                <option value="15">รายได้ค่าบริการโทรศัพท์เคลื่อนที่</option>\n\
+                <option value="16">เงินรับล่วงหน้าจากลูกค้า</option>\n\
+                <option value="17">ส่วนของใบอนุญาตให้ใช้คลื่น</option>\n\
+                <option value="18">ความถี่โทรคมนาคม ค้างจ่ายที่ถึง</option>\n\
+                <option value="19">กำหนดช้าระภายในหนึ่งปี</option>\n\
+                <option value="20">ส่วนของหนี้สินระยะยาวที่ถึงกำหนด</option>\n\
+                <option value="21">ความถี่โทรคมนาคม ค้างจ่ายที่ถึง</option>\n\
+                <option value="22">เงินกู้ยืมระยะสั้น</option>\n\
+                <option value="23">ภาษีเงินได้ค้างจ่าย</option>\n\
+                <option value="24">หนี้สินหมุนเรียนอื่น</option>\n\
+                <option value="25">รวมหนี้สินหมุนเรียน</option></select>');
             $("td", row).eq(4).css("background-color", "#ffd800");
             $("td", row).eq(5).html(financials.Standard_Title);
             $("td", row).eq(6).html(financials.Amount);
             $("td", row).eq(7).html(financials.Modified);
             $("td", row).eq(8).html(financials.CLCTCD);
-            $("#tbResult").append(row);
-            row = $("#tbResult tbody tr:last-child").clone(true);
+            $("#tbResult2").append(row);
+            row = $("#tbResult2 tbody tr:last-child").clone(true);
         });
-        $('#tbResult tbody tr').each(function (row_num) {
-            $(this).children("td:eq(0)").html(row_num + 1);
-        });
+        run_rownumber();
     };
     function OnSuccessCancel(response) {
         var model = response;
-        $(".Grid td:nth-child(2),th:nth-child(2)").hide();
-        $(".Grid td:nth-child(4),th:nth-child(4)").hide();
+        //set column to hidden
+        $(".Grid td:nth-child(3),th:nth-child(3)").hide();
         $(".Grid td:nth-child(5),th:nth-child(5)").hide();
-        $(".Grid td:nth-child(8),th:nth-child(8)").hide();
-        var row = $("#tbResult tbody tr:last-child").clone(true);
-        $("#tbResult tbody tr").remove();
+        $(".Grid td:nth-child(9),th:nth-child(9)").hide();
+        //var row = $("#tbResult2 tbody tr:last-child").clone(true);
+        var row = row_start;
+        $("#tbResult2 tbody tr").remove();
         $.each(model, function () {
             var financials = this;
             $("td", row).eq(1).html(financials.Footnote_No);
             $("td", row).eq(2).html(financials.Divisions);
             $("td", row).eq(3).html(financials.Digitized_Account_Title);
+            $("td", row).eq(3).css("background-color", "#ffffff");
             $("td", row).eq(4).html(financials.Recovered);
             $("td", row).eq(5).html(financials.Standard_Title);
             $("td", row).eq(6).html(financials.Amount);
             $("td", row).eq(7).html(financials.Modified);
             $("td", row).eq(8).html(financials.CLCTCD);
-            $("#tbResult").append(row);
-            row = $("#tbResult tbody tr:last-child").clone(true);
+            $("#tbResult2").append(row);
+            row = $("#tbResult2 tbody tr:last-child").clone(true);
         });
-        $('#tbResult tbody tr').each(function (idx) {
+        $('#tbResult2 tbody tr').each(function (idx) {
             $(this).children("td:eq(0)").html(idx + 1);
         });
     };
     function LoadData() {
-
         var filter = {
             docId: $("#hddocId").val(),
             pageType: $("#hdPageType").val()
         }
+        //set disable button
         $("#BtnInsert").attr("disabled", true);
         $("#BtnDelete").attr("disabled", true);
+        $("#BtnCommit").attr("disabled", true);
         $.ajax({
             url: '/ScanResult/AssignGrid',
             cache: false,
@@ -444,6 +488,34 @@ var ViewModel = function () {
             }
         })
     }
+    function edit_value() {
+        $("td").dblclick(function () {
+            var OriginalContent = $(this).text();
+            var col_index = $(this).index();
+            if (col_index == 6 || col_index == 3) {
+                $(this).addClass("cellEditing");
+                $(this).html("<input type='text' style='text-align: right' value='" + OriginalContent + "' />");
+                $(this).children().first().focus();
+                $(this).children().first().keypress(function (e) {
+                    if (e.which == 13) {
+                        var newContent = $(this).val();
+                        $(this).parent().text(newContent);
+                        $(this).parent().removeClass("cellEditing");
+                    }
+                });
+                $(this).children().first().blur(function () {
+                    $(this).parent().text(OriginalContent);
+                    $(this).parent().removeClass("cellEditing");
+                });
+            }
+        });
+    };
+    function run_rownumber() {
+        $('#tbResult2 tbody tr').each(function (row_num) {
+            $(this).children("td:eq(0)").html(row_num + 1);
+        });
+    }
+
 }
 var viewModel = new ViewModel();
 ko.applyBindings(viewModel);
