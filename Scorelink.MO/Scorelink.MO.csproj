@@ -35,6 +35,9 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Web.Mvc">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -50,7 +53,11 @@
     <Compile Include="DataModel\DocumentAreaModel.cs" />
     <Compile Include="DataModel\DocumentDetailModel.cs" />
     <Compile Include="DataModel\DocumentInfoModel.cs" />
-    <Compile Include="DataModel\User.cs" />
+    <Compile Include="DataModel\OnlineUserModel.cs" />
+    <Compile Include="DataModel\ResultModel.cs" />
+    <Compile Include="DataModel\StatementTypeModel.cs" />
+    <Compile Include="DataModel\SysConfigModel.cs" />
+    <Compile Include="DataModel\UserModel.cs" />
     <Compile Include="DocumentArea.cs">
       <DependentUpon>ScorelinkModel.tt</DependentUpon>
     </Compile>
@@ -60,7 +67,13 @@
     <Compile Include="DocumentInfo.cs">
       <DependentUpon>ScorelinkModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="F_DocumentDetail_Result.cs">
+      <DependentUpon>ScorelinkModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="OCRResult.cs">
+      <DependentUpon>ScorelinkModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OnlineUser.cs">
       <DependentUpon>ScorelinkModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

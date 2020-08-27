@@ -29,7 +29,7 @@ namespace Scorelink.web.Controllers
             var Info = GetField.GetInfo(docId);
             //Get Document Detail data.
             var Details = GetField.GetDetails(docId,pageType.ToString());
-            string sPagePath = Consts.sUrl + "/FileUploads/" + Common.GenZero(Info.CreateBy, 8) + "/" + Info.FileUID + "/";
+            string sPagePath = Common.getConstTxt("sUrl") + "/FileUploads/" + Common.GenZero(Info.CreateBy, 8) + "/" + Info.FileUID + "/";
             var data = docInfoRepo.Get(docId);
             ViewBag.docId = data.DocId;
             ViewBag.PageFileName = data.FileName;
