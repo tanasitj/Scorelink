@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,32 +32,37 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Interop.FREngine">
+      <HintPath>..\..\..\..\..\..\ProgramData\ABBYY\SDK\12\FineReader Engine\Inc\.Net interops\v3.5\Interop.FREngine.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="Leadtools, Version=20.0.4.0, Culture=neutral, PublicKeyToken=9cf889f53ea9b907, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\LEADTOOLS 20\Bin\Dotnet4\x64\Leadtools.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\LEADTOOLS 20\Bin\Dotnet4\Win32\Leadtools.dll</HintPath>
     </Reference>
     <Reference Include="Leadtools.Codecs, Version=20.0.4.0, Culture=neutral, PublicKeyToken=9cf889f53ea9b907, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\LEADTOOLS 20\Bin\Dotnet4\x64\Leadtools.Codecs.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\LEADTOOLS 20\Bin\Dotnet4\Win32\Leadtools.Codecs.dll</HintPath>
     </Reference>
     <Reference Include="Leadtools.Codecs.Tif, Version=20.0.4.0, Culture=neutral, PublicKeyToken=9cf889f53ea9b907, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\LEADTOOLS 20\Bin\Dotnet4\x64\Leadtools.Codecs.Tif.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\LEADTOOLS 20\Bin\Dotnet4\Win32\Leadtools.Codecs.Tif.dll</HintPath>
     </Reference>
     <Reference Include="Leadtools.Document, Version=20.0.4.0, Culture=neutral, PublicKeyToken=9cf889f53ea9b907, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\LEADTOOLS 20\Bin\Dotnet4\x64\Leadtools.Document.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\LEADTOOLS 20\Bin\Dotnet4\Win32\Leadtools.Document.dll</HintPath>
     </Reference>
     <Reference Include="Leadtools.Document.Converter, Version=20.0.4.0, Culture=neutral, PublicKeyToken=9cf889f53ea9b907, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\LEADTOOLS 20\Bin\Dotnet4\x64\Leadtools.Document.Converter.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\LEADTOOLS 20\Bin\Dotnet4\Win32\Leadtools.Document.Converter.dll</HintPath>
     </Reference>
     <Reference Include="Leadtools.Pdf, Version=20.0.4.0, Culture=neutral, PublicKeyToken=9cf889f53ea9b907, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\LEADTOOLS 20\Bin\Dotnet4\x64\Leadtools.Pdf.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\LEADTOOLS 20\Bin\Dotnet4\Win32\Leadtools.Pdf.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -68,6 +74,8 @@
   <ItemGroup>
     <Compile Include="Helper\Common.cs" />
     <Compile Include="Helper\Consts.cs" />
+    <Compile Include="Helper\EngineLoader.cs" />
+    <Compile Include="Helper\Logger.cs" />
     <Compile Include="Interface\IDocumentDetail.cs" />
     <Compile Include="Interface\IDocumentInfo.cs" />
     <Compile Include="Interface\IDocumentArea.cs" />
@@ -75,6 +83,14 @@
     <Compile Include="Repositories\DocumentAreaRepo.cs" />
     <Compile Include="Repositories\DocumentDetailRepo.cs" />
     <Compile Include="Repositories\DocumentInfoRepo.cs" />
+    <Compile Include="Repositories\OnlineUserRepo.cs" />
+    <Compile Include="Repositories\ScanEditRepo.cs" />
+    <Compile Include="Repositories\SelectAreaRepo.cs" />
+    <Compile Include="Repositories\SelectPageRepo.cs" />
+    <Compile Include="Repositories\SelectPatternRepo.cs" />
+    <Compile Include="Repositories\StatementTypeRepo.cs" />
+    <Compile Include="Repositories\SysConfigRepo.cs" />
+    <Compile Include="Repositories\UserRepo.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -71,6 +71,8 @@ namespace Scorelink.web.Controllers
             }
             catch (Exception ex)
             {
+                Logger Err = new Logger();
+                Err.ErrorLog(ex.ToString());
                 return Json(ex.Message);
             }
 
@@ -100,6 +102,8 @@ namespace Scorelink.web.Controllers
             }
             catch (Exception ex)
             {
+                Logger Err = new Logger();
+                Err.ErrorLog(ex.ToString());
                 return Json(ex.Message);
             }
             return Json(result, JsonRequestBehavior.AllowGet);
@@ -114,7 +118,7 @@ namespace Scorelink.web.Controllers
                 String sFolder = docInfo.FileUID;
                 String sPath = docInfo.FilePath;
                 //Folder for New File.
-                String sTempFolder = Consts.SLUserFlie + "\\FileUploads\\" + Common.GenZero(docInfo.CreateBy, 8) + "\\" + sFolder + "\\";
+                String sTempFolder = Common.getConstTxt("SLUserFlie") + "\\FileUploads\\" + Common.GenZero(docInfo.CreateBy, 8) + "\\" + sFolder + "\\";
                 //Check and Create Folder.
                 Common.CreateDocFolder(sTempFolder);
                 //Get PageType for File Name.
@@ -169,12 +173,14 @@ namespace Scorelink.web.Controllers
                 docDetail.PageType = pageType;
                 docDetail.ScanStatus = "";
                 docDetail.PagePath = sTempFolder + "SL" + Common.GenZero(pageType, 5) + ".tif";
-                docDetail.PageUrl = Consts.sUrl + "/FileUploads/" + Common.GenZero(docInfo.CreateBy, 8) + "/" + sFolder + "/" + "SL" + Common.GenZero(pageType, 5) + ".tif";
+                docDetail.PageUrl = Common.getConstTxt("sUrl") + "/FileUploads/" + Common.GenZero(docInfo.CreateBy, 8) + "/" + sFolder + "/" + "SL" + Common.GenZero(pageType, 5) + ".tif";
                 SelectPageRepo pageRepo = new SelectPageRepo();
                 result = pageRepo.UpdatePathFile(docDetail);
             }
             catch (Exception ex)
             {
+                Logger Err = new Logger();
+                Err.ErrorLog(ex.ToString());
                 return Json(ex.Message);
             }
             return Json(result, JsonRequestBehavior.AllowGet);
