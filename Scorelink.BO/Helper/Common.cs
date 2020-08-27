@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.IO;
 using Leadtools;
 using Leadtools.Pdf;
+using System.Management;
+using Scorelink.BO.Repositories;
 
 namespace Scorelink.BO.Helper
 {
@@ -14,7 +16,8 @@ namespace Scorelink.BO.Helper
         //For get License Leadtools in Server.
         public static void GetLicenseLeadTool()
         {
-            string sPath = Consts.LeadtoolsLIC;
+            //string sPath = Consts.LeadtoolsLIC;
+            string sPath = Common.getConstTxt("LeadtoolsLIC");
             try
             {
                 string licenseFilePath = sPath + @"LEADTOOLS.LIC";
@@ -97,7 +100,7 @@ namespace Scorelink.BO.Helper
             return sOutput;
         }
 
-        public static void PDFFileDeletePages(string sFrom , string sTo ,int iPage)
+        public static void PDFFileDeletePages(string sFrom, string sTo, int iPage)
         {
             GetLicenseLeadTool();
 
@@ -207,7 +210,8 @@ namespace Scorelink.BO.Helper
                     {
                         FREngine.IBaseLanguages FRBaseLanguages = FRTextLanguage.BaseLanguages;
                         FREngine.IBaseLanguage FRBaseLanguage = FRBaseLanguages.AddNew();
-                        FRBaseLanguage.LetterSet[FREngine.BaseLanguageLetterSetEnum.BLLS_Alphabet] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz()-0123456789-+,.:()/%$'&";
+                        //FRBaseLanguage.LetterSet[FREngine.BaseLanguageLetterSetEnum.BLLS_Alphabet] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz()-0123456789-+,.:()/%$'&";
+                        FRBaseLanguage.LetterSet[FREngine.BaseLanguageLetterSetEnum.BLLS_Alphabet] = "()-.,0123456789";
 
                         //FRTextLanguage = GetLanguageDB(engine, LanguageWord, CustomDictionaryPass);
                         //FRTextLanguage.LetterSet[FREngine.TextLanguageLetterSetEnum.TLLS_ProhibitedLetters] = "^©¬®°±—‘’‛“”•′™■□▲△►▻▼▽◄◅◊◎◦★☆♦✓❖";
@@ -455,6 +459,93 @@ namespace Scorelink.BO.Helper
             }
         }
 
-        
-}
+        //Get IP Address
+        public static string GetIPAddress()
+        {
+            System.Web.HttpContext context = System.Web.HttpContext.Current;
+            string ipAddress = context.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+
+            if (!string.IsNullOrEmpty(ipAddress))
+            {
+                string[] addresses = ipAddress.Split(',');
+                if (addresses.Length != 0)
+                {
+                    return addresses[0];
+                }
+            }
+
+            return context.Request.ServerVariables["REMOTE_ADDR"];
+        }
+
+        //Get MAC Address
+        public static string GetMACAddress()
+        {
+            string sMac = "";
+
+            using (var mc = new ManagementClass("Win32_NetworkAdapterConfiguration"))
+            {
+                foreach (ManagementObject mo in mc.GetInstances())
+                {
+                    Console.WriteLine(mo["MacAddress"].ToString());
+                    sMac = mo["MacAddress"].ToString();
+                }
+
+                return sMac;
+            }
+        }
+
+        public static string GetCPUID()
+        {
+            var mbs = new ManagementObjectSearcher("Select ProcessorId From Win32_processor");
+            ManagementObjectCollection mbsList = mbs.Get();
+            string id = "";
+            foreach (ManagementObject mo in mbsList)
+            {
+                id = mo["ProcessorId"].ToString();
+                break;
+            }
+
+            return id;
+        }
+
+        public static string EncryptText(string password)
+        {
+            try
+            {
+                byte[] encData_byte = new byte[password.Length];
+                encData_byte = System.Text.Encoding.UTF8.GetBytes(password);
+                string encodedData = Convert.ToBase64String(encData_byte);
+                return encodedData;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error in base64Encode" + ex.Message);
+            }
+        }
+
+        public string DecryptText(string encodedData)
+        {
+            System.Text.UTF8Encoding encoder = new System.Text.UTF8Encoding();
+            System.Text.Decoder utf8Decode = encoder.GetDecoder();
+            byte[] todecode_byte = Convert.FromBase64String(encodedData);
+            int charCount = utf8Decode.GetCharCount(todecode_byte, 0, todecode_byte.Length);
+            char[] decoded_char = new char[charCount];
+            utf8Decode.GetChars(todecode_byte, 0, todecode_byte.Length, decoded_char, 0);
+            string result = new String(decoded_char);
+            return result;
+        }
+
+        public static string getConstTxt(string constname)
+        {
+            SysConfigRepo sys = new SysConfigRepo();
+            return sys.GetConstTxt(constname);
+        }
+
+        public static int getConstNum(string constname)
+        {
+            SysConfigRepo sys = new SysConfigRepo();
+            return sys.GetConstNum(constname);
+        }
+
+    }
 }

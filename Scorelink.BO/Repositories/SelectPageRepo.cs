@@ -1,4 +1,5 @@
-﻿using Scorelink.MO;
+﻿using Scorelink.BO.Helper;
+using Scorelink.MO;
 using Scorelink.MO.DataModel;
 using System;
 using System.Collections.Generic;
@@ -36,6 +37,8 @@ namespace Scorelink.BO.Repositories
                     catch (Exception ex)
                     {
                         dbTran.Rollback();
+                        Logger Err = new Logger();
+                        Err.ErrorLog(ex.ToString());
                         return ex.ToString();
                     }
                 }

@@ -19,23 +19,44 @@ namespace Scorelink.web.Controllers
         // GET: SelectPattern
         public ActionResult Index(int docId, string pageType)
         {
-            //Get Document Detail.
-            SelectPatternRepo docDet = new SelectPatternRepo();
-            var data = docDet.Get(docId, pageType);
-            ViewBag.Id = data.DocId.ToString();
-            ViewBag.DocDetId = data.DocDetId;
-            ViewBag.DocPageNo = data.DocPageNo;
-            ViewBag.PageType = pageType;
-            ViewBag.PDFPath = data.PageUrl;
+            if (Session["UserId"] == null)
+            {
+                Response.Redirect("/Home/Index");
+            }
+            else
+            {
+                ViewBag.UserId = Session["UserId"].ToString();
+                int iUserId = 0;
+                Int32.TryParse(Session["UserId"].ToString(), out iUserId);
+
+                //Get User Info.
+                UserRepo userRepo = new UserRepo();
+                var userDB = userRepo.Get(iUserId);
+                ViewBag.Name = userDB.Name;
+                ViewBag.Surname = userDB.Surname;
+
+                //Check and Update online date time.
+                OnlineUserRepo onlineRepo = new OnlineUserRepo();
+                var online = onlineRepo.Get(iUserId);
+                onlineRepo.CheckTimeOut(online);
+
+                //Get Document Detail.
+                SelectPatternRepo docDet = new SelectPatternRepo();
+                var data = docDet.Get(docId, pageType);
+                ViewBag.Id = data.DocId.ToString();
+                ViewBag.DocDetId = data.DocDetId;
+                ViewBag.DocPageNo = data.DocPageNo;
+                ViewBag.PageType = pageType;
+                ViewBag.PDFPath = data.PageUrl;
 
 
-            int iStmId = 0;
-            Int32.TryParse(pageType, out iStmId);
+                int iStmId = 0;
+                Int32.TryParse(pageType, out iStmId);
 
-            StatementTypeRepo stm = new StatementTypeRepo();
-            var stms = stm.Get(iStmId);
-            ViewBag.PageTypeName = stms.StatementName;
-
+                StatementTypeRepo stm = new StatementTypeRepo();
+                var stms = stm.Get(iStmId);
+                ViewBag.PageTypeName = stms.StatementName;
+            }
             return View("SelectPatternMain");
         }
 
@@ -49,7 +70,7 @@ namespace Scorelink.web.Controllers
                 String sFolder = docInfo.FileUID;
                 String sPath = docInfo.FilePath;
                 //Save Folder for New File.
-                String sTempFolder = Consts.SLUserFlie + "\\FileUploads\\" + Common.GenZero(docInfo.CreateBy, 8) + "\\" + sFolder + "\\";
+                String sTempFolder = Common.getConstTxt("SLUserFlie") + Common.GenZero(docInfo.CreateBy, 8) + "\\" + sFolder + "\\";
                 
                 //Get DocumentDetail data.
                 var docDet = docDetailRepo.GetList(item.DocId, item.PageType);

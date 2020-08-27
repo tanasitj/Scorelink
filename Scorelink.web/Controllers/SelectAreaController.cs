@@ -17,31 +17,47 @@ namespace Scorelink.web.Controllers
 {
     public class SelectAreaController : Controller
     {
-
-        //Fix code for Test.
-        int iUserId = 1;
-        //----------------//
-
         SelectAreaRepo doc = new SelectAreaRepo();
 
         // GET: SelectArea
         public ActionResult Index(DocumentDetailModel item)
         {
-            ViewBag.Id = item.DocId;
-            ViewBag.PatternNo = item.PatternNo;
-            //Get Document Info data.
-            var docInfo = doc.GetDocInfo(item.DocId);
-            //Get Document Detail data.
-            var docDet = doc.GetDocDet(item.DocId, item.PageType);
-            //Set Path for Image.
-            string sPagePath = Consts.sUrl + "/FileUploads/" + Common.GenZero(docInfo.CreateBy, 8) + "/" + docInfo.FileUID + "/" + "PG" + Common.GenZero(docDet.PageType, 5) + Common.GenZero(docDet.DocPageNo, 4) + ".jpg";
+            if (Session["UserId"] == null)
+            {
+                Response.Redirect("/Home/Index");
+            }
+            else
+            {
+                ViewBag.UserId = Session["UserId"].ToString();
+                int iUserId = 0;
+                Int32.TryParse(Session["UserId"].ToString(), out iUserId);
 
-            ViewBag.DocDetId = docDet.DocDetId;
-            ViewBag.DocPageNo = docDet.DocPageNo;
-            ViewBag.PageType = docDet.PageType;
-            ViewBag.PageFileName = docDet.PageFileName;
-            ViewBag.PagePath = sPagePath;
+                //Get User Info.
+                UserRepo userRepo = new UserRepo();
+                var userDB = userRepo.Get(iUserId);
+                ViewBag.Name = userDB.Name;
+                ViewBag.Surname = userDB.Surname;
 
+                //Check and Update online date time.
+                OnlineUserRepo onlineRepo = new OnlineUserRepo();
+                var online = onlineRepo.Get(iUserId);
+                onlineRepo.CheckTimeOut(online);
+
+                ViewBag.Id = item.DocId;
+                ViewBag.PatternNo = item.PatternNo;
+                //Get Document Info data.
+                var docInfo = doc.GetDocInfo(item.DocId);
+                //Get Document Detail data.
+                var docDet = doc.GetDocDet(item.DocId, item.PageType);
+                //Set Path for Image.
+                string sPagePath = Common.getConstTxt("sUrl") + "/FileUploads/" + Common.GenZero(docInfo.CreateBy, 8) + "/" + docInfo.FileUID + "/" + "PG" + Common.GenZero(docDet.PageType, 5) + Common.GenZero(docDet.DocPageNo, 4) + ".jpg";
+
+                ViewBag.DocDetId = docDet.DocDetId;
+                ViewBag.DocPageNo = docDet.DocPageNo;
+                ViewBag.PageType = docDet.PageType;
+                ViewBag.PageFileName = docDet.PageFileName;
+                ViewBag.PagePath = sPagePath;
+            }
             return View("SelectAreaMain");
         }
 
@@ -54,10 +70,10 @@ namespace Scorelink.web.Controllers
             //Get Document Detail data.
             var docDet = doc.GetDocDet(docDetId);
             //Set Path
-            String sFrom = Consts.SLUserFlie + "\\FileUploads\\" + Common.GenZero(docInfo.CreateBy, 8) + "\\" + docInfo.FileUID + "\\" + "PG" + Common.GenZero(docDet.PageType,5) + Common.GenZero(docDet.DocPageNo, 4) + ".jpg";
-            String sFromTif = Consts.SLUserFlie + "\\FileUploads\\" + Common.GenZero(docInfo.CreateBy, 8) + "\\" + docInfo.FileUID + "\\" + "PG" + Common.GenZero(docDet.PageType, 5) + Common.GenZero(docDet.DocPageNo, 4) + ".tif";
+            String sFrom = Common.getConstTxt("SLUserFlie") + Common.GenZero(docInfo.CreateBy, 8) + "\\" + docInfo.FileUID + "\\" + "PG" + Common.GenZero(docDet.PageType,5) + Common.GenZero(docDet.DocPageNo, 4) + ".jpg";
+            String sFromTif = Common.getConstTxt("SLUserFlie") + Common.GenZero(docInfo.CreateBy, 8) + "\\" + docInfo.FileUID + "\\" + "PG" + Common.GenZero(docDet.PageType, 5) + Common.GenZero(docDet.DocPageNo, 4) + ".tif";
             String sSaveFolder = Server.MapPath("..\\FileUploads\\" + Common.GenZero(docInfo.CreateBy, 8) + "\\" + docInfo.FileUID + "\\");
-            String sUrlPath = Consts.sUrl + "/FileUploads/" + Common.GenZero(docInfo.CreateBy, 8) + "/" + docInfo.FileUID + "/";
+            String sUrlPath = Common.getConstTxt("sUrl") + "/FileUploads/" + Common.GenZero(docInfo.CreateBy, 8) + "/" + docInfo.FileUID + "/";
 
             //ABBY Load Engine
             EngineLoader engineLoader = new EngineLoader();
@@ -117,7 +133,7 @@ namespace Scorelink.web.Controllers
                         docArea.AreaW = w.ToString();
                         docArea.AreaPath = sSave;
                         docArea.AreaUrl = sSaveUrl;
-                        docArea.CreateBy = iUserId.ToString();
+                        docArea.CreateBy = docInfo.CreateBy;
                         docArea.CreateDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
                         docArea.UpdateDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
 
@@ -246,7 +262,7 @@ namespace Scorelink.web.Controllers
             }
             else
             {
-                data.PagePath = Consts.sUrl + "/FileUploads/" + Common.GenZero(docInfo.CreateBy, 8) + "/" + docInfo.FileUID + "/" + "PG" + Common.GenZero(data.PageType, 5) + Common.GenZero(data.DocPageNo, 4) + ".jpg";
+                data.PagePath = Common.getConstTxt("sUrl") + "/FileUploads/" + Common.GenZero(docInfo.CreateBy, 8) + "/" + docInfo.FileUID + "/" + "PG" + Common.GenZero(data.PageType, 5) + Common.GenZero(data.DocPageNo, 4) + ".jpg";
                 return Json(data, JsonRequestBehavior.AllowGet);
             }
         }

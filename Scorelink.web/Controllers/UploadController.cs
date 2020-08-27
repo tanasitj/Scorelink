@@ -23,8 +23,40 @@ namespace Scorelink.web.Controllers
         // GET: Upload
         public ActionResult Index()
         {
-            ViewBag.Id = "";
-            ViewBag.UserId = "1";
+            try
+            {
+                ViewBag.Id = "";
+                //ViewBag.UserId = "1";
+
+                if (Session["UserId"] == null)
+                {
+                    Response.Redirect("/Home/Index");
+                }
+                else
+                {
+                    ViewBag.UserId = Session["UserId"].ToString();
+                    int iUserId = 0;
+                    Int32.TryParse(Session["UserId"].ToString(), out iUserId);
+
+                    //iUserId = 0;
+
+                    //Get User Info.
+                    UserRepo userRepo = new UserRepo();
+                    var userDB = userRepo.Get(iUserId);
+                    ViewBag.Name = userDB.Name;
+                    ViewBag.Surname = userDB.Surname;
+
+                    //Check and Update online date time.
+                    OnlineUserRepo onlineRepo = new OnlineUserRepo();
+                    var online = onlineRepo.Get(iUserId);
+                    onlineRepo.CheckTimeOut(online);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger Err = new Logger();
+                Err.ErrorLog(ex.ToString());
+            }
             return View("Upload");
         }
 
@@ -38,7 +70,8 @@ namespace Scorelink.web.Controllers
                     string[] allKeys = Request.Files.AllKeys[0].Split('|');
                     var uploadNo = Common.GenZero(userId, 8);
                     string sUID = Guid.NewGuid().ToString();
-                    string folder = Consts.SLUserFlie + "\\FileUploads\\" + uploadNo + "\\" + sUID;
+                    //string folder = Consts.SLUserFlie + "\\FileUploads\\" + uploadNo + "\\" + sUID;
+                    string folder = Common.getConstTxt("SLUserFlie") + uploadNo + "\\" + sUID;
 
                     //  Get all files from Request object  
                     HttpFileCollectionBase files = Request.Files;
@@ -67,7 +100,7 @@ namespace Scorelink.web.Controllers
                         file.SaveAs(fname);
 
                         String sCreateDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
-                        String sFileUrl = Consts.sUrl + "/FileUploads/"+uploadNo + "/" + sUID + "/"+sUID+fi.Extension;
+                        String sFileUrl = Common.getConstTxt("sUrl") + "/FileUploads/"+uploadNo + "/" + sUID + "/"+sUID+fi.Extension;
 
                         DocumentInfoModel doc = new DocumentInfoModel();
                         doc.FileUID = sUID;

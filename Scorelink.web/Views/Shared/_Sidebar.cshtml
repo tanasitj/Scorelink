@@ -8,6 +8,7 @@
         <span class="brand-text font-weight-light"><b>S</b>core<b>l</b>ink <b>S</b>ystem</span>
     </a>
 
+    <input type="hidden" id="hdUserId" value="@ViewBag.UserId" />
     <!-- Sidebar -->
     <div class="sidebar">
         <!-- Sidebar user panel (optional) -->
@@ -16,7 +17,7 @@
                 <img src="~/dist/img/Scorelink_Icon.png" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="/UserProfile/Index" class="d-block">Tanasit Jarutnuntipat</a>
+                <a href="/UserProfile/Index" class="d-block">@ViewBag.Name @ViewBag.Surname</a>
             </div>
         </div>
 
@@ -32,34 +33,34 @@
                     </a>
                 </li>
                 @*<li class="nav-item">
-                    <a href="/SelectPattern/Index" class="nav-link">
-                        <i class="nav-icon fas fa-share-square"></i>
-                        <p>Select Pattern</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/SelectArea/Index" class="nav-link">
-                        <i class="nav-icon fas fa-clone"></i>
-                        <p>Select Area</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/Test/Index" class="nav-link">
-                        <i class="nav-icon fas fa-clone"></i>
-                        <p>Test Page</p>
-                    </a>
-                </li>*@
+                        <a href="/SelectPattern/Index" class="nav-link">
+                            <i class="nav-icon fas fa-share-square"></i>
+                            <p>Select Pattern</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/SelectArea/Index" class="nav-link">
+                            <i class="nav-icon fas fa-clone"></i>
+                            <p>Select Area</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/Test/Index" class="nav-link">
+                            <i class="nav-icon fas fa-clone"></i>
+                            <p>Test Page</p>
+                        </a>
+                    </li>*@
 
                 <!-- Admin Menu -->
                 @*<li class="nav-header">Admin Menu</li>
+                    <li class="nav-item">
+                        <a href="/Admin/Index" class="nav-link">
+                            <i class="nav-icon fas fa-table"></i>
+                            <p>User List</p>
+                        </a>
+                    </li>*@
                 <li class="nav-item">
-                    <a href="/Admin/Index" class="nav-link">
-                        <i class="nav-icon fas fa-table"></i>
-                        <p>User List</p>
-                    </a>
-                </li>*@
-                <li class="nav-item">
-                    <a href="/Home/Login" class="nav-link">
+                    <a id="alogout" href="#logout" class="nav-link">
                         <i class="nav-icon fas fa-sign-out-alt"></i>
                         <p>Logout</p>
                     </a>
@@ -71,3 +72,4 @@
     </div>
     <!-- /.sidebar -->
 </aside>
+
