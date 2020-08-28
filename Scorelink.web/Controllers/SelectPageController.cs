@@ -118,7 +118,7 @@ namespace Scorelink.web.Controllers
                 String sFolder = docInfo.FileUID;
                 String sPath = docInfo.FilePath;
                 //Folder for New File.
-                String sTempFolder = Common.getConstTxt("SLUserFlie") + "\\FileUploads\\" + Common.GenZero(docInfo.CreateBy, 8) + "\\" + sFolder + "\\";
+                String sTempFolder = Common.getConstTxt("SLUserFlie") + Common.GenZero(docInfo.CreateBy, 8) + "\\" + sFolder + "\\";
                 //Check and Create Folder.
                 Common.CreateDocFolder(sTempFolder);
                 //Get PageType for File Name.
