@@ -51,6 +51,10 @@ var ViewModel = function () {
             });
 
         });
+
+        $('#btnBack').click(function () {
+            window.location.href = '/Upload/Index';
+        });
     });
     //==================================================================================================
     //Event Button Click
