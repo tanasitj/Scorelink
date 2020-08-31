@@ -29,13 +29,35 @@ namespace Scorelink.web.Controllers
         }
         public ActionResult SelectPage(int id)
         {
-            var data = docInfoRepo.Get(id);
-            ViewBag.Id = data.DocId;
-            ViewBag.FileUID = data.FileUID;
-            ViewBag.FileName = data.FileName;
-            ViewBag.FilePath = data.FilePath;
-            ViewBag.FileUrl = data.FileUrl;
-            ViewBag.CreateBy = data.CreateBy;
+            if (Session["UserId"] == null)
+            {
+                Response.Redirect("/Home/Index");
+            }
+            else
+            {
+                ViewBag.UserId = Session["UserId"].ToString();
+                int iUserId = 0;
+                Int32.TryParse(Session["UserId"].ToString(), out iUserId);
+
+                //Get User Info.
+                UserRepo userRepo = new UserRepo();
+                var userDB = userRepo.Get(iUserId);
+                ViewBag.Name = userDB.Name;
+                ViewBag.Surname = userDB.Surname;
+
+                //Check and Update online date time.
+                OnlineUserRepo onlineRepo = new OnlineUserRepo();
+                var online = onlineRepo.Get(iUserId);
+                onlineRepo.CheckTimeOut(online);
+
+                var data = docInfoRepo.Get(id);
+                ViewBag.Id = data.DocId;
+                ViewBag.FileUID = data.FileUID;
+                ViewBag.FileName = data.FileName;
+                ViewBag.FilePath = data.FilePath;
+                ViewBag.FileUrl = data.FileUrl;
+                ViewBag.CreateBy = data.CreateBy;
+            }
             return View("SelectPage");
         }
         public ActionResult DeletePage(int id, string pagetype)
