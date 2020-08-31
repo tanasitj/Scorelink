@@ -50,9 +50,10 @@
     <Reference Include="EPPlus, Version=4.5.3.3, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
       <HintPath>..\packages\EPPlus.4.5.3.3\lib\net40\EPPlus.dll</HintPath>
     </Reference>
-    <Reference Include="Interop.FREngine">
-      <HintPath>..\..\..\..\..\..\ProgramData\ABBYY\SDK\12\FineReader Engine\Inc\.Net interops\v3.5\Interop.FREngine.dll</HintPath>
+    <Reference Include="Interop.FREngine, Version=12.4.7.40, Culture=neutral, PublicKeyToken=2e1e7aca5d298f96, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\..\..\ProgramData\ABBYY\SDK\12\FineReader Engine\Inc\.Net interops\v3.5\Interop.FREngine.dll</HintPath>
     </Reference>
     <Reference Include="Leadtools, Version=20.0.4.0, Culture=neutral, PublicKeyToken=9cf889f53ea9b907, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
@@ -2611,6 +2612,7 @@
     <Compile Include="Controllers\DigitizeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\RegisterController.cs" />
+    <Compile Include="Controllers\ResultDictController.cs" />
     <Compile Include="Controllers\ScanResultController.cs" />
     <Compile Include="Controllers\SelectAreaController.cs" />
     <Compile Include="Controllers\SelectPageController.cs" />
