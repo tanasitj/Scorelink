@@ -111,7 +111,9 @@ namespace Scorelink.web.Controllers
         }
         public JsonResult GetDocumentList(int filterId)
         {
-            var doc = docDetailRepo.GetListView(filterId).ToList();
+            SelectPageRepo selRepo = new SelectPageRepo();
+
+            var doc = selRepo.GetListView(filterId).ToList();
             return Json(doc, JsonRequestBehavior.AllowGet);
         }
         public JsonResult DeleteDocumentDetail(string docid, string pagetype, string docPageNo)
