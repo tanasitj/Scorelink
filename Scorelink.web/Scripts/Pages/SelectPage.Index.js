@@ -1,12 +1,12 @@
-﻿function DocDetailModel(DocId, DocPageNo, FootnoteNo, PageType,PageTypeName,UserId, date) {
+﻿function DocDetailModel(DocId, DocPageNo, FootnoteNo, PageType, PageTypeName, NoScan) {
     var self = this;
     self.DocId = ko.observable(DocId);
     self.DocPageNo = ko.observable(DocPageNo);
     self.FootnoteNo = ko.observable(FootnoteNo);
     self.PageType = ko.observable(PageType);
     self.PageTypeName = ko.observable(PageTypeName);
-    self.CreateBy = ko.observable(UserId);
-    self.CreateDate = ko.observable(date);
+    self.CanEdit = ko.observable(NoScan > 0 ? false : true);
+    self.CompletedFlag = ko.observable(NoScan > 0 ? false : true);
 }
 var ViewModel = function () {
     var self = this;
@@ -16,7 +16,11 @@ var ViewModel = function () {
     self.FootnoteNo = ko.observable();
     self.PageType = ko.observable();
     self.PageTypeName = ko.observable();
+    self.CanEdit = ko.observable(false);
+    self.CompletedFlag = ko.observable(false);
+
     GetDoclist();
+
     $(document).ready(function () {
         // Event click button select page
         $("#BtnSelectPage").click(function () {
@@ -304,7 +308,8 @@ var ViewModel = function () {
                             data.DocPageNo,
                             data.FootnoteNo,
                             data.PageType,
-                            data.PageTypeName
+                            data.PageTypeName,
+                            data.NoScan
                         )
                     );                   
                 });
