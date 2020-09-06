@@ -59,7 +59,7 @@ namespace Scorelink.BO.Repositories
                                  FootnoteNo = doc.FootnoteNo,
                                  PageType = doc.StatementId.ToString(),
                                  PageTypeName = doc.StatementName,
-                                 NoScan = doc.NoScan ?? default(int)
+                                 NoScan = doc.NoScan.ToString()
                              });
                 return query;
             }
@@ -69,6 +69,12 @@ namespace Scorelink.BO.Repositories
                 Err.ErrorLog(ex.ToString());
                 throw ex;
             }
+        }
+        public bool CheckDocPage(DocumentDetailModel item)
+        {
+            using (ScorelinkEntities db = new ScorelinkEntities())
+                return db.DocumentDetails.Where(x => x.DocId == item.DocId && x.DocPageNo == item.DocPageNo).Any();
+
         }
     }
 }
