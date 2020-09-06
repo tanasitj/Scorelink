@@ -88,25 +88,26 @@ namespace Scorelink.web.Controllers
                 docDetail.PageUrl = data_detail.FileUrl;
                 docDetail.CreateDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
                 docDetail.UpdateDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
-                DocumentDetailRepo docDetailRepo = new DocumentDetailRepo();
-                docDetailRepo.Add(docDetail);
+
+                string sChk = "";
+                SelectPageRepo selRepo = new SelectPageRepo();
+                if (selRepo.CheckDocPage(docDetail))
+                {
+                    sChk = "Dup";
+                }
+                else
+                {
+                    DocumentDetailRepo docDetailRepo = new DocumentDetailRepo();
+                    docDetailRepo.Add(docDetail);
+                    sChk = "Ok";
+                }
+                return Json(sChk, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
                 Logger Err = new Logger();
                 Err.ErrorLog(ex.ToString());
                 return Json(ex.Message);
-            }
-
-            //Return Next Page Data
-            var data = docDetailRepo.Get(docId);
-            if (data == null)
-            {
-                return Json("", JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
-                return Json(data, JsonRequestBehavior.AllowGet);
             }
         }
         public JsonResult GetDocumentList(int filterId)

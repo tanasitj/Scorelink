@@ -5,8 +5,8 @@
     self.FootnoteNo = ko.observable(FootnoteNo);
     self.PageType = ko.observable(PageType);
     self.PageTypeName = ko.observable(PageTypeName);
-    self.CanEdit = ko.observable(NoScan > 0 ? false : true);
-    self.CompletedFlag = ko.observable(NoScan > 0 ? false : true);
+    self.CanEdit = ko.observable(NoScan === '0' ? true : false);
+    self.CompletedFlag = ko.observable(NoScan > '0' ? false : true);
 }
 var ViewModel = function () {
     var self = this;
@@ -47,6 +47,9 @@ var ViewModel = function () {
                 url: "/SelectPage/Get_SelectPage",
                 data: ko.toJSON(postData),
                 success: function (data) {
+                    if (data == "Dup") {
+                        alert("Duplicate page please select new page.!!");
+                    }
                     GetDoclist();
                 },
                 error: function (err) {
