@@ -81,6 +81,9 @@ namespace Scorelink.web.Controllers
             ViewBag.IP = GetIPAddress();
             ViewBag.CPU = GetCPUID();
             ViewBag.Session = Session.SessionID;
+
+            Session.Clear();
+            Session.Abandon();
             return View("Login");
         }
 
