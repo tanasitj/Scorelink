@@ -87,7 +87,7 @@ var ViewModel = function () {
                 amount2 = $('#tbResult2 > tbody > tr').eq(row_index).find('td:eq(6)').text() + amount;
             }
             tr.remove();
-            document.getElementById("tbResult2").deleteRow(row_index);
+            document.getElementById("#tbResult2").deleteRow(row_index);
             var html =
                 "<tr><td></td><td>" + footnote2 + "</td><td></td><td>" + digitize_account2 + "</td><td></td><td></td><td>"
                 + amount2 + "</td><td>*</td><td></td></tr>";
@@ -125,6 +125,7 @@ var ViewModel = function () {
             $("#BtnInsert").attr("disabled", false);
             $("#BtnDelete").attr("disabled", false);
             $("#BtnCommit").attr("disabled", false);
+            $("#BtnExport").attr("disabled", false);
             //var type_event = "insert";
             edit_value();
         });
@@ -182,7 +183,7 @@ var ViewModel = function () {
                 contentType: "application/json; charset=utf-8",
                 data: ko.toJSON(temp_data),
                 success: function () {
-                    alert("Commit All Readdy");
+                    alert("Commit file already");
                     $.redirect("/SelectPage/SelectPage", {
                         'id': $("#hddocId").val()
                     }, "POST");
@@ -295,7 +296,7 @@ var ViewModel = function () {
                 table2.find(" tbody tr").each(function () {
                     tab_text = tab_text + "<tr>";
                     $(this).find("td").each(function () {
-                        if ($(this).hasClass("text-center")) {
+                        if ($(this).hasClass("text-center") || $(this).hasClass("text-left") || $(this).hasClass("text-right")) {
                             var value = $(this).text();                     
                             tab_text = tab_text + "<th>" + value + "</th>";                      
                         }
@@ -363,9 +364,12 @@ var ViewModel = function () {
     }
     function OnSuccessCheck(response) {
         var model = response;
-        $(".Grid td:nth-child(3),th:nth-child(3)").toggle();
-        $(".Grid td:nth-child(5),th:nth-child(5)").toggle();
-        $(".Grid td:nth-child(9),th:nth-child(9)").toggle();
+        //Hide comlum
+        $(".Grid td:nth-child(3),th:nth-child(3)").toggle(); //Division
+        $(".Grid td:nth-child(5),th:nth-child(5)").toggle(); //Recovered
+       // $(".Grid td:nth-child(9),th:nth-child(9)").toggle(); //CLCTCD
+        $(".Grid td:nth-child(8),th:nth-child(8)").hide();  //Modified
+        //-----------------------------------------------------
         var row = $("#tbResult2 tbody tr:last-child").clone(true);
         $("#tbResult2 tbody tr").remove();
         $.each(model, function () {
@@ -377,20 +381,20 @@ var ViewModel = function () {
                 <option value="High">Major2</option></select>');
             $("td", row).eq(3).html(financials.Digitized_Account_Title);
             $("td", row).eq(3).css("background-color", "#ffd800");
-            //var post_data = {
-            //    docId: $("#hddocId").val(),
-            //    account_title: financials.Digitized_Account_Title
-            //}
-            //$.ajax({
-            //    url: "/ResultDict/AssignGrid",
-            //    cash: false,
-            //    type: "POST",
-            //    contentType: "application/json; charset=utf-8",
-            //    data: ko.toJSON(post_data),
-            //    success: function (data) {
-            //       // goxxx();
-            //    }
-            //});
+            var post_data = {
+                docId: $("#hddocId").val(),
+                account_title: financials.Digitized_Account_Title
+            }
+            $.ajax({
+                url: "/ResultDict/AssignGrid",
+                cash: false,
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: ko.toJSON(post_data),
+                success: function (data) {
+                   // goxxx();
+                }
+            });
             $("td", row).eq(4).html('<select class="form-control input-sm">\n\
                 <option value = "1">งบแสดงฐานะการเงิน</option>\n\
                 <option value="2">สินทรัพย์</option>\n\
@@ -463,6 +467,7 @@ var ViewModel = function () {
         $("#BtnInsert").attr("disabled", true);
         $("#BtnDelete").attr("disabled", true);
         $("#BtnCommit").attr("disabled", true);
+        $("#BtnExport").attr("disabled", true);
         $.ajax({
             url: '/ScanResult/AssignGrid',
             cache: false,

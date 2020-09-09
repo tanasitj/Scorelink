@@ -29,10 +29,11 @@ var ViewModel = function () {
             var Footnotes = "Test Footnotes";
             var Kind_Of_Financial = $("input[name = 'Kind_of_Financial']:checked").val();
             var Type_Page;
-            switch (Kind_Of_Financial) { case "Income Statement": Type_Page = '1';break;
-                case "Balance Sheet": Type_Page = '2';break;
-                case "Cash Flow": Type_Page = '3';break;
-                case "Footnotes":Type_Page = '4';break;
+            switch (Kind_Of_Financial) {
+                case "Income Statement": Type_Page = '1'; break;
+                case "Balance Sheet": Type_Page = '2'; break;
+                case "Cash Flow": Type_Page = '3'; break;
+                case "Footnotes": Type_Page = '4'; break;
                 default:
             }
             var postData = {
@@ -124,7 +125,7 @@ var ViewModel = function () {
                 goSelectPattern(DocId, Type_Page);
             }
         });
-    } 
+    }
     self.ClickScan_Edit = function (data, event) {
         $.redirect("/ScanResult/Index", {
             'docId': data.DocId(),
@@ -314,7 +315,7 @@ var ViewModel = function () {
                             data.PageTypeName,
                             data.NoScan
                         )
-                    );                   
+                    );
                 });
             }
         })

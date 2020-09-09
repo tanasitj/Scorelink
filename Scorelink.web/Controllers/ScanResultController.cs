@@ -11,8 +11,7 @@ using OfficeOpenXml;
 using System.Text.RegularExpressions;
 using System.Text;
 using System.Drawing;
-
-
+using System.Windows.Forms;
 
 namespace Scorelink.web.Controllers
 {
@@ -29,7 +28,7 @@ namespace Scorelink.web.Controllers
             var Info = GetField.GetInfo(docId);
             //Get Document Detail data.
             var Details = GetField.GetDetails(docId,pageType.ToString());
-            string sPagePath = Common.getConstTxt("sUrl") + "/FileUploads/" + Common.GenZero(Info.CreateBy, 8) + "/" + Info.FileUID + "/";
+            string sPagePath = Consts.sUrl + "/FileUploads/" + Common.GenZero(Info.CreateBy, 8) + "/" + Info.FileUID + "/";
             var data = docInfoRepo.Get(docId);
             ViewBag.docId = data.DocId;
             ViewBag.PageFileName = data.FileName;
@@ -99,29 +98,38 @@ namespace Scorelink.web.Controllers
             newbook.Version = ExcelVersion.Version2013;
             newbook.Worksheets.Clear();
             Workbook workbook = new Workbook();
-            for (int i = 0; i < files.Count; i++)
+            if (files.Count > 0)
             {
-                workbook.LoadFromFile(FolderPath + files[i].ToString() + ".csv", ",", 1, 1);
-                Worksheet sheet = workbook.Worksheets[0];
-                int last = sheet.LastRow;
-                sheet.Name = files[i].ToString();
-                switch(sheet.Name)
+                for (int i = 0; i < files.Count; i++)
                 {
-                    case "Tmp001": { sheet.Name = "Income Statement";break; }
-                    case "Tmp002": { sheet.Name = "Balance Sheet";break; }
-                }
+                    workbook.LoadFromFile(FolderPath + files[i].ToString() + ".csv", ",", 1, 1);
+                    Worksheet sheet = workbook.Worksheets[0];
+                    int last = sheet.LastRow;
+                    sheet.Name = files[i].ToString();
+                    switch (sheet.Name)
+                    {
+                        case "Tmp001": { sheet.Name = "Income Statement"; break; }
+                        case "Tmp002": { sheet.Name = "Balance Sheet"; break; }
+                        case "Tmp003": { sheet.Name = "Cash flow"; break; }
+                    }
 
-                sheet.Range["C2:E" + last].Style.Color = Color.Gold;
-                sheet.Range["C2:E" + last].Style.Font.FontName = "Segoe UI";
-                sheet.Range["C2:E" + last].Style.Font.Size = 11.5;
-                sheet.Range["C1" + sheet.LastColumn].Style.Font.IsBold = true;
-                sheet.SetColumnWidth(2, 15);
-                sheet.SetColumnWidth(3, 30);
-                sheet.SetColumnWidth(4, 30);
-                sheet.SetColumnWidth(5, 30);
-                sheet.SetColumnWidth(6, 20);
-                workbook.SaveToFile(FolderPath.ToString() + files[i].ToString() + ".xlsx", ExcelVersion.Version2010);
+                    sheet.Range["C2:E" + last].Style.Color = Color.Gold;
+                    sheet.Range["C2:E" + last].Style.Font.FontName = "Segoe UI";
+                    sheet.Range["C2:E" + last].Style.Font.Size = 11.5;
+                    sheet.Range["C1" + sheet.LastColumn].Style.Font.IsBold = true;
+                    sheet.SetColumnWidth(2, 15);
+                    sheet.SetColumnWidth(3, 30);
+                    sheet.SetColumnWidth(4, 30);
+                    sheet.SetColumnWidth(5, 30);
+                    sheet.SetColumnWidth(6, 20);
+                    workbook.SaveToFile(FolderPath.ToString() + files[i].ToString() + ".xlsx", ExcelVersion.Version2010);
+                }
             }
+            else
+            {
+                MessageBox.Show("Cannot find data for commit file");
+            }
+
         }
         public void CombineFiles(List<string> files,string FolderPath)
         {
@@ -129,16 +137,24 @@ namespace Scorelink.web.Controllers
             newbook.Version = ExcelVersion.Version2013;
             newbook.Worksheets.Clear();
             Workbook tempbook = new Workbook();
-            for (int i = 0; i < files.Count; i++)
+            if (files.Count > 0)
             {
-                tempbook.LoadFromFile(FolderPath + files[i] + ".xlsx");
-                foreach (Worksheet sheet in tempbook.Worksheets)
+                for (int i = 0; i < files.Count; i++)
                 {
-                    newbook.Worksheets.AddCopy(sheet);
+                    tempbook.LoadFromFile(FolderPath + files[i] + ".xlsx");
+                    foreach (Worksheet sheet in tempbook.Worksheets)
+                    {
+                        newbook.Worksheets.AddCopy(sheet);
+                    }
                 }
+                newbook.SaveToFile(FolderPath + "AllReSult.xlsx", ExcelVersion.Version2013);
+                System.Diagnostics.Process.Start(FolderPath + "AllReSult.xlsx");
             }
-            newbook.SaveToFile(FolderPath + "AllReSult.xlsx", ExcelVersion.Version2013);
-            System.Diagnostics.Process.Start(FolderPath + "AllReSult.xlsx");
+            else
+            {
+                MessageBox.Show("Cannot find data for export file");
+            }
+           
         }
         public SelectList DivisionStatus()
         {

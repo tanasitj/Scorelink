@@ -33,7 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Interop.FREngine">
-      <HintPath>..\..\..\..\..\..\ProgramData\ABBYY\SDK\12\FineReader Engine\Inc\.Net interops\v3.5\Interop.FREngine.dll</HintPath>
+      <HintPath>..\..\..\ProgramData\ABBYY\SDK\12\FineReader Engine\Inc\.Net interops\v3.5\Interop.FREngine.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Leadtools, Version=20.0.4.0, Culture=neutral, PublicKeyToken=9cf889f53ea9b907, processorArchitecture=x86">
