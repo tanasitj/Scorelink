@@ -7,11 +7,12 @@ using Scorelink.MO.DataModel;
 using Scorelink.BO.Repositories;
 using System.IO;
 using Spire.Xls;
-using OfficeOpenXml;
+//using OfficeOpenXml;
 using System.Text.RegularExpressions;
 using System.Text;
 using System.Drawing;
-using System.Windows.Forms;
+
+
 
 namespace Scorelink.web.Controllers
 {
@@ -127,7 +128,7 @@ namespace Scorelink.web.Controllers
             }
             else
             {
-                MessageBox.Show("Cannot find data for commit file");
+               // MessageBox.Show("Cannot find data for commit file");
             }
 
         }
@@ -152,9 +153,10 @@ namespace Scorelink.web.Controllers
             }
             else
             {
-                MessageBox.Show("Cannot find data for export file");
+               //MessageBox.Show("Cannot find data for export file");
             }
            
+
         }
         public SelectList DivisionStatus()
         {

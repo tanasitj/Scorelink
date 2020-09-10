@@ -364,7 +364,8 @@ var ViewModel = function () {
     }
     function OnSuccessCheck(response) {
         var model = response;
-        //Hide comlum
+        var post_data = [];
+       //Hide comlum
         $(".Grid td:nth-child(3),th:nth-child(3)").toggle(); //Division
         $(".Grid td:nth-child(5),th:nth-child(5)").toggle(); //Recovered
        // $(".Grid td:nth-child(9),th:nth-child(9)").toggle(); //CLCTCD
@@ -372,7 +373,7 @@ var ViewModel = function () {
         //-----------------------------------------------------
         var row = $("#tbResult2 tbody tr:last-child").clone(true);
         $("#tbResult2 tbody tr").remove();
-        $.each(model, function () {
+        $.each(model, function (index) {
             var financials = this;
             $("td", row).eq(1).html(financials.Footnote_No);
             $("td", row).eq(2).html('<select name = "Combo" id = "Combo" class="form-control input-sm">\n\
@@ -381,46 +382,10 @@ var ViewModel = function () {
                 <option value="High">Major2</option></select>');
             $("td", row).eq(3).html(financials.Digitized_Account_Title);
             $("td", row).eq(3).css("background-color", "#ffd800");
-            var post_data = {
-                docId: $("#hddocId").val(),
-                account_title: financials.Digitized_Account_Title
-            }
-            $.ajax({
-                url: "/ResultDict/AssignGrid",
-                cash: false,
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
-                data: ko.toJSON(post_data),
-                success: function (data) {
-                   // goxxx();
-                }
-            });
-            $("td", row).eq(4).html('<select class="form-control input-sm">\n\
-                <option value = "1">งบแสดงฐานะการเงิน</option>\n\
-                <option value="2">สินทรัพย์</option>\n\
-                 <option value="3">สินทรัพย์หมุนเวียน</option>\n\
-                 <option value="4">เงินสดและรายการเทียบเท่าเงินสด</option>\n\
-                 <option value="5">ลูกหนี้การค้าและลูกหนี้หมุนเวียนอื่น</option>\n\
-                <option value="6">ลูกหนี้การค้า</option>\n\
-                <option value="7">เงินให้กู้ยืมระยะสั้น</option>\n\
-                <option value="8">สินค้าคงเหลือ</option>\n\
-                <option value="9">สินทรัพย์ภาษีเงินได้ของงวดปัจจุบัน</option>\n\
-                <option value="10">สินทรัพย์ทางการเงินหมุนเวียนอื่น</option>\n\
-                <option value="11">สินทรัพย์หมุนเวียนอื่น</option>\n\
-                <option value="12">เจ้าหนี้การค้าและเจ้าหนี้หมุนเรียนอื่น</option>\n\
-                <option value="13">เจ้าหนี้การค้า</option>\n\
-                <option value="14">เจ้าหนี้อื่น</option>\n\
-                <option value="15">รายได้ค่าบริการโทรศัพท์เคลื่อนที่</option>\n\
-                <option value="16">เงินรับล่วงหน้าจากลูกค้า</option>\n\
-                <option value="17">ส่วนของใบอนุญาตให้ใช้คลื่น</option>\n\
-                <option value="18">ความถี่โทรคมนาคม ค้างจ่ายที่ถึง</option>\n\
-                <option value="19">กำหนดช้าระภายในหนึ่งปี</option>\n\
-                <option value="20">ส่วนของหนี้สินระยะยาวที่ถึงกำหนด</option>\n\
-                <option value="21">ความถี่โทรคมนาคม ค้างจ่ายที่ถึง</option>\n\
-                <option value="22">เงินกู้ยืมระยะสั้น</option>\n\
-                <option value="23">ภาษีเงินได้ค้างจ่าย</option>\n\
-                <option value="24">หนี้สินหมุนเรียนอื่น</option>\n\
-                <option value="25">รวมหนี้สินหมุนเรียน</option></select>');
+            
+            $("td", row).eq(4).html('<select id="select_' + index +'" class="form-control input-sm"></select>');
+            post_data.push(financials.Digitized_Account_Title);
+          
             $("td", row).eq(4).css("background-color", "#ffd800");
             $("td", row).eq(5).html(financials.Standard_Title);
             $("td", row).eq(6).html(financials.Amount);
@@ -429,7 +394,26 @@ var ViewModel = function () {
             $("#tbResult2").append(row);
             row = $("#tbResult2 tbody tr:last-child").clone(true);
         });
-        run_rownumber();
+        
+  
+        $.ajax({
+            url: "/ResultDict/AssignGrid",
+            cache: false,
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            data: ko.toJSON({ pageType: $("#hdPageType").val(), account_title: post_data }),
+            success: function (response) {
+                var len = response.length;
+                for (i = 0; i < len; i++) {
+                    for (var j = 0; j < response[i].length; j++) {
+
+                        $('#select_' + i).append(new Option(response[i][j], response[i][j]));
+                      
+                    }
+                }
+            }
+        });       
+         run_rownumber();
     };
     function OnSuccessCancel(response) {
         var model = response;
