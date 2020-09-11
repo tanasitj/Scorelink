@@ -18,7 +18,7 @@
             alert("Username or Password can not be blank.");
         } else {
             if (!isEmail(sEmail)) {
-                alert("User is not correct format.");
+                alert("Username is not correct format.");
             } else {
                 Login();
             }
