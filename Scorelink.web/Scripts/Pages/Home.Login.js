@@ -51,7 +51,7 @@
                     window.location.href = "/UserProfile/Index";
                 } else if (data == "Time") {
                     unblockUI();
-                    alert("Duplicate login please wait to login again.!!");
+                    alert("Duplicate login please wait to log in again.!!");
                 } else {
                     unblockUI();
                     alert("Username or Password is not correct.!!");
