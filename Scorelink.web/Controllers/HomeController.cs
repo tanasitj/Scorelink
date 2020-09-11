@@ -96,7 +96,16 @@ namespace Scorelink.web.Controllers
         {
             var data = "";
             UserRepo userRepo = new UserRepo();
-            data = userRepo.Add(item);
+
+            if (userRepo.CheckUserDup(item.UserName))
+            {
+                data = "Dup";
+            }
+            else
+            {
+                data = userRepo.Add(item);
+            }
+
             return Json(data, JsonRequestBehavior.AllowGet);
         }
 
