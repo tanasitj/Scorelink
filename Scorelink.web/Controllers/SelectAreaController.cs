@@ -256,16 +256,24 @@ namespace Scorelink.web.Controllers
                 engineLoader.Dispose();
             }
 
-            //Return Next Page Data
-            var data = doc.GetDocDet(docId,docDet.PageType);
-            if (data == null)
+            //Check Session After Save Area.
+            if (Session["UserId"] == null)
             {
-                return Json("", JsonRequestBehavior.AllowGet);
+                return Json("Home", JsonRequestBehavior.AllowGet);
             }
             else
             {
-                data.PagePath = Common.getConstTxt("sUrl") + "/FileUploads/" + Common.GenZero(docInfo.CreateBy, 8) + "/" + docInfo.FileUID + "/" + "PG" + Common.GenZero(data.PageType, 5) + Common.GenZero(data.DocPageNo, 4) + ".jpg";
-                return Json(data, JsonRequestBehavior.AllowGet);
+                //Return Next Page Data
+                var data = doc.GetDocDet(docId,docDet.PageType);
+                if (data == null)
+                {
+                    return Json("", JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    data.PagePath = Common.getConstTxt("sUrl") + "/FileUploads/" + Common.GenZero(docInfo.CreateBy, 8) + "/" + docInfo.FileUID + "/" + "PG" + Common.GenZero(data.PageType, 5) + Common.GenZero(data.DocPageNo, 4) + ".jpg";
+                    return Json(data, JsonRequestBehavior.AllowGet);
+                }
             }
         }
 

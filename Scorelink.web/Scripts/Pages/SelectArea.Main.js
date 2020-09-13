@@ -88,27 +88,13 @@ var ViewModel = function () {
                 data: JSON.stringify(postData),
                 success: function (data) {
                     unblockUI();
-                    if (!data) {
-                        //window.location.href = '/Upload/Index';
+                    if (data == "Home") {
+                        window.location.href = '/Home/Index';
+                    } else if (!data) {
                         $.redirect("/SelectPage/SelectPage", {
                             'id': $("#hdId").val()
                         }, "POST");
                     } else {
-                        //$("#hdId").val(data.DocId);
-                        //$("#hdDocDetId").val(data.DocDetId);
-                        //$("#hdDocPageNo").val(data.DocPageNo);
-                        //$("#hdPageFileName").val(data.PageFileName);
-                        //$("#hdPagePath").val(data.PagePath);
-                        //$("#hdPatternNo").val(data.PatternNo);
-                        //$("#lbPageNo").text(data.DocPageNo);
-                        //$('img#view').attr("src", data.PagePath).width(600);
-                        ////$('img#view').selectAreas('reset');
-                        //$('img#view').selectAreas('add', area1);
-                        //$('img#view').selectAreas('add', area2);
-                        //if (data.PatternNo != "5") {
-                        //    $('img#view').selectAreas('add', area3);
-                        //}
-
                         var arg = {
                             DocDetId: data.DocDetId,
                             DocId: data.DocId,
