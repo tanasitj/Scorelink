@@ -62,9 +62,9 @@ var ViewModel = function () {
             $("#tbResult2").append(row);
             $("#BtnCheck").attr("disabled", true);
             $("#BtnMerge").attr("disabled", true);
-            $("#BtnExport").attr("disabled", true);
-            $("#BtnDelete").attr("disabled", true);
-            $("#Commit").attr("disabled", true);
+            //$("#BtnExport").attr("disabled", true);
+            //$("#BtnDelete").attr("disabled", true);
+            //$("#Commit").attr("disabled", true);
             run_rownumber();
         });
         $("#BtnMerge").click(function () {
@@ -87,7 +87,7 @@ var ViewModel = function () {
                 amount2 = $('#tbResult2 > tbody > tr').eq(row_index).find('td:eq(6)').text() + amount;
             }
             tr.remove();
-            document.getElementById("#tbResult2").deleteRow(row_index);
+            document.getElementById("tbResult2").deleteRow(row_index);
             var html =
                 "<tr><td></td><td>" + footnote2 + "</td><td></td><td>" + digitize_account2 + "</td><td></td><td></td><td>"
                 + amount2 + "</td><td>*</td><td></td></tr>";
@@ -98,6 +98,7 @@ var ViewModel = function () {
         });
         $("#BtnDelete").click(function () {
             tr.remove(); 
+            run_rownumber();
         });
         //Check --edit data
         $("#BtnCheck").click(function () {

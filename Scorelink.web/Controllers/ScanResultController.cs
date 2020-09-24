@@ -156,7 +156,6 @@ namespace Scorelink.web.Controllers
                //MessageBox.Show("Cannot find data for export file");
             }
            
-
         }
         public SelectList DivisionStatus()
         {
