@@ -28,6 +28,7 @@ var ViewModel = function () {
     var footnote2;
     var digitize_account;
     var lastSelected;
+    var row_start;
     $(document).ready(function () {
         //set scroll bar
         $('.pane-hScroll').scroll(function () {
@@ -46,7 +47,6 @@ var ViewModel = function () {
             amount = $(this).closest("tr").find('td:eq(6)').text();
             modified = $(this).closest("tr").find('td:eq(7)').text();   
         });
-        var row_start = $("#tbResult2 tbody tr:last-child").clone(true);
         //set index column selected
         $('td').click(function () {
             row_index = $(this).parent().index();
@@ -59,7 +59,7 @@ var ViewModel = function () {
             //$("td", row).eq(2).html("");
             $("td", row).eq(3).html("");
             $("td", row).eq(6).html("");
-            $("#tbResult2").append(row);
+            $('#tbResult2 > tbody > tr').eq(row_index).after(row);
             $("#BtnCheck").attr("disabled", true);
             $("#BtnMerge").attr("disabled", true);
             //$("#BtnExport").attr("disabled", true);
@@ -87,7 +87,7 @@ var ViewModel = function () {
                 amount2 = $('#tbResult2 > tbody > tr').eq(row_index).find('td:eq(6)').text() + amount;
             }
             tr.remove();
-            document.getElementById("tbResult2").deleteRow(row_index);
+            document.getElementById("#tbResult2").deleteRow(row_index);
             var html =
                 "<tr><td></td><td>" + footnote2 + "</td><td></td><td>" + digitize_account2 + "</td><td></td><td></td><td>"
                 + amount2 + "</td><td>*</td><td></td></tr>";
@@ -102,6 +102,7 @@ var ViewModel = function () {
         });
         //Check --edit data
         $("#BtnCheck").click(function () {
+            row_start = $("#tbResult2 tbody tr:last-child").clone(true);
             var filter = {
                 docId: $("#hddocId").val(),
                 pageType: $("#hdPageType").val()
@@ -127,6 +128,7 @@ var ViewModel = function () {
             $("#BtnDelete").attr("disabled", false);
             $("#BtnCommit").attr("disabled", false);
             $("#BtnExport").attr("disabled", false);
+            $("#BtnCancel").attr("disabled", false);
             //var type_event = "insert";
             edit_value();
         });
@@ -136,7 +138,8 @@ var ViewModel = function () {
                 docId: $("#hddocId").val(),
                 pageType: $("#hdPageType").val()
             }
-            $("#tbResult2").find("td").removeClass("selected");
+            $("#tbResult2").find("td").removeClass("row_selected");
+            $("#tbResult2").find("td").toggleClass("changeBackground");
             $.ajax({
                 url: "/ScanResult/AssignGrid",
                 type: "POST",
@@ -422,7 +425,7 @@ var ViewModel = function () {
         $(".Grid td:nth-child(3),th:nth-child(3)").hide();
         $(".Grid td:nth-child(5),th:nth-child(5)").hide();
         $(".Grid td:nth-child(9),th:nth-child(9)").hide();
-        //var row = $("#tbResult2 tbody tr:last-child").clone(true);
+        $(".Grid td:nth-child(3)").css("background-color", "#ffffff");
         var row = row_start;
         $("#tbResult2 tbody tr").remove();
         $.each(model, function () {
@@ -430,7 +433,6 @@ var ViewModel = function () {
             $("td", row).eq(1).html(financials.Footnote_No);
             $("td", row).eq(2).html(financials.Divisions);
             $("td", row).eq(3).html(financials.Digitized_Account_Title);
-            $("td", row).eq(3).css("background-color", "#ffffff");
             $("td", row).eq(4).html(financials.Recovered);
             $("td", row).eq(5).html(financials.Standard_Title);
             $("td", row).eq(6).html(financials.Amount);
@@ -453,6 +455,7 @@ var ViewModel = function () {
         $("#BtnDelete").attr("disabled", true);
         $("#BtnCommit").attr("disabled", true);
         $("#BtnExport").attr("disabled", true);
+        $("#BtnCancel").attr("disabled", true);
         $.ajax({
             url: '/ScanResult/AssignGrid',
             cache: false,
@@ -482,7 +485,7 @@ var ViewModel = function () {
         $("td").dblclick(function () {
             var OriginalContent = $(this).text();
             var col_index = $(this).index();
-            if (col_index == 6 || col_index == 3) {
+            if (col_index == 6) {
                 $(this).addClass("cellEditing");
                 $(this).html("<input type='text' style='text-align: right' value='" + OriginalContent + "' />");
                 $(this).children().first().focus();
