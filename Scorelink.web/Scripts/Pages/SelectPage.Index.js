@@ -144,8 +144,27 @@ var ViewModel = function () {
             type: "POST",
             contentType: "application/json; charset=utf-8",
             data: ko.toJSON(filter),
+            success: function (data) {
+                //get the file name for download
+                window.location = '/ScanResult/Download?file=' + data;
+               // alert("Export data all result already");
+            }
+
+        });
+    });
+    $("#BtnSeeAllResult").click(function () {
+        var filter = {
+            docId: $("#hdId").val()
+
+        }
+        $.ajax({
+            url: "/ScanResult/SeetAllResult",
+            cash: false,
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            data: ko.toJSON(filter),
             success: function () {
-                alert("Export data all result ready");
+
             }
 
         });

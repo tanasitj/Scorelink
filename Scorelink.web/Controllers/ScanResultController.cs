@@ -85,13 +85,90 @@ namespace Scorelink.web.Controllers
             var Info = docInfoRepo.Get(docId);
             //Get Document Detail data.
             String FolderPath = Server.MapPath("..\\FileUploads\\" + Common.GenZero(Info.CreateBy, 8) + "\\" + Info.FileUID + "\\");
+            String UrlPath = Common.getConstTxt("sUrl") + "/FileUploads/" + Common.GenZero(Info.CreateBy, 8) + "/" + Info.FileUID + "/";
             List<string> files = new List<string>();
-            files.Add(@"Tmp001");
-            files.Add(@"Tmp002");
-            //Call Procedure create file
-            Create_Temp_Files(files, FolderPath);
-            CombineFiles(files, FolderPath);
-            return Json("Success fully");
+            string Statement = FolderPath + "Tmp001.csv";
+            string BalanceSheet = FolderPath + "Tmp002.csv";
+            string Cashflow = FolderPath + "Tmp003.csv";
+            var fileName = "AllReSult" + ".xlsx";
+            //Check File for insert parameter
+            try
+            {
+                if (System.IO.File.Exists(Statement))
+                {
+                    files.Add(@"Tmp001");
+                }
+                if (System.IO.File.Exists(BalanceSheet))
+                {
+                    files.Add(@"Tmp002");
+                }
+                if (System.IO.File.Exists(Cashflow))
+                {
+                    files.Add(@"Tmp003");
+                }
+                //Call Procedure create file
+                if (files.Count > 0)
+                {
+                    Create_Temp_Files(files, FolderPath);
+                    //CombineFiles(files, FolderPath, UrlPath);
+
+                    //Save the file to server temp folder
+                    //Save the file to server temp folder
+                    string fullPath = Path.Combine(Server.MapPath("~/temp"), fileName);
+
+                    Workbook newbook = new Workbook();
+                    newbook.Version = ExcelVersion.Version2013;
+                    newbook.Worksheets.Clear();
+                    Workbook tempbook = new Workbook();
+                    if (files.Count > 0)
+                    {
+                        for (int i = 0; i < files.Count; i++)
+                        {
+                            tempbook.LoadFromFile(FolderPath + files[i] + ".xlsx");
+                            foreach (Worksheet sheet in tempbook.Worksheets)
+                            {
+                                newbook.Worksheets.AddCopy(sheet);
+                            }
+                        }
+                        //create file to save on server
+                        newbook.SaveToFile(FolderPath + "AllReSult.xlsx", ExcelVersion.Version2013);
+                        //create file to folder temp for client download
+                        newbook.SaveToFile(fullPath, ExcelVersion.Version2013);
+
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message);
+            }
+            return Json(new { fileName = fileName });
+            //return Json("Success");
+        }
+        public ActionResult Download(string fileName)
+        {
+            //Get the temp folder and file path in server
+            string fullPath = Path.Combine(Server.MapPath("~/temp"), "AllReSult.xlsx");
+            byte[] fileByteArray = System.IO.File.ReadAllBytes(fullPath);
+            System.IO.File.Delete(fullPath);
+            return File(fileByteArray, "application/vnd.ms-excel", fileName);
+        }
+        public JsonResult SeetAllResult(int docId)
+        {
+            var Info = docInfoRepo.Get(docId);
+            String FolderPath = Server.MapPath("..\\FileUploads\\" + Common.GenZero(Info.CreateBy, 8) + "\\" + Info.FileUID + "\\");
+            //string fullPath = Path.Combine(Server.MapPath("~/temp"));
+            try
+            {
+                System.Diagnostics.Process.Start(FolderPath + "AllReSult.xlsx");
+                //System.Diagnostics.Process.Start(fullPath + "AllReSult.xlsx"); //path temp file
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message);
+            }
+            return Json("Success");
         }
         public void Create_Temp_Files(List<string> files,string FolderPath)
         {
@@ -126,13 +203,8 @@ namespace Scorelink.web.Controllers
                     workbook.SaveToFile(FolderPath.ToString() + files[i].ToString() + ".xlsx", ExcelVersion.Version2010);
                 }
             }
-            else
-            {
-               // MessageBox.Show("Cannot find data for commit file");
-            }
-
         }
-        public void CombineFiles(List<string> files,string FolderPath)
+        public void CombineFiles(List<string> files,string FolderPath,string UrlPath)
         {
             Workbook newbook = new Workbook();
             newbook.Version = ExcelVersion.Version2013;
@@ -149,11 +221,6 @@ namespace Scorelink.web.Controllers
                     }
                 }
                 newbook.SaveToFile(FolderPath + "AllReSult.xlsx", ExcelVersion.Version2013);
-                System.Diagnostics.Process.Start(FolderPath + "AllReSult.xlsx");
-            }
-            else
-            {
-               //MessageBox.Show("Cannot find data for export file");
             }
            
         }
