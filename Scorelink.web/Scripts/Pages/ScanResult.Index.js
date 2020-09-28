@@ -162,6 +162,8 @@ var ViewModel = function () {
             $("#BtnMerge").attr("disabled", false);
             $("#BtnInsert").attr("disabled", true);
             $("#BtnDelete").attr("disabled", true);
+            $("#BtnCommit").attr("disabled", true);
+            $("#BtnExport").attr("disabled", true);
         });
         $("#BtnBack").click(function () {
             $.redirect("/SelectPage/SelectPage", {
@@ -483,7 +485,9 @@ var ViewModel = function () {
     }
     function edit_value() {
         $("td").dblclick(function () {
-            var OriginalContent = $(this).text();
+
+            //var OriginalContent = $(this).text();
+            var OriginalContent = $(this).text().replace(/\,/g, '');
             var col_index = $(this).index();
             if (col_index == 6) {
                 $(this).addClass("cellEditing");
@@ -491,7 +495,8 @@ var ViewModel = function () {
                 $(this).children().first().focus();
                 $(this).children().first().keypress(function (e) {
                     if (e.which == 13) {
-                        var newContent = $(this).val();
+                         //var newContent = $(this).val();
+                        var newContent = $(this).val().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
                         $(this).parent().text(newContent);
                         $(this).parent().removeClass("cellEditing");
                     }

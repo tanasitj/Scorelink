@@ -149,10 +149,17 @@ namespace Scorelink.web.Controllers
         public ActionResult Download(string fileName)
         {
             //Get the temp folder and file path in server
-            string fullPath = Path.Combine(Server.MapPath("~/temp"), "AllReSult.xlsx");
-            byte[] fileByteArray = System.IO.File.ReadAllBytes(fullPath);
-            System.IO.File.Delete(fullPath);
-            return File(fileByteArray, "application/vnd.ms-excel", fileName);
+            try
+            {
+                string fullPath = Path.Combine(Server.MapPath("~/temp"), "AllReSult.xlsx");
+                byte[] fileByteArray = System.IO.File.ReadAllBytes(fullPath);
+                System.IO.File.Delete(fullPath);
+                return File(fileByteArray, "application/vnd.ms-excel", fileName);
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message);
+            }
         }
         public JsonResult SeetAllResult(int docId)
         {
