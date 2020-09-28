@@ -44,5 +44,37 @@ namespace Scorelink.BO.Repositories
                 }
             }
         }
+
+        public IEnumerable<F_DocumentDetailModel> GetListView(int id)
+        {
+            ScorelinkEntities db = new ScorelinkEntities();
+            try
+            {
+                var query = (from doc in db.F_DocumentDetail(id)
+                             where doc.DocId == id
+                             select new F_DocumentDetailModel
+                             {
+                                 DocId = doc.DocId,
+                                 DocPageNo = doc.PageNo,
+                                 FootnoteNo = doc.FootnoteNo,
+                                 PageType = doc.StatementId.ToString(),
+                                 PageTypeName = doc.StatementName,
+                                 NoScan = doc.NoScan.ToString()
+                             });
+                return query;
+            }
+            catch (Exception ex)
+            {
+                Logger Err = new Logger();
+                Err.ErrorLog(ex.ToString());
+                throw ex;
+            }
+        }
+        public bool CheckDocPage(DocumentDetailModel item)
+        {
+            using (ScorelinkEntities db = new ScorelinkEntities())
+                return db.DocumentDetails.Where(x => x.DocId == item.DocId && x.DocPageNo == item.DocPageNo).Any();
+
+        }
     }
 }

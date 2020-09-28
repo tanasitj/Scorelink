@@ -42,7 +42,6 @@ namespace Scorelink.web.App_Start
                 .Include("~/plugins/datatables/jquery.dataTables.js")
                 //.Include("~/Content/js/plugins/moment/moment.js")
                 //.Include("~/Content/js/plugins/datepicker/bootstrap-datepicker.js")
-                .Include("~/Content/js/plugins/pnotify/pnotify.custom.min.js")
                 //.Include("~/Content/js/plugins/icheck/icheck.js")
                 //.Include("~/Content/js/plugins/validator/validator.js")
                 //.Include("~/Content/js/plugins/inputmask/jquery.inputmask.bundle.js")

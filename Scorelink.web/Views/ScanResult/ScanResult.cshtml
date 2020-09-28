@@ -38,7 +38,7 @@
 
             body {
                 font-family: Arial;
-                font-size: 14pt;
+                font-size: 12pt;
             }
 
             table {
@@ -73,6 +73,7 @@
                 height: 600px;
                 /*            background: red;*/
             }
+            /*Hide colum*/
             .Grid td:nth-child(3), th:nth-child(3),
             .Grid td:nth-child(5), th:nth-child(5),
             .Grid td:nth-child(6), th:nth-child(6),
@@ -110,6 +111,10 @@
                 cursor: pointer;
                 font-weight: normal;
                 background-color: skyblue;
+            }
+            .changeBackground {
+                background-color: white;
+                
             }
         </style>
         @*<style>
@@ -221,15 +226,15 @@
                                             </button>
                                             <span class="verticalDivider"></span>
                                             <!-- Document pages display -->
-                                            <button id="singlePageDisplay_shortcut" title="Single page display">
+                                            @*<button id="singlePageDisplay_shortcut" title="Single page display">
                                                 <span class="icon icon-sm singleLayoutIcon"></span>
-                                            </button>
+                                            </button>*@
                                             <button id="showThumbnails" class="navigationbarBtn">
                                                 <span class="icon thumbnailsIcon"></span>
                                             </button>
-                                            <button class="annotationObjectBtn" title="Rectangle" value="-3">
+                                            @*<button class="annotationObjectBtn" title="Rectangle" value="-3">
                                                 <span class="icon rectangleIcon"></span>
-                                            </button>
+                                            </button>*@
                                         </div>
                                     </div>
 
@@ -2004,8 +2009,8 @@
                                         <th class="text-center" style="width: 310px">Recovered</th>
                                         <th class="text-center" style="width: 250px">Standard Title</th>
                                         <th class="text-center" style="width: 190px">Amount</th>
-                                        <th class="text-center" style="width: 120px">Modified</th>
-                                        <th class="text-center" style="width: 120px">CLCTCD</th>
+                                        <th class="text" style="width: 120px">Modified</th>
+                                        <th class="text" style="width: 120px">CLCTCD</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -2019,9 +2024,9 @@
                                             <td class="text-left" style="width: 330px"><span data-bind="text: Digitized_Account_Title"></span></td>
                                             <td class="dropdown" style="width: 310px"><span data-bind="text: Recovered"></span></td>
                                             <td class="text-center" style="width: 250px"><span data-bind="text: Standard_Title"></span></td>
-                                            <td class="text-right" style="width: 190px"><span data-bind="text: Amount"></span></td>
-                                            <td class="text-center" style="width: 120px"><span data-bind="text: Modified"></span></td>
-                                            <td class="text-center" style="width: 120px"><span data-bind="text: CLCTCD"></span></td>
+                                            <td class="text-center" style="width: 190px"><span data-bind="text: Amount"></span></td>
+                                            <td class="text" style="width: 120px"><span data-bind="text: Modified"></span></td>
+                                            <td class="text" style="width: 120px"><span data-bind="text: CLCTCD"></span></td>
                                         </tr>
                                     </tbody>
                                 </table>

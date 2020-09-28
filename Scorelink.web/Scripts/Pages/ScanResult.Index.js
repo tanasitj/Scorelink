@@ -28,6 +28,7 @@ var ViewModel = function () {
     var footnote2;
     var digitize_account;
     var lastSelected;
+    var row_start;
     $(document).ready(function () {
         //set scroll bar
         $('.pane-hScroll').scroll(function () {
@@ -46,7 +47,6 @@ var ViewModel = function () {
             amount = $(this).closest("tr").find('td:eq(6)').text();
             modified = $(this).closest("tr").find('td:eq(7)').text();   
         });
-        var row_start = $("#tbResult2 tbody tr:last-child").clone(true);
         //set index column selected
         $('td').click(function () {
             row_index = $(this).parent().index();
@@ -59,12 +59,12 @@ var ViewModel = function () {
             //$("td", row).eq(2).html("");
             $("td", row).eq(3).html("");
             $("td", row).eq(6).html("");
-            $("#tbResult2").append(row);
+            $('#tbResult2 > tbody > tr').eq(row_index).after(row);
             $("#BtnCheck").attr("disabled", true);
             $("#BtnMerge").attr("disabled", true);
-            $("#BtnExport").attr("disabled", true);
-            $("#BtnDelete").attr("disabled", true);
-            $("#Commit").attr("disabled", true);
+            //$("#BtnExport").attr("disabled", true);
+            //$("#BtnDelete").attr("disabled", true);
+            //$("#Commit").attr("disabled", true);
             run_rownumber();
         });
         $("#BtnMerge").click(function () {
@@ -87,7 +87,7 @@ var ViewModel = function () {
                 amount2 = $('#tbResult2 > tbody > tr').eq(row_index).find('td:eq(6)').text() + amount;
             }
             tr.remove();
-            document.getElementById("tbResult2").deleteRow(row_index);
+            document.getElementById("#tbResult2").deleteRow(row_index);
             var html =
                 "<tr><td></td><td>" + footnote2 + "</td><td></td><td>" + digitize_account2 + "</td><td></td><td></td><td>"
                 + amount2 + "</td><td>*</td><td></td></tr>";
@@ -98,9 +98,11 @@ var ViewModel = function () {
         });
         $("#BtnDelete").click(function () {
             tr.remove(); 
+            run_rownumber();
         });
         //Check --edit data
         $("#BtnCheck").click(function () {
+            row_start = $("#tbResult2 tbody tr:last-child").clone(true);
             var filter = {
                 docId: $("#hddocId").val(),
                 pageType: $("#hdPageType").val()
@@ -125,6 +127,8 @@ var ViewModel = function () {
             $("#BtnInsert").attr("disabled", false);
             $("#BtnDelete").attr("disabled", false);
             $("#BtnCommit").attr("disabled", false);
+            $("#BtnExport").attr("disabled", false);
+            $("#BtnCancel").attr("disabled", false);
             //var type_event = "insert";
             edit_value();
         });
@@ -134,7 +138,8 @@ var ViewModel = function () {
                 docId: $("#hddocId").val(),
                 pageType: $("#hdPageType").val()
             }
-            $("#tbResult2").find("td").removeClass("selected");
+            $("#tbResult2").find("td").removeClass("row_selected");
+            $("#tbResult2").find("td").toggleClass("changeBackground");
             $.ajax({
                 url: "/ScanResult/AssignGrid",
                 type: "POST",
@@ -157,6 +162,8 @@ var ViewModel = function () {
             $("#BtnMerge").attr("disabled", false);
             $("#BtnInsert").attr("disabled", true);
             $("#BtnDelete").attr("disabled", true);
+            $("#BtnCommit").attr("disabled", true);
+            $("#BtnExport").attr("disabled", true);
         });
         $("#BtnBack").click(function () {
             $.redirect("/SelectPage/SelectPage", {
@@ -182,7 +189,7 @@ var ViewModel = function () {
                 contentType: "application/json; charset=utf-8",
                 data: ko.toJSON(temp_data),
                 success: function () {
-                    alert("Commit All Readdy");
+                    alert("Commit file already");
                     $.redirect("/SelectPage/SelectPage", {
                         'id': $("#hddocId").val()
                     }, "POST");
@@ -295,7 +302,7 @@ var ViewModel = function () {
                 table2.find(" tbody tr").each(function () {
                     tab_text = tab_text + "<tr>";
                     $(this).find("td").each(function () {
-                        if ($(this).hasClass("text-center")) {
+                        if ($(this).hasClass("text-center") || $(this).hasClass("text-left") || $(this).hasClass("text-right")) {
                             var value = $(this).text();                     
                             tab_text = tab_text + "<th>" + value + "</th>";                      
                         }
@@ -363,12 +370,16 @@ var ViewModel = function () {
     }
     function OnSuccessCheck(response) {
         var model = response;
-        $(".Grid td:nth-child(3),th:nth-child(3)").toggle();
-        $(".Grid td:nth-child(5),th:nth-child(5)").toggle();
-        $(".Grid td:nth-child(9),th:nth-child(9)").toggle();
+        var post_data = [];
+       //Hide comlum
+        $(".Grid td:nth-child(3),th:nth-child(3)").toggle(); //Division
+        $(".Grid td:nth-child(5),th:nth-child(5)").toggle(); //Recovered
+       // $(".Grid td:nth-child(9),th:nth-child(9)").toggle(); //CLCTCD
+        $(".Grid td:nth-child(8),th:nth-child(8)").hide();  //Modified
+        //-----------------------------------------------------
         var row = $("#tbResult2 tbody tr:last-child").clone(true);
         $("#tbResult2 tbody tr").remove();
-        $.each(model, function () {
+        $.each(model, function (index) {
             var financials = this;
             $("td", row).eq(1).html(financials.Footnote_No);
             $("td", row).eq(2).html('<select name = "Combo" id = "Combo" class="form-control input-sm">\n\
@@ -377,46 +388,10 @@ var ViewModel = function () {
                 <option value="High">Major2</option></select>');
             $("td", row).eq(3).html(financials.Digitized_Account_Title);
             $("td", row).eq(3).css("background-color", "#ffd800");
-            //var post_data = {
-            //    docId: $("#hddocId").val(),
-            //    account_title: financials.Digitized_Account_Title
-            //}
-            //$.ajax({
-            //    url: "/ResultDict/AssignGrid",
-            //    cash: false,
-            //    type: "POST",
-            //    contentType: "application/json; charset=utf-8",
-            //    data: ko.toJSON(post_data),
-            //    success: function (data) {
-            //       // goxxx();
-            //    }
-            //});
-            $("td", row).eq(4).html('<select class="form-control input-sm">\n\
-                <option value = "1">งบแสดงฐานะการเงิน</option>\n\
-                <option value="2">สินทรัพย์</option>\n\
-                 <option value="3">สินทรัพย์หมุนเวียน</option>\n\
-                 <option value="4">เงินสดและรายการเทียบเท่าเงินสด</option>\n\
-                 <option value="5">ลูกหนี้การค้าและลูกหนี้หมุนเวียนอื่น</option>\n\
-                <option value="6">ลูกหนี้การค้า</option>\n\
-                <option value="7">เงินให้กู้ยืมระยะสั้น</option>\n\
-                <option value="8">สินค้าคงเหลือ</option>\n\
-                <option value="9">สินทรัพย์ภาษีเงินได้ของงวดปัจจุบัน</option>\n\
-                <option value="10">สินทรัพย์ทางการเงินหมุนเวียนอื่น</option>\n\
-                <option value="11">สินทรัพย์หมุนเวียนอื่น</option>\n\
-                <option value="12">เจ้าหนี้การค้าและเจ้าหนี้หมุนเรียนอื่น</option>\n\
-                <option value="13">เจ้าหนี้การค้า</option>\n\
-                <option value="14">เจ้าหนี้อื่น</option>\n\
-                <option value="15">รายได้ค่าบริการโทรศัพท์เคลื่อนที่</option>\n\
-                <option value="16">เงินรับล่วงหน้าจากลูกค้า</option>\n\
-                <option value="17">ส่วนของใบอนุญาตให้ใช้คลื่น</option>\n\
-                <option value="18">ความถี่โทรคมนาคม ค้างจ่ายที่ถึง</option>\n\
-                <option value="19">กำหนดช้าระภายในหนึ่งปี</option>\n\
-                <option value="20">ส่วนของหนี้สินระยะยาวที่ถึงกำหนด</option>\n\
-                <option value="21">ความถี่โทรคมนาคม ค้างจ่ายที่ถึง</option>\n\
-                <option value="22">เงินกู้ยืมระยะสั้น</option>\n\
-                <option value="23">ภาษีเงินได้ค้างจ่าย</option>\n\
-                <option value="24">หนี้สินหมุนเรียนอื่น</option>\n\
-                <option value="25">รวมหนี้สินหมุนเรียน</option></select>');
+            
+            $("td", row).eq(4).html('<select id="select_' + index +'" class="form-control input-sm"></select>');
+            post_data.push(financials.Digitized_Account_Title);
+          
             $("td", row).eq(4).css("background-color", "#ffd800");
             $("td", row).eq(5).html(financials.Standard_Title);
             $("td", row).eq(6).html(financials.Amount);
@@ -425,7 +400,26 @@ var ViewModel = function () {
             $("#tbResult2").append(row);
             row = $("#tbResult2 tbody tr:last-child").clone(true);
         });
-        run_rownumber();
+        
+  
+        $.ajax({
+            url: "/ResultDict/AssignGrid",
+            cache: false,
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            data: ko.toJSON({ pageType: $("#hdPageType").val(), account_title: post_data }),
+            success: function (response) {
+                var len = response.length;
+                for (i = 0; i < len; i++) {
+                    for (var j = 0; j < response[i].length; j++) {
+
+                        $('#select_' + i).append(new Option(response[i][j], response[i][j]));
+                      
+                    }
+                }
+            }
+        });       
+         run_rownumber();
     };
     function OnSuccessCancel(response) {
         var model = response;
@@ -433,7 +427,7 @@ var ViewModel = function () {
         $(".Grid td:nth-child(3),th:nth-child(3)").hide();
         $(".Grid td:nth-child(5),th:nth-child(5)").hide();
         $(".Grid td:nth-child(9),th:nth-child(9)").hide();
-        //var row = $("#tbResult2 tbody tr:last-child").clone(true);
+        $(".Grid td:nth-child(3)").css("background-color", "#ffffff");
         var row = row_start;
         $("#tbResult2 tbody tr").remove();
         $.each(model, function () {
@@ -441,7 +435,6 @@ var ViewModel = function () {
             $("td", row).eq(1).html(financials.Footnote_No);
             $("td", row).eq(2).html(financials.Divisions);
             $("td", row).eq(3).html(financials.Digitized_Account_Title);
-            $("td", row).eq(3).css("background-color", "#ffffff");
             $("td", row).eq(4).html(financials.Recovered);
             $("td", row).eq(5).html(financials.Standard_Title);
             $("td", row).eq(6).html(financials.Amount);
@@ -463,6 +456,8 @@ var ViewModel = function () {
         $("#BtnInsert").attr("disabled", true);
         $("#BtnDelete").attr("disabled", true);
         $("#BtnCommit").attr("disabled", true);
+        $("#BtnExport").attr("disabled", true);
+        $("#BtnCancel").attr("disabled", true);
         $.ajax({
             url: '/ScanResult/AssignGrid',
             cache: false,
@@ -490,15 +485,18 @@ var ViewModel = function () {
     }
     function edit_value() {
         $("td").dblclick(function () {
-            var OriginalContent = $(this).text();
+
+            //var OriginalContent = $(this).text();
+            var OriginalContent = $(this).text().replace(/\,/g, '');
             var col_index = $(this).index();
-            if (col_index == 6 || col_index == 3) {
+            if (col_index == 6) {
                 $(this).addClass("cellEditing");
                 $(this).html("<input type='text' style='text-align: right' value='" + OriginalContent + "' />");
                 $(this).children().first().focus();
                 $(this).children().first().keypress(function (e) {
                     if (e.which == 13) {
-                        var newContent = $(this).val();
+                         //var newContent = $(this).val();
+                        var newContent = $(this).val().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
                         $(this).parent().text(newContent);
                         $(this).parent().removeClass("cellEditing");
                     }

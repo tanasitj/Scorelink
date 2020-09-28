@@ -34,6 +34,7 @@ var ViewModel = function () {
 
 
         function SaveRegister() {
+            blockUI();
             var arg = {
                 UserName: $("#Email").val(),
                 Name: $("#Name").val(),
@@ -58,9 +59,12 @@ var ViewModel = function () {
                 success: function (data) {
                     if (data == "OK") {
                         window.location.href = '/Home/Index';
+                    } else if (data == "Dup") {
+                        alert("Duplicate email can't register your information.");
                     } else {
-                        alert("System can't regiter your information.");
+                        alert("System can't register your information.");
                     }
+                    unblockUI();
                 }
             })
         }

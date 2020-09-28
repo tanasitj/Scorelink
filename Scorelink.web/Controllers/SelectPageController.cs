@@ -29,13 +29,35 @@ namespace Scorelink.web.Controllers
         }
         public ActionResult SelectPage(int id)
         {
-            var data = docInfoRepo.Get(id);
-            ViewBag.Id = data.DocId;
-            ViewBag.FileUID = data.FileUID;
-            ViewBag.FileName = data.FileName;
-            ViewBag.FilePath = data.FilePath;
-            ViewBag.FileUrl = data.FileUrl;
-            ViewBag.CreateBy = data.CreateBy;
+            if (Session["UserId"] == null)
+            {
+                Response.Redirect("/Home/Index");
+            }
+            else
+            {
+                ViewBag.UserId = Session["UserId"].ToString();
+                int iUserId = 0;
+                Int32.TryParse(Session["UserId"].ToString(), out iUserId);
+
+                //Get User Info.
+                UserRepo userRepo = new UserRepo();
+                var userDB = userRepo.Get(iUserId);
+                ViewBag.Name = userDB.Name;
+                ViewBag.Surname = userDB.Surname;
+
+                //Check and Update online date time.
+                OnlineUserRepo onlineRepo = new OnlineUserRepo();
+                var online = onlineRepo.Get(iUserId);
+                onlineRepo.CheckTimeOut(online);
+
+                var data = docInfoRepo.Get(id);
+                ViewBag.Id = data.DocId;
+                ViewBag.FileUID = data.FileUID;
+                ViewBag.FileName = data.FileName;
+                ViewBag.FilePath = data.FilePath;
+                ViewBag.FileUrl = data.FileUrl;
+                ViewBag.CreateBy = data.CreateBy;
+            }
             return View("SelectPage");
         }
         public ActionResult DeletePage(int id, string pagetype)
@@ -66,28 +88,33 @@ namespace Scorelink.web.Controllers
                 docDetail.PageUrl = data_detail.FileUrl;
                 docDetail.CreateDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
                 docDetail.UpdateDate = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
-                DocumentDetailRepo docDetailRepo = new DocumentDetailRepo();
-                docDetailRepo.Add(docDetail);
+
+                string sChk = "";
+                SelectPageRepo selRepo = new SelectPageRepo();
+                if (selRepo.CheckDocPage(docDetail))
+                {
+                    sChk = "Dup";
+                }
+                else
+                {
+                    DocumentDetailRepo docDetailRepo = new DocumentDetailRepo();
+                    docDetailRepo.Add(docDetail);
+                    sChk = "Ok";
+                }
+                return Json(sChk, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
+                Logger Err = new Logger();
+                Err.ErrorLog(ex.ToString());
                 return Json(ex.Message);
-            }
-
-            //Return Next Page Data
-            var data = docDetailRepo.Get(docId);
-            if (data == null)
-            {
-                return Json("", JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
-                return Json(data, JsonRequestBehavior.AllowGet);
             }
         }
         public JsonResult GetDocumentList(int filterId)
         {
-            var doc = docDetailRepo.GetListView(filterId).ToList();
+            SelectPageRepo selRepo = new SelectPageRepo();
+
+            var doc = selRepo.GetListView(filterId).ToList();
             return Json(doc, JsonRequestBehavior.AllowGet);
         }
         public JsonResult DeleteDocumentDetail(string docid, string pagetype, string docPageNo)
@@ -100,6 +127,8 @@ namespace Scorelink.web.Controllers
             }
             catch (Exception ex)
             {
+                Logger Err = new Logger();
+                Err.ErrorLog(ex.ToString());
                 return Json(ex.Message);
             }
             return Json(result, JsonRequestBehavior.AllowGet);
@@ -114,7 +143,7 @@ namespace Scorelink.web.Controllers
                 String sFolder = docInfo.FileUID;
                 String sPath = docInfo.FilePath;
                 //Folder for New File.
-                String sTempFolder = Consts.SLUserFlie + "\\FileUploads\\" + Common.GenZero(docInfo.CreateBy, 8) + "\\" + sFolder + "\\";
+                String sTempFolder = Common.getConstTxt("SLUserFlie") + Common.GenZero(docInfo.CreateBy, 8) + "\\" + sFolder + "\\";
                 //Check and Create Folder.
                 Common.CreateDocFolder(sTempFolder);
                 //Get PageType for File Name.
@@ -169,12 +198,14 @@ namespace Scorelink.web.Controllers
                 docDetail.PageType = pageType;
                 docDetail.ScanStatus = "";
                 docDetail.PagePath = sTempFolder + "SL" + Common.GenZero(pageType, 5) + ".tif";
-                docDetail.PageUrl = Consts.sUrl + "/FileUploads/" + Common.GenZero(docInfo.CreateBy, 8) + "/" + sFolder + "/" + "SL" + Common.GenZero(pageType, 5) + ".tif";
+                docDetail.PageUrl = Common.getConstTxt("sUrl") + "/FileUploads/" + Common.GenZero(docInfo.CreateBy, 8) + "/" + sFolder + "/" + "SL" + Common.GenZero(pageType, 5) + ".tif";
                 SelectPageRepo pageRepo = new SelectPageRepo();
                 result = pageRepo.UpdatePathFile(docDetail);
             }
             catch (Exception ex)
             {
+                Logger Err = new Logger();
+                Err.ErrorLog(ex.ToString());
                 return Json(ex.Message);
             }
             return Json(result, JsonRequestBehavior.AllowGet);

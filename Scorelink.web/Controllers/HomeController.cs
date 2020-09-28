@@ -81,6 +81,9 @@ namespace Scorelink.web.Controllers
             ViewBag.IP = GetIPAddress();
             ViewBag.CPU = GetCPUID();
             ViewBag.Session = Session.SessionID;
+
+            Session.Clear();
+            Session.Abandon();
             return View("Login");
         }
 
@@ -93,7 +96,16 @@ namespace Scorelink.web.Controllers
         {
             var data = "";
             UserRepo userRepo = new UserRepo();
-            data = userRepo.Add(item);
+
+            if (userRepo.CheckUserDup(item.UserName))
+            {
+                data = "Dup";
+            }
+            else
+            {
+                data = userRepo.Add(item);
+            }
+
             return Json(data, JsonRequestBehavior.AllowGet);
         }
 

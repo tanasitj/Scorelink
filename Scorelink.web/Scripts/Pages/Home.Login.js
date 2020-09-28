@@ -12,11 +12,16 @@
 
     self.ClickLogin = function () {
         var sEmail = $("#txtUser").val();
+        var sPass = $("#txtPass").val();
 
-        if (!isEmail(sEmail)) {
-            alert("User is not correct format.");
+        if (sEmail.length === 0 || sPass.length === 0) {
+            alert("Username or Password can not be blank.");
         } else {
-            Login();
+            if (!isEmail(sEmail)) {
+                alert("Username is not correct format.");
+            } else {
+                Login();
+            }
         }
     }
 
@@ -46,7 +51,7 @@
                     window.location.href = "/UserProfile/Index";
                 } else if (data == "Time") {
                     unblockUI();
-                    alert("Duplicate login please wait to login again.!!");
+                    alert("Duplicate login please wait to log in again.!!");
                 } else {
                     unblockUI();
                     alert("Username or Password is not correct.!!");

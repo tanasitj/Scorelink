@@ -144,13 +144,13 @@ namespace Scorelink.web.Controllers
                 var doc = docInfoRepo.Get(id);
                 string sPath = Server.MapPath("..\\FileUploads\\" + Common.GenZero(doc.CreateBy, 8) + "\\" + doc.FileUID + "\\");
 
+                //Delete All Data by DocId.
+                result = docInfoRepo.Delete(id.ToString());
+
                 if (Directory.Exists(sPath))
                 {
                     //Delete Folder.
                     DeleteDirectory(sPath);
-
-                    //Delete All Data by DocId.
-                    result = docInfoRepo.Delete(id.ToString());
                 }
             }
             catch (Exception ex)

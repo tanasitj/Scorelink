@@ -57,6 +57,13 @@ namespace Scorelink.BO.Repositories
             }
         }
 
+        public bool CheckUserDup(string username)
+        {
+            using (ScorelinkEntities db = new ScorelinkEntities())
+                return db.Users.Where(x => x.UserName == username).Any();
+
+        }
+
         public bool CheckLogIn(string username, string password)
         {
             using (ScorelinkEntities db = new ScorelinkEntities())

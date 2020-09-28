@@ -37,7 +37,7 @@
             <div class="card">
                 <!-- Head -->
                 <div class="card-header bg-gradient-primary">
-                    <h3 class="card-title"><b><i class="far fa-object-ungroup"></i>Page Preview</b></h3>
+                    <h3 class="card-title"><b><i class="far fa-object-ungroup"></i> Page Preview</b></h3>
                 </div>
                 <table id="tab0" class="table">
                     <tbody>
@@ -103,15 +103,15 @@
                                         </button>
                                         <span class="verticalDivider"></span>
                                         <!-- Document pages display -->
-                                        <button id="singlePageDisplay_shortcut" title="Single page display">
+                                        @*<button id="singlePageDisplay_shortcut" title="Single page display">
                                             <span class="icon icon-sm singleLayoutIcon"></span>
-                                        </button>
+                                        </button>*@
                                         <button id="showThumbnails" class="navigationbarBtn">
                                             <span class="icon thumbnailsIcon"></span>
                                         </button>
-                                        <button class="annotationObjectBtn" title="Rectangle" value="-3">
+                                        @*<button class="annotationObjectBtn" title="Rectangle" value="-3">
                                             <span class="icon rectangleIcon"></span>
-                                        </button>
+                                        </button>*@
                                     </div>
                                 </div>
 
@@ -1872,7 +1872,7 @@
         <div class="col-lg-4">
             <div class="card" style="height:700px">
                 <div class="card-header bg-gradient-primary">
-                    <h3 class="card-title"><b><i class="far fa-edit"></i>Select kind of financial statements</b></h3>
+                    <h3 class="card-title"><b><i class="far fa-edit"></i> Select kind of financial statements</b></h3>
                 </div>
                 <div class="card-body">
                     <!-- Group of default radios - option 1 -->
@@ -1890,17 +1890,17 @@
                         <label><input type="radio" value="Cash Flow" name="Kind_of_Financial">  Cash Flow</label>
                     </div>
                     <!-- Group of default radios - option 4 -->
-                    <div class="custom-control custom-radio">
+                    @*<div class="custom-control custom-radio">
                         <label><input type="radio" value="FootNotes" name="Kind_of_Financial">  FootNotes</label>
-                    </div>
+                    </div>*@
                     <!-- Footnotes-->
                     <!-- Select Dropdown-->
                     <div class="card-body">
-                        <b>  Footnotes No. and Titile</b>
+                        <!--<b>  Footnotes No. and Titile</b>
                         <div class="form-row">
-                            <div class="form-group col-md-2">
+                            <div class="form-group col-md-2">-->
                                 @*<label for="inputFootnote">Footnotes</label>*@
-                                <input type="text" class="form-control" id="inputFootnotes" name="Footnotes" />
+                                <!--<input type="text" class="form-control" id="inputFootnotes" name="Footnotes" />
                             </div>
                             <div class="form-group col-md-7">
                                 <select id="inputNotes" class="form-control">
@@ -1908,19 +1908,18 @@
                                     <option>....</option>
                                 </select>
                             </div>
-                        </div>
+                        </div>-->
                         <br />
-                        <div class="form-row">
+                        @*<div class="form-row">
                             <b class="text-success">Input Footnotes No. and Title</b>
                             <b class="text-success">Select text from Statement image or type in</b>
-                        </div>
+                        </div>*@
                         <div class="form-row">
 
                             <button type="button" id="BtnSelectPage" class="btn btn-block bg-gradient-info">Select this page</button>
                         </div>
                         <div class="form-row">
-                            <b class="text-success">Add the currently displayed page to</b>
-                            <b class="text-success"> a statement</b>
+                            <b class="text-success">Add the currently displayed page to a statement</b>
                         </div>
                     </div>
                 </div>
@@ -1931,7 +1930,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header bg-gradient-primary">
-                    <h3 class="card-title"><b>Select Page List</b></h3>
+                    <h3 class="card-title"><b> Select Page List</b></h3>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
                     </div>
@@ -1963,10 +1962,10 @@
                                     <button type="button" class="btn btn-block bg-gradient-success" data-bind="click: $root.ClickScan">Scan</button>
                                 </td>
                                 <td class="text-center">
-                                    <button type="button" class="btn btn-block bg-gradient-success" data-bind="click: $root.ClickScan_Edit">Scan/Edit</button>
+                                    <button type="button" class="btn btn-block bg-gradient-success" data-bind="enable: CanEdit, click: $root.ClickScan_Edit">Scan/Edit</button>
                                 </td>
                                 <td class="text-center">
-                                    <label><input type="checkbox" value="" disabled></label>
+                                    <label><input type="checkbox" value="" data-bind="checked: CompletedFlag" disabled></label>
                                 </td>
                             </tr>
                         </tbody>
@@ -1976,10 +1975,10 @@
                         <div class="col-md-6"></div>
                         <div class="col-md-6">
                             <div class="text-right">
-                                <button type="button" class="btn btn-light" data-bind="click: $root.ClickSeeResult">See All Results</button>
+                                <input type="button" class="btn btn-light" id ="BtnSeeAllResult" name="BtnSeeAllResult" value="See All Results"/>
                                 <input type="button" class="btn btn-light" id ="BtnExportAll" name="BtnExportAll" value="Export All Results"/>
-                                <button type="button" class="btn btn-light" data-bind="click: $root.ClickSaveScan">Save Scanned</button>
-                                <button type="button" class="btn btn-light" data-bind="click: $root.ClickBack">Back</button>
+                                @*<button type="button" class="btn btn-light" data-bind="click: $root.ClickSaveScan">Save Scanned</button>*@
+                                @*<button type="button" class="btn btn-light" data-bind="click: $root.ClickBack">Back</button>*@
                             </div>
 
                         </div>
@@ -2026,14 +2025,6 @@
     </div>
 </div>
 @section scripts{
-    <!-- bs-custom-file-input -->
-    <script src="https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.1.0.js"
-            type="text/javascript"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            bsCustomFileInput.init();
-        });
-    </script>
     <script src="~/Scripts/Pages/SelectPage.Index.js"></script>
 
     @*  Leadtools .js files*@

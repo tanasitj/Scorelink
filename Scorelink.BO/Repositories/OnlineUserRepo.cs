@@ -139,14 +139,16 @@ namespace Scorelink.BO.Repositories
             try
             {
                 bool chk = false;
-                int iTimeout = Common.getConstNum("TimeOut");
+                if (item != null)
+                {
+                    int iTimeout = Common.getConstNum("TimeOut");
 
-                using (ScorelinkEntities db = new ScorelinkEntities())
+                    using (ScorelinkEntities db = new ScorelinkEntities())
                     //Check existing Online User
-                    if(db.OnlineUsers.Where(x => x.UserId == item.UserId).Any())
+                    if (db.OnlineUsers.Where(x => x.UserId == item.UserId).Any())
                     {
                         //Check User online time.
-                        if(db.OnlineUsers.Where(x => x.UserId == item.UserId && DbFunctions.DiffMinutes(x.OnlineUpdate, DateTime.Now) < iTimeout).Any())
+                        if (db.OnlineUsers.Where(x => x.UserId == item.UserId && DbFunctions.DiffMinutes(x.OnlineUpdate, DateTime.Now) < iTimeout).Any())
                         {
                             chk = true;
                         }
@@ -159,7 +161,7 @@ namespace Scorelink.BO.Repositories
                     {
                         Add(item);
                     }
-
+                }
                 return chk;
             }
             catch (Exception ex)

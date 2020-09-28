@@ -1,12 +1,12 @@
-﻿function DocDetailModel(DocId, DocPageNo, FootnoteNo, PageType,PageTypeName,UserId, date) {
+﻿function DocDetailModel(DocId, DocPageNo, FootnoteNo, PageType, PageTypeName, NoScan) {
     var self = this;
     self.DocId = ko.observable(DocId);
     self.DocPageNo = ko.observable(DocPageNo);
     self.FootnoteNo = ko.observable(FootnoteNo);
     self.PageType = ko.observable(PageType);
     self.PageTypeName = ko.observable(PageTypeName);
-    self.CreateBy = ko.observable(UserId);
-    self.CreateDate = ko.observable(date);
+    self.CanEdit = ko.observable(NoScan === '0' ? true : false);
+    self.CompletedFlag = ko.observable(NoScan > '0' ? false : true);
 }
 var ViewModel = function () {
     var self = this;
@@ -16,7 +16,11 @@ var ViewModel = function () {
     self.FootnoteNo = ko.observable();
     self.PageType = ko.observable();
     self.PageTypeName = ko.observable();
+    self.CanEdit = ko.observable(false);
+    self.CompletedFlag = ko.observable(false);
+
     GetDoclist();
+
     $(document).ready(function () {
         // Event click button select page
         $("#BtnSelectPage").click(function () {
@@ -25,10 +29,11 @@ var ViewModel = function () {
             var Footnotes = "Test Footnotes";
             var Kind_Of_Financial = $("input[name = 'Kind_of_Financial']:checked").val();
             var Type_Page;
-            switch (Kind_Of_Financial) { case "Income Statement": Type_Page = '1';break;
-                case "Balance Sheet": Type_Page = '2';break;
-                case "Cash Flow": Type_Page = '3';break;
-                case "Footnotes":Type_Page = '4';break;
+            switch (Kind_Of_Financial) {
+                case "Income Statement": Type_Page = '1'; break;
+                case "Balance Sheet": Type_Page = '2'; break;
+                case "Cash Flow": Type_Page = '3'; break;
+                case "Footnotes": Type_Page = '4'; break;
                 default:
             }
             var postData = {
@@ -43,6 +48,9 @@ var ViewModel = function () {
                 url: "/SelectPage/Get_SelectPage",
                 data: ko.toJSON(postData),
                 success: function (data) {
+                    if (data == "Dup") {
+                        alert("Duplicate page please select new page.!!");
+                    }
                     GetDoclist();
                 },
                 error: function (err) {
@@ -50,6 +58,10 @@ var ViewModel = function () {
                 }
             });
 
+        });
+
+        $('#btnBack').click(function () {
+            window.location.href = '/Upload/Index';
         });
     });
     //==================================================================================================
@@ -113,7 +125,7 @@ var ViewModel = function () {
                 goSelectPattern(DocId, Type_Page);
             }
         });
-    } 
+    }
     self.ClickScan_Edit = function (data, event) {
         $.redirect("/ScanResult/Index", {
             'docId': data.DocId(),
@@ -132,8 +144,27 @@ var ViewModel = function () {
             type: "POST",
             contentType: "application/json; charset=utf-8",
             data: ko.toJSON(filter),
+            success: function (data) {
+                //get the file name for download
+                window.location = '/ScanResult/Download?file=' + data;
+               // alert("Export data all result already");
+            }
+
+        });
+    });
+    $("#BtnSeeAllResult").click(function () {
+        var filter = {
+            docId: $("#hdId").val()
+
+        }
+        $.ajax({
+            url: "/ScanResult/SeetAllResult",
+            cash: false,
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            data: ko.toJSON(filter),
             success: function () {
-                alert("Export data all result ready");
+
             }
 
         });
@@ -300,9 +331,10 @@ var ViewModel = function () {
                             data.DocPageNo,
                             data.FootnoteNo,
                             data.PageType,
-                            data.PageTypeName
+                            data.PageTypeName,
+                            data.NoScan
                         )
-                    );                   
+                    );
                 });
             }
         })
