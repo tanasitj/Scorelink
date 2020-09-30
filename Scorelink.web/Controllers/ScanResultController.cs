@@ -25,18 +25,40 @@ namespace Scorelink.web.Controllers
         ScanEditRepo GetField = new ScanEditRepo();
         public ActionResult Index(int docId, int pageType, string pageTypeName)
         {
-            //Get Document Info data.
-            var Info = GetField.GetInfo(docId);
-            //Get Document Detail data.
-            var Details = GetField.GetDetails(docId,pageType.ToString());
-            string sPagePath = Consts.sUrl + "/FileUploads/" + Common.GenZero(Info.CreateBy, 8) + "/" + Info.FileUID + "/";
-            var data = docInfoRepo.Get(docId);
-            ViewBag.docId = data.DocId;
-            ViewBag.PageFileName = data.FileName;
-            ViewBag.PageUrl = sPagePath + "SL" + Common.GenZero(Details.PageType, 5) + ".tif";
-            ViewBag.TempPath = sPagePath;
-            ViewBag.PageType = pageType;
-            ViewBag.PageTypeName = pageTypeName;
+            if (Session["UserId"] == null)
+            {
+                Response.Redirect("/Home/Index");
+            }
+            else
+            {
+                ViewBag.UserId = Session["UserId"].ToString();
+                int iUserId = 0;
+                Int32.TryParse(Session["UserId"].ToString(), out iUserId);
+
+                //Get User Info.
+                UserRepo userRepo = new UserRepo();
+                var userDB = userRepo.Get(iUserId);
+                ViewBag.Name = userDB.Name;
+                ViewBag.Surname = userDB.Surname;
+
+                //Check and Update online date time.
+                OnlineUserRepo onlineRepo = new OnlineUserRepo();
+                var online = onlineRepo.Get(iUserId);
+                onlineRepo.CheckTimeOut(online);
+
+                //Get Document Info data.
+                var Info = GetField.GetInfo(docId);
+                //Get Document Detail data.
+                var Details = GetField.GetDetails(docId, pageType.ToString());
+                string sPagePath = Consts.sUrl + "/FileUploads/" + Common.GenZero(Info.CreateBy, 8) + "/" + Info.FileUID + "/";
+                var data = docInfoRepo.Get(docId);
+                ViewBag.docId = data.DocId;
+                ViewBag.PageFileName = data.FileName;
+                ViewBag.PageUrl = sPagePath + "SL" + Common.GenZero(Details.PageType, 5) + ".tif";
+                ViewBag.TempPath = sPagePath;
+                ViewBag.PageType = pageType;
+                ViewBag.PageTypeName = pageTypeName;
+            }
             return View("ScanResult", objModel);
         }
        public List<DataResult> Grid_Row(int docId,string PageType)
@@ -161,7 +183,7 @@ namespace Scorelink.web.Controllers
                 return Json(ex.Message);
             }
         }
-        public JsonResult SeetAllResult(int docId)
+        public JsonResult SeeAllResult(int docId)
         {
             var Info = docInfoRepo.Get(docId);
             String FolderPath = Server.MapPath("..\\FileUploads\\" + Common.GenZero(Info.CreateBy, 8) + "\\" + Info.FileUID + "\\");
