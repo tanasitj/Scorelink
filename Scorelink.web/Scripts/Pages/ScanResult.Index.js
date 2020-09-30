@@ -42,10 +42,15 @@ var ViewModel = function () {
         $("#tbResult2 tbody tr").on("click", function (event) { 
             tr = $(this).closest("tr").find("td").toggleClass("row_selected");
            // tr = $(this).closest("tr").find("td").addClass("selected");
-            footnote = $(this).closest("tr").find('td:eq(1)').text();
-            digitize_account = $(this).closest("tr").find('td:eq(3)').text();
-            amount = $(this).closest("tr").find('td:eq(6)').text();
-            modified = $(this).closest("tr").find('td:eq(7)').text();   
+            footnote = $("#hdFootnote").val() + $(this).closest("tr").find('td:eq(1)').text();
+            digitize_account = $("#hdDigitize").val() + $(this).closest("tr").find('td:eq(3)').text();
+            amount = $("#hdAmount").val() + $(this).closest("tr").find('td:eq(6)').text();
+            modified = $(this).closest("tr").find('td:eq(7)').text();
+
+            $("#hdFootnote").val(footnote);
+            $("#hdDigitize").val(digitize_account);
+            $("#hdAmount").val(amount);
+
         });
         //set index column selected
         $('td').click(function () {
@@ -69,32 +74,36 @@ var ViewModel = function () {
         });
         $("#BtnMerge").click(function () {
             //set value row selected
+            //Footnote
             var footnote2 = $('#tbResult2 > tbody > tr').eq(row_index).find('td:eq(1)').text();
-            if ((footnote2 != "") && (footnote != "")) {
-                footnote2 = $('#tbResult2 > tbody > tr').eq(row_index).find('td:eq(1)').text() + "," + footnote;
+            if ((footnote2 != "") && ($("#hdFootnote").val() != "")) {
+                footnote2 = $("#hdFootnote").val() + "," + $('#tbResult2 > tbody > tr').eq(row_index).find('td:eq(1)').text();
             }
             else {
-                footnote2 = $('#tbResult2 > tbody > tr').eq(row_index).find('td:eq(1)').text() + footnote;
+                footnote2 = $("#hdFootnote").val() + $('#tbResult2 > tbody > tr').eq(row_index).find('td:eq(1)').text();
             }
-            var digitize_account2 = $('#tbResult2 > tbody > tr').eq(row_index).find('td:eq(3)').text() + " " + digitize_account;
+
+            //Digitize
+            var digitize_account2 = $("#hdDigitize").val() + " " + $('#tbResult2 > tbody > tr').eq(row_index).find('td:eq(3)').text();
+
+            //Amount
             var amount2 = $('#tbResult2 > tbody > tr').eq(row_index).find('td:eq(6)').text();
-            if ((amount2 != "") && (amount != "")) {
+            if ((amount2 != "") && ($("#hdAmount").val() != "")) {
                 alert("Cannot merge row please check data");
                 $('#tbResult2 > tbody > tr').removeClass("rowOnCheck");
                 return false;
             }
             else {
-                amount2 = $('#tbResult2 > tbody > tr').eq(row_index).find('td:eq(6)').text() + amount;
+                amount2 = $("#hdAmount").val() + $('#tbResult2 > tbody > tr').eq(row_index).find('td:eq(6)').text();
             }
             tr.remove();
-            document.getElementById("#tbResult2").deleteRow(row_index);
-            var html =
-                "<tr><td></td><td>" + footnote2 + "</td><td></td><td>" + digitize_account2 + "</td><td></td><td></td><td>"
-                + amount2 + "</td><td>*</td><td></td></tr>";
-            
-            $('#tbResult2 > tbody > tr').eq(row_index).after(html);
 
-           // $("#tbResult").find("td").removeClass("selected");
+            //Delete Row
+            document.getElementById("tbResult2").deleteRow(row_index - 1);
+
+            //Merge Row
+            var html = "<tr><td></td><td>" + footnote2 + "</td><td></td><td>" + digitize_account2 + "</td><td></td><td></td><td>" + amount2 + "</td><td>*</td><td></td></tr>";
+            $('#tbResult2 > tbody > tr').eq(row_index).after(html);
         });
         $("#BtnDelete").click(function () {
             tr.remove(); 
@@ -132,7 +141,6 @@ var ViewModel = function () {
             //var type_event = "insert";
             edit_value();
         });
-
         $("#BtnCancel").click(function () {
             var filter = {
                 docId: $("#hddocId").val(),
@@ -270,7 +278,6 @@ var ViewModel = function () {
         } // end if
         return tab_text;
     }
-
     function ExportHTMLTableToExcel(table1,table2,sheetName,filename) {
         var tab_text = ""
         var final_text = "";
@@ -355,7 +362,6 @@ var ViewModel = function () {
             }
         }
     }
-
     function isNullOrUndefinedWithEmpty(text) {
         if (text == undefined)
             return true;

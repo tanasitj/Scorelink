@@ -158,7 +158,7 @@ var ViewModel = function () {
 
         }
         $.ajax({
-            url: "/ScanResult/SeetAllResult",
+            url: "/ScanResult/SeeAllResult",
             cash: false,
             type: "POST",
             contentType: "application/json; charset=utf-8",

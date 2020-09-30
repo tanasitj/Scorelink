@@ -1,123 +1,125 @@
 ﻿@model Scorelink.MO.DataModel.ResultModel
 @{
-    ViewBag.Title = "ScanResult";
+    ViewBag.Title = "Scan Result";
 }
 @{
     var data = ViewData["Message"];
     //Layout = null;
 
 }
-    <head>
-        <title>KnockoutJS foreach binding</title>
-        <meta charset="utf-8" />
-        <title id="demoTitle">LEADTOOLS Document Viewer Demo</title>
-        <link rel="shortcut icon" type="image/x-icon" href="~/plugins/Leadtools/Resources/Images/favicon.ico" />
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=IE8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0" />
+<head>
+    <title>KnockoutJS foreach binding</title>
+    <meta charset="utf-8" />
+    <title id="demoTitle">LEADTOOLS Document Viewer Demo</title>
+    <link rel="shortcut icon" type="image/x-icon" href="~/plugins/Leadtools/Resources/Images/favicon.ico" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=IE8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0" />
 
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
-        <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/DocumentViewerDemo.css" type="text/css" />
-        <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/Toolbars.css" type="text/css" />
-        <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/ImageViewerStyles.css" type="text/css" />
-        <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/ImageViewerThumbnailStyles.css" type="text/css" />
-        <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/Sidebar.css" type="text/css" />
-        <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/Table.css" type="text/css" />
-        <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/Dialogs.css" type="text/css" />
-        <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/Icons.css" type="text/css" />
-        <link rel="stylesheet" href="~/plugins/css/ediTable.min.css" />
-        <script src="~/plugins/jquery/jquery.min.js"></script>
-        <script src="~/plugins/jquery/ediTable.min.js"></script>
+    <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/DocumentViewerDemo.css" type="text/css" />
+    <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/Toolbars.css" type="text/css" />
+    <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/ImageViewerStyles.css" type="text/css" />
+    <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/ImageViewerThumbnailStyles.css" type="text/css" />
+    <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/Sidebar.css" type="text/css" />
+    <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/Table.css" type="text/css" />
+    <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/Dialogs.css" type="text/css" />
+    <link rel="stylesheet" href="~/plugins/Leadtools/Resources/Styles/Icons.css" type="text/css" />
+    <link rel="stylesheet" href="~/plugins/css/ediTable.min.css" />
+    <script src="~/plugins/jquery/jquery.min.js"></script>
+    <script src="~/plugins/jquery/ediTable.min.js"></script>
 
-        <style type="text/css">
-            * {
-                box-sizing: border-box;
-            }
+    <style type="text/css">
+        * {
+            box-sizing: border-box;
+        }
 
-            body {
-                font-family: Arial;
-                font-size: 12pt;
-            }
+        body {
+            font-family: Arial;
+            font-size: 12pt;
+        }
 
-            table {
-                border-collapse: collapse;
-                background: white;
-                table-layout: fixed;
-                width: 100%;
-            }
+        table {
+            border-collapse: collapse;
+            background: white;
+            table-layout: fixed;
+            width: 100%;
+        }
 
-            th, td {
-                padding: 8px 16px;
-                border: 1px solid #ddd;
-                width: 160px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-            }
+        th, td {
+            padding: 8px 16px;
+            border: 1px solid #ddd;
+            width: 160px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
 
-            .pane {
-                background: #eee;
-            }
+        .pane {
+            background: #eee;
+        }
 
-            .pane-hScroll {
-                overflow: auto;
-                width: auto;
-                /*            background: green;*/
-            }
+        .pane-hScroll {
+            overflow: auto;
+            width: auto;
+            /*            background: green;*/
+        }
 
-            .pane-vScroll {
-                overflow-y: auto;
-                overflow-x: hidden;
-                height: 600px;
-                /*            background: red;*/
-            }
-            /*Hide colum*/
-            .Grid td:nth-child(3), th:nth-child(3),
-            .Grid td:nth-child(5), th:nth-child(5),
-            .Grid td:nth-child(6), th:nth-child(6),
-            .Grid td:nth-child(9), th:nth-child(9) {
-                display: none
-            }
-            .Grid {
+        .pane-vScroll {
+            overflow-y: auto;
+            overflow-x: hidden;
+            height: 600px;
+            /*            background: red;*/
+        }
+        /*Hide colum*/
+        .Grid td:nth-child(3), th:nth-child(3),
+        .Grid td:nth-child(5), th:nth-child(5),
+        .Grid td:nth-child(6), th:nth-child(6),
+        .Grid td:nth-child(9), th:nth-child(9) {
+            display: none
+        }
+
+        .Grid {
+            border: solid 1px;
+            width: 100%
+        }
+
+            .Grid td {
                 border: solid 1px;
-                width: 100%
             }
 
-                .Grid td {
-                    border: solid 1px;
+            .Grid .cellEditing {
+                padding: 0;
+            }
+
+                .Grid .cellEditing input[type=text] {
+                    width: 100%;
+                    border: 0;
+                    background-color: rgb(255,253,210);
                 }
 
-                .Grid .cellEditing {
-                    padding: 0;
-                }
-
-                    .Grid .cellEditing input[type=text] {
-                        width: 100%;
-                        border: 0;
-                        background-color: rgb(255,253,210);
-                    }
-                .Grid td {
-                    cursor: pointer;
-                }
-
-                .Grid .selected {
-                    background-color: skyblue;
-                }
-
-            .row_selected {
-                color: blue;
+            .Grid td {
                 cursor: pointer;
-                font-weight: normal;
+            }
+
+            .Grid .selected {
                 background-color: skyblue;
             }
-            .changeBackground {
-                background-color: white;
-                
-            }
-        </style>
-        @*<style>
+
+        .row_selected {
+            color: blue;
+            cursor: pointer;
+            font-weight: normal;
+            background-color: skyblue;
+        }
+
+        .changeBackground {
+            background-color: white;
+        }
+    </style>
+    @*<style>
             .blogdesire-wrapper {
                 margin: 20px auto;
                 padding: 20px;
@@ -142,16 +144,20 @@
             }
         </style>*@
 
-        <script src="//code.jquery.com/jquery-1.12.4.js"></script>
-        <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-    </head>
+</head>
 <input type="hidden" id="hddocId" value="@ViewBag.docId" />
 <input type="hidden" id="hdTempPath" value="@ViewBag.TempPath" />
 <input type="hidden" id="hdPDFFile" value="@ViewBag.PageUrl" />
 <input type="hidden" id="hdPageType" value="@ViewBag.PageType" />
 <input type="hidden" id="hdPageTypeName" value="@ViewBag.PageTypeName" />
+
+<input type="text" id="hdFootnote" />
+<input type="text" id="hdDigitize" />
+<input type="text" id="hdAmount" />
 
 <body>
     <div class="container-fluid">
@@ -227,14 +233,14 @@
                                             <span class="verticalDivider"></span>
                                             <!-- Document pages display -->
                                             @*<button id="singlePageDisplay_shortcut" title="Single page display">
-                                                <span class="icon icon-sm singleLayoutIcon"></span>
-                                            </button>*@
+                                                    <span class="icon icon-sm singleLayoutIcon"></span>
+                                                </button>*@
                                             <button id="showThumbnails" class="navigationbarBtn">
                                                 <span class="icon thumbnailsIcon"></span>
                                             </button>
                                             @*<button class="annotationObjectBtn" title="Rectangle" value="-3">
-                                                <span class="icon rectangleIcon"></span>
-                                            </button>*@
+                                                    <span class="icon rectangleIcon"></span>
+                                                </button>*@
                                         </div>
                                     </div>
 
