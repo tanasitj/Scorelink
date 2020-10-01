@@ -40,17 +40,8 @@ var ViewModel = function () {
         });
         //set value row selected
         $("#tbResult2 tbody tr").on("click", function (event) { 
-            tr = $(this).closest("tr").find("td").toggleClass("row_selected");
-           // tr = $(this).closest("tr").find("td").addClass("selected");
-            footnote = $("#hdFootnote").val() + $(this).closest("tr").find('td:eq(1)').text();
-            digitize_account = $("#hdDigitize").val() + $(this).closest("tr").find('td:eq(3)').text();
-            amount = $("#hdAmount").val() + $(this).closest("tr").find('td:eq(6)').text();
-            modified = $(this).closest("tr").find('td:eq(7)').text();
-
-            $("#hdFootnote").val(footnote);
-            $("#hdDigitize").val(digitize_account);
-            $("#hdAmount").val(amount);
-
+            tr = $(this).closest("tr").toggleClass("row_selected");
+           
         });
         //set index column selected
         $('td').click(function () {
@@ -74,36 +65,49 @@ var ViewModel = function () {
         });
         $("#BtnMerge").click(function () {
             //set value row selected
-            //Footnote
-            var footnote2 = $('#tbResult2 > tbody > tr').eq(row_index).find('td:eq(1)').text();
-            if ((footnote2 != "") && ($("#hdFootnote").val() != "")) {
-                footnote2 = $("#hdFootnote").val() + "," + $('#tbResult2 > tbody > tr').eq(row_index).find('td:eq(1)').text();
+          
+        
+            var footnote = $('#tbResult2').find('tr.row_selected').eq(0).find('td:eq(1)').text();
+            var footnote2 = $('#tbResult2').find('tr.row_selected').eq(1).find('td:eq(1)').text();
+            if ((footnote2 != "") && (footnote != "")) {
+                footnote2 = footnote2 + "," + footnote;
             }
-            else {
-                footnote2 = $("#hdFootnote").val() + $('#tbResult2 > tbody > tr').eq(row_index).find('td:eq(1)').text();
+            else
+            {
+                footnote2 = footnote2 + footnote;
             }
 
-            //Digitize
-            var digitize_account2 = $("#hdDigitize").val() + " " + $('#tbResult2 > tbody > tr').eq(row_index).find('td:eq(3)').text();
-
-            //Amount
-            var amount2 = $('#tbResult2 > tbody > tr').eq(row_index).find('td:eq(6)').text();
-            if ((amount2 != "") && ($("#hdAmount").val() != "")) {
+           
+            var digitize_account2 = $('#tbResult2').find('tr.row_selected').find('td:eq(3)').text(); 
+            var idx_1 = $('#tbResult2').find('tr.row_selected')[0].rowIndex;
+            var idx_2 = $('#tbResult2').find('tr.row_selected')[1].rowIndex;
+            if (idx_2 - idx_1 != 1) {
+                alert("Cannot merge row please select row again!");
+                $('#tbResult2').find('tr.row_selected').toggleClass("row_selected");
+                return false;     
+            }   
+            
+            var amount = $('#tbResult2').find('tr.row_selected').eq(0).find('td:eq(6)').text();
+            var amount2 = $('#tbResult2').find('tr.row_selected').eq(1).find('td:eq(6)').text();
+            
+            if ((amount2 != "") && (amount != "")) {
                 alert("Cannot merge row please check data");
-                $('#tbResult2 > tbody > tr').removeClass("rowOnCheck");
+                $('#tbResult2').find('tr.row_selected').toggleClass("row_selected");
                 return false;
             }
             else {
-                amount2 = $("#hdAmount").val() + $('#tbResult2 > tbody > tr').eq(row_index).find('td:eq(6)').text();
+                var amount2 = $('#tbResult2').find('tr.row_selected').find('td:eq(6)').text();
             }
+            
             tr.remove();
+            $('#tbResult2').find('tr.row_selected').find('td:eq(1)').text(footnote2);
+            $('#tbResult2').find('tr.row_selected').find('td:eq(3)').text(digitize_account2);
+            $('#tbResult2').find('tr.row_selected').find('td:eq(6)').text(amount2);
 
-            //Delete Row
-            document.getElementById("tbResult2").deleteRow(row_index - 1);
+            $('#tbResult2').find('tr.row_selected').toggleClass("row_selected");
+        
+            run_rownumber();
 
-            //Merge Row
-            var html = "<tr><td></td><td>" + footnote2 + "</td><td></td><td>" + digitize_account2 + "</td><td></td><td></td><td>" + amount2 + "</td><td>*</td><td></td></tr>";
-            $('#tbResult2 > tbody > tr').eq(row_index).after(html);
         });
         $("#BtnDelete").click(function () {
             tr.remove(); 
@@ -141,6 +145,7 @@ var ViewModel = function () {
             //var type_event = "insert";
             edit_value();
         });
+
         $("#BtnCancel").click(function () {
             var filter = {
                 docId: $("#hddocId").val(),
@@ -280,6 +285,7 @@ var ViewModel = function () {
         } // end if
         return tab_text;
     }
+
     function ExportHTMLTableToExcel(table1,table2,sheetName,filename) {
         var tab_text = ""
         var final_text = "";
@@ -364,6 +370,7 @@ var ViewModel = function () {
             }
         }
     }
+
     function isNullOrUndefinedWithEmpty(text) {
         if (text == undefined)
             return true;
@@ -384,29 +391,15 @@ var ViewModel = function () {
         $(".Grid td:nth-child(8),th:nth-child(8)").hide();  //Modified
         //-----------------------------------------------------
         var row = $("#tbResult2 tbody tr:last-child").clone(true);
-        $("#tbResult2 tbody tr").remove();
-        $.each(model, function (index) {
-            var financials = this;
-            $("td", row).eq(1).html(financials.Footnote_No);
-            $("td", row).eq(2).html('<select name = "Combo" id = "Combo" class="form-control input-sm">\n\
-                <option value = "Low">Major0</option>\n\
+      
+        $('#tbResult2 tbody tr').each(function (row_num) {
+            $('#tbResult2 > tbody > tr').eq(row_num).find('td:eq(2)').html('<select name = "Combo" id = "Combo" class="form-control input-sm">\n\
+                <option value="Low">Major0</option>\n\
                 <option value="Normal">Major1</option>\n\
                 <option value="High">Major2</option></select>');
-            $("td", row).eq(3).html(financials.Digitized_Account_Title);
-            $("td", row).eq(3).css("background-color", "#ffd800");
-            
-            $("td", row).eq(4).html('<select id="select_' + index +'" class="form-control input-sm"></select>');
-            post_data.push(financials.Digitized_Account_Title);
-          
-            $("td", row).eq(4).css("background-color", "#ffd800");
-            $("td", row).eq(5).html(financials.Standard_Title);
-            $("td", row).eq(6).html(financials.Amount);
-            $("td", row).eq(7).html(financials.Modified);
-            $("td", row).eq(8).html(financials.CLCTCD);
-            $("#tbResult2").append(row);
-            row = $("#tbResult2 tbody tr:last-child").clone(true);
+            $('#tbResult2 > tbody > tr').eq(row_num).find('td:eq(4)').html('<select id="select_' + row_num + '" class="form-control input-sm"></select>');
+            post_data.push($('#tbResult2 > tbody > tr').eq(row_num).find('td:eq(3)').text());
         });
-        
   
         $.ajax({
             url: "/ResultDict/AssignGrid",
@@ -462,7 +455,7 @@ var ViewModel = function () {
         $("#BtnInsert").attr("disabled", true);
         $("#BtnDelete").attr("disabled", true);
         $("#BtnCommit").attr("disabled", true);
-        $("#BtnExport").attr("disabled", true);
+        $("#BtnExport").attr("disabled", true); 
         $("#BtnCancel").attr("disabled", true);
         $.ajax({
             url: '/ScanResult/AssignGrid',

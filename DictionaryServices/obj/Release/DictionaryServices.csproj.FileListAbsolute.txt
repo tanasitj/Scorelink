@@ -172,3 +172,5 @@ C:\Users\cyber\source\repos\DictionaryWeb\DictionaryServices\obj\Release\Diction
 C:\Users\cyber\source\repos\DictionaryWeb\DictionaryServices\obj\Release\DictionaryServices.csproj.CopyComplete
 C:\Users\cyber\source\repos\DictionaryWeb\DictionaryServices\obj\Release\DictionaryServices.dll
 C:\Users\cyber\source\repos\DictionaryWeb\DictionaryServices\obj\Release\DictionaryServices.pdb
+C:\Users\cyber\source\repos\DictionaryWeb\DictionaryServices\bin\Dict\ConvertOCRResult.xlsx
+C:\Users\cyber\source\repos\DictionaryWeb\DictionaryServices\bin\Dict\ConvertStandard.xlsx

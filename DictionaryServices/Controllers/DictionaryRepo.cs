@@ -5,13 +5,14 @@ using SIO = System.IO;
 using Microsoft.VisualBasic;
 using System;
 using OXml = OpenXML;
-//using DocumentFormat.OpenXml.Packaging;
-//using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using System.Collections;
 using Microsoft.VisualBasic.CompilerServices;
 using DictionaryServices.Models;
+using System.IO;
+using System.Net.Http;
+using System.Web;
 
 namespace DictionaryServices.Controllers
 {
@@ -96,10 +97,18 @@ namespace DictionaryServices.Controllers
         private static Dictionary<string, Dictionary<string, standard>> pStandardDictionary;
         private static Dictionary<string, string> pConvertWordDictionary= null;
         private static Dictionary<string, Dictionary<string, string>> pForcedConvertDictionary;
+        private string convertOCRPath = "";
+        private string convertStand = "";
         public DictionaryRepo()
         {
-          ReadyRecoverDictionary();
-          ReadConvertStandard();
+
+
+
+
+            convertOCRPath =  HttpContext.Current.Server.MapPath("~/Dict/") + "ConvertOCRResult.xlsx"  ;
+            convertStand = HttpContext.Current.Server.MapPath("~/Dict/") + "ConvertStandard.xlsx";
+            ReadyRecoverDictionary();
+            ReadConvertStandard();
          
         }
 
@@ -109,7 +118,8 @@ namespace DictionaryServices.Controllers
         {
 
             //string DictPath = SIO.Path.Combine(FCCS.PresetValues.EnvironmentPath.Dicts, LangPath, FileName);
-            string DictPath = "C:\\SRC\\Scorelink\\Dicts\\th\\ConvertOCRResult.xlsx";
+           // string DictPath = "C:\\Users\\cyber\\source\\repos\\DictionaryWeb\\DictionaryWeb\\Dicts\\th\\ConvertOCRResult.xlsx";
+            string DictPath = convertOCRPath;
             using (var openXML = new OXml.SpreadSheets())
             {
 
@@ -117,7 +127,7 @@ namespace DictionaryServices.Controllers
                 pRecoverDictionary.Add("INCOME STATEMENT", new List<string>());
                 pRecoverDictionary.Add("BALANCE SHEET", new List<string>());
                 pRecoverDictionary.Add("CASH FLOW STATEMENT", new List<string>());
-                using (var document = openXML.OpenSpreadsheetDocument(DictPath,false))
+                using (var document = openXML.OpenSpreadsheetDocument(DictPath, false))
                 {
                     var wbPart = document.WorkbookPart;
                     var stringTable = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault();
@@ -154,7 +164,8 @@ namespace DictionaryServices.Controllers
         public Dictionary<string, Dictionary<string, standard>> ReadConvertStandard()
         {
            
-            string DictPath = "C:\\SRC\\Scorelink\\Dicts\\th\\ConvertStandard.xlsx";
+           // string DictPath = "C:\\Users\\cyber\\source\\repos\\DictionaryWeb\\DictionaryWeb\\Dicts\\th\\ConvertStandard.xlsx";
+            string DictPath = convertStand;
             using (var openXML = new OXml.SpreadSheets())
             {
 
