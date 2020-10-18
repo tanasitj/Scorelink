@@ -99,7 +99,7 @@ namespace Scorelink.web.Controllers
                 {
                     DocumentDetailRepo docDetailRepo = new DocumentDetailRepo();
                     docDetailRepo.Add(docDetail);
-                    sChk = "Ok";
+                    sChk = docPageNo;
                 }
                 return Json(sChk, JsonRequestBehavior.AllowGet);
             }

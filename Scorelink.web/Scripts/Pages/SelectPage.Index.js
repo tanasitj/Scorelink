@@ -49,7 +49,9 @@ var ViewModel = function () {
                 data: ko.toJSON(postData),
                 success: function (data) {
                     if (data == "Dup") {
-                        alert("Duplicate page please select new page.!!");
+                        alert("Duplicate page select, Please select new page.");
+                    } else {
+                        alert("Page "+ data +" selected already.");
                     }
                     GetDoclist();
                 },
@@ -146,7 +148,7 @@ var ViewModel = function () {
             data: ko.toJSON(filter),
             success: function (data) {
                 //get the file name for download
-                window.location = '/ScanResult/Download?file=' + data;
+                window.location = '/ScanResult/Download?file=' + data + '&docId=' + $("#hdId").val();
                // alert("Export data all result already");
             }
 
