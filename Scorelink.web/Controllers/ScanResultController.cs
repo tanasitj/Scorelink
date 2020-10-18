@@ -107,12 +107,17 @@ namespace Scorelink.web.Controllers
             var Info = docInfoRepo.Get(docId);
             //Get Document Detail data.
             String FolderPath = Server.MapPath("..\\FileUploads\\" + Common.GenZero(Info.CreateBy, 8) + "\\" + Info.FileUID + "\\");
-            String UrlPath = Common.getConstTxt("sUrl") + "/FileUploads/" + Common.GenZero(Info.CreateBy, 8) + "/" + Info.FileUID + "/";
+            //String UrlPath = Common.getConstTxt("sUrl") + "/FileUploads/" + Common.GenZero(Info.CreateBy, 8) + "/" + Info.FileUID + "/";
+            String UrlPath = "~/FileUploads/" + Common.GenZero(Info.CreateBy, 8) + "/" + Info.FileUID + "/";
             List<string> files = new List<string>();
             string Statement = FolderPath + "Tmp001.csv";
             string BalanceSheet = FolderPath + "Tmp002.csv";
             string Cashflow = FolderPath + "Tmp003.csv";
-            var fileName = "AllReSult" + ".xlsx";
+            //var fileName = "AllReSult" + ".xlsx";
+            string sDateTime = DateTime.Now.ToString("yyyyMMddHHmmssFFFF");
+            var UserFileName = "ARS" + Info.FileUID + ".xlsx";
+            var TmpFileName = "EX" + sDateTime + ".xlsx";
+
             //Check File for insert parameter
             try
             {
@@ -135,8 +140,8 @@ namespace Scorelink.web.Controllers
                     //CombineFiles(files, FolderPath, UrlPath);
 
                     //Save the file to server temp folder
-                    //Save the file to server temp folder
-                    string fullPath = Path.Combine(Server.MapPath("~/temp"), fileName);
+                    //string fullPath = Path.Combine(Server.MapPath("~/temp"), fileName);
+                    string TmpPath = Path.Combine(Server.MapPath(UrlPath), TmpFileName);
 
                     Workbook newbook = new Workbook();
                     newbook.Version = ExcelVersion.Version2013;
@@ -153,9 +158,10 @@ namespace Scorelink.web.Controllers
                             }
                         }
                         //create file to save on server
-                        newbook.SaveToFile(FolderPath + "AllReSult.xlsx", ExcelVersion.Version2013);
+                        //newbook.SaveToFile(FolderPath + "AllReSult.xlsx", ExcelVersion.Version2013);
+                        newbook.SaveToFile(FolderPath + UserFileName, ExcelVersion.Version2013);
                         //create file to folder temp for client download
-                        newbook.SaveToFile(fullPath, ExcelVersion.Version2013);
+                        newbook.SaveToFile(TmpPath, ExcelVersion.Version2013);
 
                     }
 
@@ -165,18 +171,22 @@ namespace Scorelink.web.Controllers
             {
                 return Json(ex.Message);
             }
-            return Json(new { fileName = fileName });
+            //return Json(new { fileName = fileName });
             //return Json("Success");
+            return Json(TmpFileName);
         }
-        public ActionResult Download(string fileName)
+        public ActionResult Download(string file, int docId)
         {
             //Get the temp folder and file path in server
             try
             {
-                string fullPath = Path.Combine(Server.MapPath("~/temp"), "AllReSult.xlsx");
+                var Info = docInfoRepo.Get(docId);
+                String UrlPath = "~/FileUploads/" + Common.GenZero(Info.CreateBy, 8) + "/" + Info.FileUID + "/";
+
+                string fullPath = Path.Combine(Server.MapPath(UrlPath), file);
                 byte[] fileByteArray = System.IO.File.ReadAllBytes(fullPath);
                 System.IO.File.Delete(fullPath);
-                return File(fileByteArray, "application/vnd.ms-excel", fileName);
+                return File(fileByteArray, "application/vnd.ms-excel", file);
             }
             catch (Exception ex)
             {
