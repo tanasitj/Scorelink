@@ -24,6 +24,8 @@ var ViewModel = function () {
     var area1 = {};
     var area2 = {};
     var area3 = {};
+    var area4 = {};
+    var area5 = {};
 
     setAreaValue($("#hdPatternNo").val());
 
@@ -37,6 +39,8 @@ var ViewModel = function () {
             area1,
             area2,
             area3,
+            area4,
+            area5,
             ]
     });
 
@@ -131,20 +135,24 @@ var ViewModel = function () {
     function setAreaValue(patternNo) {
         if (patternNo == "1") {
             $('img#pattern').attr("src", "../Content/img/Pattern/OCRArea_Pattern1n.png");
-            area1 = { x: 78, y: 145, width: 122, height: 550, };
-            area2 = { x: 203, y: 145, width: 22, height: 550, };
-            area3 = { x: 228, y: 145, width: 78, height: 550, };
+            area1 = { x: 78, y: 145, width: 122, height: 450, };
+            area2 = { x: 223, y: 145, width: 22, height: 450, };
+            area3 = { x: 270, y: 145, width: 60, height: 450, };
         } else if (patternNo == "2") {
             $('img#pattern').attr("src", "../Content/img/Pattern/OCRArea_Pattern2n.png");
-            area1 = { x: 78, y: 145, width: 122, height: 550, };
-            area2 = { x: 223, y: 145, width: 22, height: 550, };
-            area3 = { x: 248, y: 145, width: 78, height: 550, };
+            area1 = { x: 78, y: 145, width: 122, height: 450, };
+            area2 = { x: 223, y: 145, width: 22, height: 450, };
+            area3 = { x: 270, y: 145, width: 60, height: 450, };
+            area4 = { x: 340, y: 145, width: 60, height: 450, };
         } else if (patternNo == "3") {
             $('img#pattern').attr("src", "../Content/img/Pattern/OCRArea_Pattern3n.png");
-            area1 = { x: 78, y: 145, width: 122, height: 550, };
-            area2 = { x: 203, y: 145, width: 22, height: 550, };
-            area3 = { x: 248, y: 145, width: 78, height: 550, };
-        } else if (patternNo == "4") {
+            area1 = { x: 78, y: 145, width: 122, height: 450, };
+            area2 = { x: 223, y: 145, width: 22, height: 450, };
+            area3 = { x: 270, y: 145, width: 60, height: 450, };
+            area4 = { x: 340, y: 145, width: 60, height: 450, };
+            area5 = { x: 410, y: 145, width: 60, height: 450, };
+        }
+        /*} else if (patternNo == "4") {
             $('img#pattern').attr("src", "../Content/img/Pattern/OCRArea_Pattern4n.png");
             area1 = { x: 78, y: 145, width: 122, height: 550, };
             area2 = { x: 223, y: 145, width: 22, height: 550, };
@@ -158,7 +166,7 @@ var ViewModel = function () {
             area1 = { x: 78, y: 145, width: 122, height: 550, };
             area2 = { x: 203, y: 145, width: 22, height: 550, };
             area3 = { x: 228, y: 145, width: 78, height: 550, };
-        }
+        }*/
     }
 }
 

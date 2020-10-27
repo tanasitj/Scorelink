@@ -33,7 +33,7 @@ namespace DictionaryServices.Controllers
             repLst.Add(statementName_CF);
             string strStatementName;
             string KeyCLCTCD="";
-            string strwCLCTCD="";
+            string strwCLCTCD="0000";
             string strCLCTCD="";
             int distance = 0;
             List<List<string>> recoverList = new List<List<string>>();

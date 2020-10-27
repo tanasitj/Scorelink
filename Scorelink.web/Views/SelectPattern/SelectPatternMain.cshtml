@@ -39,70 +39,6 @@
                 <div class="card">
                     <!-- HEAD -->
                     <div class="card-header bg-gradient-primary">
-                        <h3 class="card-title"><b><i class="far fa-object-ungroup"></i> Select Pattern For Scan</b></h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="form-group text-center">
-                            <table id="tab1" class="table table-bordered">
-                                <thead class="bg-gray-light">
-                                    <tr class="text-center">
-                                        <th><input id="rdPattern" type="radio" name="rdPattern" value="1" checked /></th>
-                                        <th><input id="rdPattern" type="radio" name="rdPattern" value="2" /></th>
-                                        <th><input id="rdPattern" type="radio" name="rdPattern" value="3" /></th>
-                                        <th><input id="rdPattern" type="radio" name="rdPattern" value="4" /></th>
-                                        <th><input id="rdPattern" type="radio" name="rdPattern" value="5" /></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="text-center">
-                                        <td>
-                                            <img id="Pattern1" src="~/Content/img/Pattern/OCRArea_Pattern1n.png" />
-                                        </td>
-                                        <td>
-                                            <img id="Pattern1" src="~/Content/img/Pattern/OCRArea_Pattern2n.png" />
-                                        </td>
-                                        <td>
-                                            <img id="Pattern1" src="~/Content/img/Pattern/OCRArea_Pattern3n.png" />
-                                        </td>
-                                        <td>
-                                            <img id="Pattern1" src="~/Content/img/Pattern/OCRArea_Pattern4n.png" />
-                                        </td>
-                                        <td>
-                                            <img id="Pattern1" src="~/Content/img/Pattern/OCRArea_Pattern5n.png" />
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="card-footer text-center">
-                        <button type="button" class="btn bg-gradient-success" id="btnSubmit" value="Submit">Begin Scan</button>
-                        <button type="button" class="btn bg-gradient-danger" id="btnBack" value="Back">Back</button>
-                    </div>
-                </div>
-            </div>
-            <!-- /COL 1 -->
-            <!-- COL 2 -->
-            <div class="col-lg-3">
-                <div class="card">
-                    <div class="card-header bg-gradient-success">
-                        <h3 class="card-title"><b><i class="far fa-edit"></i> Kind of financial statements</b></h3>
-                    </div>
-                    <div class="card-body text-center" style="height: 100px">
-                        <label id="lbPageType">@ViewBag.PageTypeName</label>
-                    </div>
-                </div>
-            </div>
-            <!-- /COL 2 -->
-        </div>
-        <!-- /ROW 1 -->
-        <!-- ROW 2 -->
-        <div class="row">
-            <!-- COL 1 -->
-            <div class="col-lg-8 connectedSortable">
-                <div class="card">
-                    <!-- HEAD -->
-                    <div class="card-header bg-gradient-primary">
                         <h3 class="card-title"><i class="far fa-object-ungroup"></i> Page Preview</h3>
                     </div>
                     <div class="card-body">
@@ -1939,8 +1875,21 @@
                         <h3 class="card-title"><i class="far fa-edit"></i> Scan Setting</h3>
                     </div>
                     <div class="card-body">
-                        <div><code>Uncheck the checkbox to avoid that nonexistent type of data.</code></div>
+                        <label>Kind of financial statements</label>
+                        <div class="form-check-label text-center vertical" style="height: 30px; vertical-align: middle;">
+                            <label class="text-success" id="lbPageType">@ViewBag.PageTypeName</label>
+                        </div>
+                        <hr>
 
+                        <label>Amount Column Number</label>
+                        <select id="opAmountCol" class="form-control">
+                            <option value="1" selected>1 Column</option>
+                            <option value="2">2 Column</option>
+                            <option value="3">3 Column</option>
+                        </select>
+                        <hr>
+
+                        <div><code>Uncheck the checkbox to avoid that nonexistent type of data.</code></div>
                         <label>Account Title/Item</label>
                         <div class="form-check">
                             <input id="chkAccTitleAlphabet" class="form-check-input" type="checkbox">
@@ -2004,12 +1953,16 @@
                         </div>
                         <hr>
 
+                        <div class="text-center">
+                            <button type="button" class="btn bg-gradient-success" id="btnSubmit" value="Submit">Begin Scan</button>
+                            <button type="button" class="btn bg-gradient-danger" id="btnBack" value="Back">Back</button>
+                        </div>
                     </div>
                 </div>
             </div>
             <!-- /COL 2 -->
         </div>
-        <!-- /ROW 2 -->
+        <!-- /ROW 1 -->
     </div>
 </section>
 

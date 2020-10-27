@@ -13,6 +13,13 @@
     <form role="form">
         <div class="card-body">
             <div class="form-group">
+                <div class="form-group">
+                    <label>Laguage</label>
+                    <select id="txtLanguage" class="form-control w-25">
+                        <option value="English">English</option>
+                        <option value="Thai">Thai</option>
+                    </select>
+                </div>
                 <label for="exampleInputFile">File input</label>
                 <div class="input-group">
                     <div class="custom-file">
@@ -43,6 +50,7 @@
                 <tr class="text-center">
                     <th style="width: 10px">No.</th>
                     <th>File Name</th>
+                    <th>Language</th>
                     <th>Upload Date</th>
                     <th style="width: 150px">Scan</th>
                     <th style="width: 50px">Delete</th>
@@ -52,6 +60,7 @@
                 <tr>
                     <td class="text-center"><span data-bind="text: $index() + 1"></span></td>
                     <td><span data-bind="text: FileName"></span></td>
+                    <td class="text-center"><span data-bind="text: Language"></span></td>
                     <td class="text-center"><span data-bind="text: CreateDate"></span></td>
                     <td class="text-center">
                         <button type="button" class="btn btn-block bg-gradient-success" data-bind="click: $root.ClickScan" title="Scan">Scan</button>

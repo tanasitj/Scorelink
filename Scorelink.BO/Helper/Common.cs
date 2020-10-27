@@ -228,6 +228,14 @@ namespace Scorelink.BO.Helper
                         //FRTextLanguage.LetterSet[FREngine.TextLanguageLetterSetEnum.TLLS_ProhibitedLetters] = "^©¬®°±—‘’‛“”•′™■□▲△►▻▼▽◄◅◊◎◦★☆♦✓❖";
                         break;
                     }
+                default:
+                    {
+                        FREngine.IBaseLanguages FRBaseLanguages = FRTextLanguage.BaseLanguages;
+                        FREngine.IBaseLanguage FRBaseLanguage = FRBaseLanguages.AddNew();
+                        FRBaseLanguage.LetterSet[FREngine.BaseLanguageLetterSetEnum.BLLS_Alphabet] = "()-.,0123456789";
+
+                        break;
+                    }
             }
 
             return FRTextLanguage;

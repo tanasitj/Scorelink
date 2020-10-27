@@ -57,6 +57,13 @@ namespace Scorelink.web.Controllers
                 ViewBag.PageType = docDet.PageType;
                 ViewBag.PageFileName = docDet.PageFileName;
                 ViewBag.PagePath = sPagePath;
+
+                int iStmId = 0;
+                Int32.TryParse(docDet.PageType, out iStmId);
+
+                StatementTypeRepo stm = new StatementTypeRepo();
+                var stms = stm.Get(iStmId);
+                ViewBag.PageTypeName = stms.StatementName;
             }
             return View("SelectAreaMain");
         }

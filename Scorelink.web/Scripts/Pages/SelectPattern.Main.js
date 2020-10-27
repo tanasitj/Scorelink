@@ -56,7 +56,7 @@
 
             var data = {
                 'item': arg,
-                'PatternNo': $("#rdPattern:checked").val()
+                'PatternNo': $("#opAmountCol").val()
             };
 
             $.ajax({
@@ -79,7 +79,7 @@
                 PageType: $("#hdPageType").val(),
                 PageFileName: $("#hdPageFileName").val(),
                 PagePath: $("#hdPagePath").val(),
-                PatternNo: $("#rdPattern:checked").val()
+                PatternNo: $("#opAmountCol").val()
             }
 
             $.redirect("/SelectArea/Index", {
