@@ -25,6 +25,7 @@ namespace Scorelink.BO.Repositories
                                 FileName = doc.FileName,
                                 FilePath = doc.FilePath,
                                 FileUrl = doc.FileUrl,
+                                Language = doc.Language,
                                 CreateBy = doc.CreateBy,
                                 CreateDate = doc.CreateDate.ToString()
                             }).FirstOrDefault();
@@ -52,6 +53,7 @@ namespace Scorelink.BO.Repositories
                                  FileName = doc.FileName,
                                  FilePath = doc.FilePath,
                                  FileUrl = doc.FileUrl,
+                                 Language = doc.Language,
                                  CreateBy = doc.CreateBy,
                                  CreateDate = doc.CreateDate.ToString()
                              });
@@ -79,6 +81,7 @@ namespace Scorelink.BO.Repositories
                             FileName = item.FileName,
                             FilePath = item.FilePath,
                             FileUrl = item.FileUrl,
+                            Language = item.Language,
                             CreateBy = item.CreateBy,
                             CreateDate = DateTime.Parse(item.CreateDate)
                         };
