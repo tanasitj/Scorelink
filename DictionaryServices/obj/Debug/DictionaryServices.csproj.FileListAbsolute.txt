@@ -85,6 +85,8 @@ C:\Users\cyber\source\repos\DictionaryWeb\ProductApp\obj\Debug\DictionaryService
 C:\Users\cyber\source\repos\DictionaryWeb\ProductApp\obj\Debug\DictionaryServices.dll
 C:\Users\cyber\source\repos\DictionaryWeb\ProductApp\obj\Debug\DictionaryServices.pdb
 C:\Users\cyber\source\repos\DictionaryWeb\ProductApp\obj\Debug\DictionaryServices.csprojAssemblyReference.cache
+C:\Users\cyber\source\repos\DictionaryWeb\DictionaryServices\bin\Dict\ConvertOCRResult.xlsx
+C:\Users\cyber\source\repos\DictionaryWeb\DictionaryServices\bin\Dict\ConvertStandard.xlsx
 C:\Users\cyber\source\repos\DictionaryWeb\DictionaryServices\bin\DictionaryServices.dll.config
 C:\Users\cyber\source\repos\DictionaryWeb\DictionaryServices\bin\DictionaryServices.dll
 C:\Users\cyber\source\repos\DictionaryWeb\DictionaryServices\bin\DictionaryServices.pdb
@@ -138,11 +140,9 @@ C:\Users\cyber\source\repos\DictionaryWeb\DictionaryServices\bin\roslyn\vbc.rsp
 C:\Users\cyber\source\repos\DictionaryWeb\DictionaryServices\bin\roslyn\VBCSCompiler.exe
 C:\Users\cyber\source\repos\DictionaryWeb\DictionaryServices\bin\roslyn\VBCSCompiler.exe.config
 C:\Users\cyber\source\repos\DictionaryWeb\DictionaryServices\bin\Antlr3.Runtime.dll
-C:\Users\cyber\source\repos\DictionaryWeb\DictionaryServices\bin\DocumentFormat.OpenXml.dll
 C:\Users\cyber\source\repos\DictionaryWeb\DictionaryServices\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
 C:\Users\cyber\source\repos\DictionaryWeb\DictionaryServices\bin\Microsoft.Web.Infrastructure.dll
 C:\Users\cyber\source\repos\DictionaryWeb\DictionaryServices\bin\Newtonsoft.Json.dll
-C:\Users\cyber\source\repos\DictionaryWeb\DictionaryServices\bin\OpenXML.dll
 C:\Users\cyber\source\repos\DictionaryWeb\DictionaryServices\bin\System.Net.Http.Formatting.dll
 C:\Users\cyber\source\repos\DictionaryWeb\DictionaryServices\bin\System.Web.Helpers.dll
 C:\Users\cyber\source\repos\DictionaryWeb\DictionaryServices\bin\System.Web.Http.dll
@@ -167,13 +167,11 @@ C:\Users\cyber\source\repos\DictionaryWeb\DictionaryServices\bin\System.Web.WebP
 C:\Users\cyber\source\repos\DictionaryWeb\DictionaryServices\bin\System.Web.WebPages.Deployment.xml
 C:\Users\cyber\source\repos\DictionaryWeb\DictionaryServices\bin\System.Web.WebPages.Razor.xml
 C:\Users\cyber\source\repos\DictionaryWeb\DictionaryServices\bin\Antlr3.Runtime.pdb
+C:\Users\cyber\source\repos\DictionaryWeb\DictionaryServices\obj\Debug\DictionaryServices.csprojAssemblyReference.cache
 C:\Users\cyber\source\repos\DictionaryWeb\DictionaryServices\obj\Debug\DictionaryServices.csproj.CoreCompileInputs.cache
 C:\Users\cyber\source\repos\DictionaryWeb\DictionaryServices\obj\Debug\DictionaryServices.csproj.CopyComplete
 C:\Users\cyber\source\repos\DictionaryWeb\DictionaryServices\obj\Debug\DictionaryServices.dll
 C:\Users\cyber\source\repos\DictionaryWeb\DictionaryServices\obj\Debug\DictionaryServices.pdb
-C:\Users\cyber\source\repos\DictionaryWeb\DictionaryServices\bin\Dict\ConvertOCRResult.xlsx
-C:\Users\cyber\source\repos\DictionaryWeb\DictionaryServices\bin\Dict\ConvertStandard.xlsx
-C:\Users\cyber\source\repos\DictionaryWeb\DictionaryServices\obj\Debug\DictionaryServices.csprojAssemblyReference.cache
 C:\SRC\Scorelink\DictionaryServices\bin\Dict\ConvertOCRResult.xlsx
 C:\SRC\Scorelink\DictionaryServices\bin\Dict\ConvertStandard.xlsx
 C:\SRC\Scorelink\DictionaryServices\bin\DictionaryServices.dll.config
@@ -229,7 +227,6 @@ C:\SRC\Scorelink\DictionaryServices\bin\roslyn\vbc.rsp
 C:\SRC\Scorelink\DictionaryServices\bin\roslyn\VBCSCompiler.exe
 C:\SRC\Scorelink\DictionaryServices\bin\roslyn\VBCSCompiler.exe.config
 C:\SRC\Scorelink\DictionaryServices\bin\Antlr3.Runtime.dll
-C:\SRC\Scorelink\DictionaryServices\bin\DocumentFormat.OpenXml.dll
 C:\SRC\Scorelink\DictionaryServices\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
 C:\SRC\Scorelink\DictionaryServices\bin\Microsoft.Web.Infrastructure.dll
 C:\SRC\Scorelink\DictionaryServices\bin\Newtonsoft.Json.dll
@@ -257,6 +254,7 @@ C:\SRC\Scorelink\DictionaryServices\bin\System.Web.WebPages.xml
 C:\SRC\Scorelink\DictionaryServices\bin\System.Web.WebPages.Deployment.xml
 C:\SRC\Scorelink\DictionaryServices\bin\System.Web.WebPages.Razor.xml
 C:\SRC\Scorelink\DictionaryServices\bin\Antlr3.Runtime.pdb
+C:\SRC\Scorelink\DictionaryServices\obj\Debug\DictionaryServices.csprojAssemblyReference.cache
 C:\SRC\Scorelink\DictionaryServices\obj\Debug\DictionaryServices.csproj.CoreCompileInputs.cache
 C:\SRC\Scorelink\DictionaryServices\obj\Debug\DictionaryServices.csproj.CopyComplete
 C:\SRC\Scorelink\DictionaryServices\obj\Debug\DictionaryServices.dll
