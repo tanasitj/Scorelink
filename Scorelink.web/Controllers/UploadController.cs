@@ -60,7 +60,7 @@ namespace Scorelink.web.Controllers
             return View("Upload");
         }
 
-        public ActionResult UploadFiles(string userId)
+        public ActionResult UploadFiles(string userId, string language)
         {
             // Checking no of files injected in Request object  
             if (Request.Files.Count > 0)
@@ -70,6 +70,7 @@ namespace Scorelink.web.Controllers
                     string[] allKeys = Request.Files.AllKeys[0].Split('|');
                     var uploadNo = Common.GenZero(userId, 8);
                     string sUID = Guid.NewGuid().ToString();
+                    string sLanguage = language;
                     //string folder = Consts.SLUserFlie + "\\FileUploads\\" + uploadNo + "\\" + sUID;
                     string folder = Common.getConstTxt("SLUserFlie") + uploadNo + "\\" + sUID;
 
@@ -107,6 +108,7 @@ namespace Scorelink.web.Controllers
                         doc.FileName = allKeys[0];
                         doc.FilePath = fname;
                         doc.FileUrl = sFileUrl;
+                        doc.Language = sLanguage;
                         doc.CreateBy = userId;
                         doc.CreateDate = sCreateDate;
 

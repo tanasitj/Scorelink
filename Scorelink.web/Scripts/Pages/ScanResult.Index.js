@@ -1,11 +1,13 @@
-﻿function ScanEditModel(Footnote_No, Divisions, Digitized_Account_Title, Recovered,Standard_Title, Amount, Modified, CLCTCD) {
+﻿function ScanEditModel(Footnote_No, Divisions, Digitized_Account_Title, Recovered, Standard_Title, Amount1, Amount2, Amount3, Modified, CLCTCD) {
     var self = this;
     self.Footnote_No = ko.observable(Footnote_No);
     self.Divisions = ko.observable(Divisions);
     self.Digitized_Account_Title = ko.observable(Digitized_Account_Title);
     self.Recovered = ko.observable(Recovered);
     self.Standard_Title = ko.observable(Standard_Title);
-    self.Amount = ko.observable(Amount);
+    self.Amount1 = ko.observable(Amount1);
+    self.Amount2 = ko.observable(Amount2);
+    self.Amount3 = ko.observable(Amount3);
     self.Modified = ko.observable(Modified);
     self.CLCTCD = ko.observable(CLCTCD);
 }
@@ -17,7 +19,9 @@ var ViewModel = function () {
     self.Digitized_Account_Title = ko.observable();
     self.Recovered = ko.observable();
     self.Standard_Title = ko.observable();
-    self.Amount = ko.observable();
+    self.Amount1 = ko.observable();
+    self.Amount2 = ko.observable();
+    self.Amount3 = ko.observable();
     self.Modified = ko.observable();
     self.CLCTCD = ko.observable();
     LoadData();
@@ -473,7 +477,9 @@ var ViewModel = function () {
                             data.Digitized_Account_Title,
                             data.Recovered,
                             data.Standard_Title,
-                            data.Amount,
+                            data.Amount1,
+                            data.Amount2,
+                            data.Amount3,
                             data.Modified,
                             data.CLCTCD
                         )
