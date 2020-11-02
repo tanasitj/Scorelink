@@ -86,6 +86,7 @@ namespace Scorelink.web.Controllers
             EngineLoader engineLoader = new EngineLoader();
             IEngine engine = default;
 
+            String sLanguage = docInfo.Language;
             String sLanguageFolder = Server.MapPath("..\\Language\\");
             String sLanguageFile = "th_ABBYY.dic";
             String CustomDictionaryPass = sLanguageFolder + sLanguageFile;
@@ -179,7 +180,7 @@ namespace Scorelink.web.Controllers
                         FRRegion.AddRect(left, top, right, bottom);
                         IBlock newBlock = FRDocument.Pages[0].Layout.Blocks.AddNew(BlockTypeEnum.BT_Text, FRRegion);
                         // Set Dictionary
-                        newBlock.GetAsTextBlock().RecognizerParams.TextLanguage = Common.GetTextLanguage(iRunNo, engine, "Thai", CustomDictionaryPass); //Common.GetLanguageDB(engine, "Thai", CustomDictionaryPass);//
+                        newBlock.GetAsTextBlock().RecognizerParams.TextLanguage = Common.GetTextLanguage(iRunNo, engine, sLanguage, CustomDictionaryPass);
                         // Specify horizontal writing
                         ITextOrientation wTextOrientation = engine.CreateTextOrientation();
                         wTextOrientation.ReadingType = ReadingTypeEnum.TRT_LinesBased;

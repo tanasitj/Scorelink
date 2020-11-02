@@ -29,7 +29,7 @@ var ViewModel = function () {
 
     setAreaValue($("#hdPatternNo").val());
 
-    if ($("#hdPatternNo").val() == "2" || $("#hdPatternNo").val() == "3") {
+    if ($("#hdPatternNo").val() == "2") {
         $('img#view').selectAreas({
             allowSelect: false,
             allowDelete: false,
