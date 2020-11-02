@@ -74,19 +74,51 @@ namespace Scorelink.web.Controllers
             {
                 Regex csv_file = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
                 string[] words = csv_file.Split(line);
-                objTempmodel.Add(new DataResult
+                if (details.PatternNo == "2" || details.PatternNo == "3")
                 {
-                    Footnote_No = words[1].Trim(new Char[] {'"'}),
-                    Divisions = DivisionStatus(),
-                    Digitized_Account_Title = words[0].Trim(new Char[] {'"'}),
-                    Recovered = "",//RecoveredStatus(),
-                    Standard_Title = "",
-                    Amount1 = words[2].Trim(new Char[] {'"'}),
-                    Amount2 = words[3].Trim(new Char[] { '"' }),
-                    Amount3 = words[4].Trim(new Char[] { '"' }),
-                    Modified = "",
-                    CLCTCD = ""
-                });
+                    objTempmodel.Add(new DataResult
+                    {
+                        Footnote_No = words[1].Trim(new Char[] { '"' }),
+                        Divisions = DivisionStatus(),
+                        Digitized_Account_Title = words[0].Trim(new Char[] { '"' }),
+                        Recovered = "",//RecoveredStatus(),
+                        Standard_Title = "",
+                        Amount1 = words[2].Trim(new Char[] { '"' }),
+                        Amount2 = words[3].Trim(new Char[] { '"' }),
+                        Modified = "",
+                        CLCTCD = ""
+                    });
+                }else if (details.PatternNo == "3")
+                {
+                    objTempmodel.Add(new DataResult
+                    {
+                        Footnote_No = words[1].Trim(new Char[] { '"' }),
+                        Divisions = DivisionStatus(),
+                        Digitized_Account_Title = words[0].Trim(new Char[] { '"' }),
+                        Recovered = "",//RecoveredStatus(),
+                        Standard_Title = "",
+                        Amount1 = words[2].Trim(new Char[] { '"' }),
+                        Amount2 = words[3].Trim(new Char[] { '"' }),
+                        Amount3 = words[4].Trim(new Char[] { '"' }),
+                        Modified = "",
+                        CLCTCD = ""
+                    });
+                }
+                else
+                {
+                    objTempmodel.Add(new DataResult
+                    {
+                        Footnote_No = words[1].Trim(new Char[] { '"' }),
+                        Divisions = DivisionStatus(),
+                        Digitized_Account_Title = words[0].Trim(new Char[] { '"' }),
+                        Recovered = "",//RecoveredStatus(),
+                        Standard_Title = "",
+                        Amount1 = words[2].Trim(new Char[] { '"' }),
+                        Modified = "",
+                        CLCTCD = ""
+                    });
+                }
+                
             }
             return objTempmodel;
         }     
