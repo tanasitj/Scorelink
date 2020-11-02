@@ -58,6 +58,7 @@ namespace Scorelink.web.Controllers
                 ViewBag.TempPath = sPagePath;
                 ViewBag.PageType = pageType;
                 ViewBag.PageTypeName = pageTypeName;
+                ViewBag.PatternNo = Details.PatternNo;
             }
             return View("ScanResult", objModel);
         }

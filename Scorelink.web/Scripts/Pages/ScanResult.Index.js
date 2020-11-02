@@ -451,6 +451,14 @@ var ViewModel = function () {
         });
     };
     function LoadData() {
+        var PatternNo = $("#hdPatternNo").val();
+        if (PatternNo == "1") {
+            $(".Grid td:nth-child(8),th:nth-child(8)").hide();//Amount2
+            $(".Grid td:nth-child(9),th:nth-child(9)").hide();//Amount3
+        } else if (PatternNo == "2") {
+            $(".Grid td:nth-child(9),th:nth-child(9)").hide();//Amount3
+        }
+
         var filter = {
             docId: $("#hddocId").val(),
             pageType: $("#hdPageType").val()
