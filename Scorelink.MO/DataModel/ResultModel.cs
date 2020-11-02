@@ -23,7 +23,9 @@ namespace Scorelink.MO.DataModel
         //public SelectList Recovered { get; set; }
         public string Recovered { get; set; }
         public string Standard_Title {get; set;}
-        public string Amount { get; set; }
+        public string Amount1 { get; set; }
+        public string Amount2 { get; set; }
+        public string Amount3 { get; set; }
         public string Modified { get; set; }
         public string CLCTCD { get; set; }      
     }

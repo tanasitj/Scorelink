@@ -81,7 +81,9 @@ namespace Scorelink.web.Controllers
                     Digitized_Account_Title = words[0].Trim(new Char[] {'"'}),
                     Recovered = "",//RecoveredStatus(),
                     Standard_Title = "",
-                    Amount = words[2].Trim(new Char[] {'"'}),
+                    Amount1 = words[2].Trim(new Char[] {'"'}),
+                    Amount2 = words[3].Trim(new Char[] { '"' }),
+                    Amount3 = words[4].Trim(new Char[] { '"' }),
                     Modified = "",
                     CLCTCD = ""
                 });

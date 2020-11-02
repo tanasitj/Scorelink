@@ -163,7 +163,8 @@ namespace ABBYEngine
         // Return customer project id for FRE
         public static String GetCustomerProjectId()
         {
-            return "x8wGPbUykqrNbwsA9mdg";
+            //return "x8wGPbUykqrNbwsA9mdg";
+            return "xSm2Y5zRSUhDKSRfry2b";
         }
 
         // Return path to license file
