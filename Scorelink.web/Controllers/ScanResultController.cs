@@ -74,7 +74,7 @@ namespace Scorelink.web.Controllers
             {
                 Regex csv_file = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
                 string[] words = csv_file.Split(line);
-                if (details.PatternNo == "2" || details.PatternNo == "3")
+                if (details.PatternNo == "2")
                 {
                     objTempmodel.Add(new DataResult
                     {
