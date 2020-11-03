@@ -44,7 +44,7 @@ var ViewModel = function () {
             allowDelete: false,
             minSize: [10, 10],
             onChanged: debugQtyAreas,
-            width: 600,
+            width: 800,
             areas: [area1, area2, area3, area4, area5]
         });
     } else {
@@ -53,7 +53,7 @@ var ViewModel = function () {
             allowDelete: false,
             minSize: [10, 10],
             onChanged: debugQtyAreas,
-            width: 600,
+            width: 800,
             areas: [area1, area2, area3]
         });
     }
