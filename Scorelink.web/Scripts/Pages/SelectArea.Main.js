@@ -20,16 +20,17 @@ var ViewModel = function () {
     self.DocumentDetail = ko.observableArray();
     var sImgPath = $("#hdPagePath").val();
     $('img#view').attr("src", sImgPath);
+    var sPatternNo = $("#hdPatternNo").val();
 
     var area1 = {};
     var area2 = {};
     var area3 = {};
-    if ($("#hdPatternNo").val() == "2" || $("#hdPatternNo").val() == "3") { var area4 = {}; }
-    if ($("#hdPatternNo").val() == "3") { var area5 = {}; }
+    if (sPatternNo == "2" || sPatternNo == "3") { var area4 = {}; }
+    if (sPatternNo == "3") { var area5 = {}; }
 
-    setAreaValue($("#hdPatternNo").val());
+    setAreaValue(sPatternNo);
 
-    if ($("#hdPatternNo").val() == "2") {
+    if (sPatternNo == "2") {
         $('img#view').selectAreas({
             allowSelect: false,
             allowDelete: false,
@@ -38,13 +39,13 @@ var ViewModel = function () {
             width: 600,
             areas: [area1, area2, area3, area4]
         });
-    } else if ($("#hdPatternNo").val() == "3") {
+    } else if (sPatternNo == "3") {
         $('img#view').selectAreas({
             allowSelect: false,
             allowDelete: false,
             minSize: [10, 10],
             onChanged: debugQtyAreas,
-            width: 600,
+            width: 800,
             areas: [area1, area2, area3, area4, area5]
         });
     } else {
@@ -53,7 +54,7 @@ var ViewModel = function () {
             allowDelete: false,
             minSize: [10, 10],
             onChanged: debugQtyAreas,
-            width: 600,
+            width: 800,
             areas: [area1, area2, area3]
         });
     }
