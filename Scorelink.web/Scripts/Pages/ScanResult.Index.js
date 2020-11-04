@@ -151,7 +151,7 @@ var ViewModel = function () {
         });
 
         $("#BtnCancel").click(function () {
-            var filter = {
+            /*var filter = {
                 docId: $("#hddocId").val(),
                 pageType: $("#hdPageType").val()
             }
@@ -169,19 +169,25 @@ var ViewModel = function () {
                 error: function (response) {
                     alert(response.d);
                 }
-            });
+            });*/
             //$("#BtnCheck").removeattr("disabled");
             //var row = $("#tbResult1 thead tr:last-child").clone(true);
             //$("#tbResult2 tbody tr").remove();
             //$("#tbResult1 thead tr").remove();
             //LoadData();
-            $("#BtnCheck").attr("disabled", false);
+            /*$("#BtnCheck").attr("disabled", false);
             $("#BtnMerge").attr("disabled", false);
             $("#BtnInsert").attr("disabled", true);
             $("#BtnDelete").attr("disabled", true);
             $("#BtnCommit").attr("disabled", true);
-            $("#BtnExport").attr("disabled", true);
+            $("#BtnExport").attr("disabled", true);*/
+            $.redirect("/ScanResult/Index", {
+                'docId': $("#hddocId").val(),
+                'pageType': $("#hdPageType").val(),
+                'pagetypeName': $("#hdPageTypeName").val()
+            }, "POST");
         });
+
         $("#BtnBack").click(function () {
             $.redirect("/SelectPage/SelectPage", {
                 'id': $("#hddocId").val()
