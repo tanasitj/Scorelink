@@ -99,19 +99,79 @@ namespace DictionaryServices.Controllers
         private static Dictionary<string, Dictionary<string, string>> pForcedConvertDictionary;
         private string convertOCRPath = "";
         private string convertStand = "";
-        public DictionaryRepo()
+        private string convertCustom = "";
+        public DictionaryRepo(string lng)
         {
+            string dicPath="";
 
 
+            switch (lng) 
+            {
+                case "Thai":
+                    dicPath = "th";
+                    break;
+                case "English":
+                    dicPath = "en";
+                    break;
+            }
 
+            
+            convertOCRPath =  HttpContext.Current.Server.MapPath("~/Dict/")+ dicPath + "/ConvertOCRResult.xlsx"  ;
+            convertStand = HttpContext.Current.Server.MapPath("~/Dict/") + dicPath + "/ConvertStandard.xlsx";
+            convertCustom = HttpContext.Current.Server.MapPath("~/Dict/") + dicPath +  "/TCCS_"+dicPath+".xlsx";
 
-            convertOCRPath =  HttpContext.Current.Server.MapPath("~/Dict/") + "ConvertOCRResult.xlsx"  ;
-            convertStand = HttpContext.Current.Server.MapPath("~/Dict/") + "ConvertStandard.xlsx";
+            // convertCustom = HttpContext.Current.Server.MapPath("~/Dict/") + "TCCS.xlsx";
             ReadyRecoverDictionary();
             ReadConvertStandard();
-         
+           
         }
+        public List<string> GetCustomDictionary(string statement)
+        {
 
+          
+            string DictPath = convertCustom;
+            using (var openXML = new OXml.SpreadSheets())
+            {
+
+                Dictionary<string, List<string>> pCustomDictionary = new Dictionary<string, List<string>>();
+                pCustomDictionary.Add("INCOME STATEMENT", new List<string>());
+                pCustomDictionary.Add("BALANCE SHEET", new List<string>());
+                pCustomDictionary.Add("CASH FLOW STATEMENT", new List<string>());
+                string shName = statement;
+                using (var document = openXML.OpenSpreadsheetDocument(DictPath, false))
+                {
+                    var wbPart = document.WorkbookPart;
+                    var stringTable = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault();
+                    //foreach (string shName in new[] { "INCOME STATEMENT", "BALANCE SHEET", "CASH FLOW STATEMENT" })
+                    //{
+
+                   
+                        var theSheet = wbPart.Workbook.Descendants<Sheet>().Where(s => s.Name == shName).FirstOrDefault();
+                        WorksheetPart wsPart = (WorksheetPart)wbPart.GetPartById(theSheet.Id);
+                        var rows = wsPart.Worksheet.Descendants<Row>();
+                        for (int rowIdx = 0, loopTo = rows.Count() - 1; rowIdx <= loopTo; rowIdx++)
+                        {
+                            if (rows.ElementAtOrDefault(rowIdx) is null)
+                                continue;
+
+                            var cells = rows.ElementAtOrDefault(rowIdx).Elements<Cell>();
+
+
+                            string sbjName = GetCellValue(cells.ElementAtOrDefault(0), stringTable);
+
+
+                            if (string.IsNullOrEmpty(sbjName))
+                                break;
+                            if (pCustomDictionary.ContainsKey(shName) == true)
+                                pCustomDictionary[shName].Add(sbjName.ToLower());
+                       }
+                    //} End for each
+                 }
+                openXML.Dispose();
+                List<string> customDic =pCustomDictionary[shName].ToList();
+                return customDic;
+            }// End Using
+        }
 
         //private static void ReadyRecoverDictionary(string LangPath, string FileName)
         public Dictionary<string, List<string>> ReadyRecoverDictionary()
@@ -549,17 +609,18 @@ namespace DictionaryServices.Controllers
                 {
                     ConvertStandardRet = pStandardDictionary[sbjCd][title].SBJName;
                 }
-                else if (title.ToLower() == "total(auto)")
+                else //if (title.ToLower() == "total(auto)") //change for thai
                 {
-                    ConvertStandardRet = "total";
+                    ConvertStandardRet = "N/A"; //"total";
                     strCLCTCD = "02" + strwCLCTCD;
                 }
-                else
-                {
+                /// For Thai;
+                //else
+                //{
                   
-                    strCLCTCD = "10" + strwCLCTCD;
-                    ConvertStandardRet = GetForcedConvertStandard(strStatementName, strCLCTCD);
-                }
+                //    strCLCTCD = "10" + strwCLCTCD;
+                //    ConvertStandardRet = GetForcedConvertStandard(strStatementName, strCLCTCD);
+                //}
             }
 
             return ConvertStandardRet;
