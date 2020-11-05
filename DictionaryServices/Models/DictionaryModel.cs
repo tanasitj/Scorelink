@@ -1,4 +1,5 @@
-﻿using System.Dynamic;
+﻿using System.Collections.Generic;
+using System.Dynamic;
 
 namespace DictionaryServices.Models
 {
@@ -7,6 +8,22 @@ namespace DictionaryServices.Models
     {
         public string pagetype { get; set; }
         public string acctitle { get; set; }
+        public string accStandard { get; set; }
         public string CLCTCD { get; set; }
     }
+    public class retData
+    {
+        public retData()
+        {
+            stdValue = new List<string>();
+            RecoverData = new List<List<string>>();
+            CustomData = new List<List<string>>();
+        }
+        
+        public List<string> stdValue { get; set; }
+        public List<List<string>> RecoverData { get; set; }
+        public List<List<string>> CustomData { get; set; }
+
+    }
+   
 }

@@ -392,18 +392,13 @@ var ViewModel = function () {
             false;
     }
     function OnSuccessCheck(response) {
-        blockUI();
         var model = response;
         var post_data = [];
        //Hide comlum
-        //$(".Grid td:nth-child(3),th:nth-child(3)").toggle(); //Division Hide
+        $(".Grid td:nth-child(3),th:nth-child(3)").toggle(); //Division
         $(".Grid td:nth-child(5),th:nth-child(5)").toggle(); //Recovered
-        $(".Grid td:nth-child(6),th:nth-child(6)").toggle(); //Standard
-        $(".Grid td:nth-child(7),th:nth-child(7)").toggle(); //Custom Title
-        $(".Grid td:nth-child(11),th:nth-child(11)").toggle(); //Modify
-        $(".Grid td:nth-child(12),th:nth-child(12)").toggle(); //CLCTCD
-
-        
+       // $(".Grid td:nth-child(9),th:nth-child(9)").toggle(); //CLCTCD
+        $(".Grid td:nth-child(8),th:nth-child(8)").hide();  //Modified
         //-----------------------------------------------------
         var row = $("#tbResult2 tbody tr:last-child").clone(true);
       
@@ -413,7 +408,6 @@ var ViewModel = function () {
                 <option value="Normal">Major1</option>\n\
                 <option value="High">Major2</option></select>');
             $('#tbResult2 > tbody > tr').eq(row_num).find('td:eq(4)').html('<select id="select_' + row_num + '" class="form-control input-sm"></select>');
-            $('#tbResult2 > tbody > tr').eq(row_num).find('td:eq(6)').html('<select id="customDic_' + row_num + '" class="form-control input-sm"></select>');
             post_data.push($('#tbResult2 > tbody > tr').eq(row_num).find('td:eq(3)').text());
         });
   
@@ -422,28 +416,19 @@ var ViewModel = function () {
             cache: false,
             type: "POST",
             contentType: "application/json; charset=utf-8",
-            data: ko.toJSON({ pageType: $("#hdPageType").val(), docId: $("#hddocId").val(), account_title: post_data }),
+            data: ko.toJSON({ pageType: $("#hdPageType").val(), account_title: post_data }),
             success: function (response) {
-                var len = response.RecoverData.length;
+                var len = response.length;
                 for (i = 0; i < len; i++) {
-                    for (var j = 0; j < response.RecoverData[i].length; j++) {
+                    for (var j = 0; j < response[i].length; j++) {
 
-                        $('#select_' + i).append(new Option(response.RecoverData[i][j], response.RecoverData[i][j]));
-                       
+                        $('#select_' + i).append(new Option(response[i][j], response[i][j]));
                       
                     }
-                    for (var j = 0; j < response.CustomData[i].length; j++) {
-
-                        $('#customDic_' + i).append(new Option(response.CustomData[i][j], response.CustomData[i][j]));
-
-                    }
-                    $('#tbResult2 > tbody > tr').eq(i).find('td:eq(5)').text(response.stdValue[i]);
-                   
                 }
-                unblockUI();
             }
         });       
-        run_rownumber();
+         run_rownumber();
     };
     function OnSuccessCancel(response) {
         var model = response;
@@ -474,12 +459,10 @@ var ViewModel = function () {
     function LoadData() {
         var PatternNo = $("#hdPatternNo").val();
         if (PatternNo == "1") {
-          $(".Grid td:nth-child(7),th:nth-child(7)").hide(); //Custom Title
-          //$(".Grid td:nth-child(8),th:nth-child(8)").hide();//Amount1
-          $(".Grid td:nth-child(9),th:nth-child(9)").hide();//Amount2
-          $(".Grid td:nth-child(9),th:nth-child(10)").hide();//Amount3
+            $(".Grid td:nth-child(8),th:nth-child(8)").hide();//Amount2
+            $(".Grid td:nth-child(9),th:nth-child(9)").hide();//Amount3
         } else if (PatternNo == "2") {
-           // $(".Grid td:nth-child(9),th:nth-child(9)").hide();//Amount3
+            $(".Grid td:nth-child(9),th:nth-child(9)").hide();//Amount3
         }
 
         var filter = {
@@ -525,7 +508,7 @@ var ViewModel = function () {
             //var OriginalContent = $(this).text();
             var OriginalContent = $(this).text().replace(/\,/g, '');
             var col_index = $(this).index();
-            if (col_index == 7) {
+            if (col_index == 6) {
                 $(this).addClass("cellEditing");
                 $(this).html("<input type='text' style='text-align: right' value='" + OriginalContent + "' />");
                 $(this).children().first().focus();

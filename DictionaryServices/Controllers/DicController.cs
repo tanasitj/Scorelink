@@ -12,6 +12,7 @@ using HttpPostAttribute = System.Web.Http.HttpPostAttribute;
 using HttpGetAttribute = System.Web.Http.HttpGetAttribute;
 using System.Collections;
 using System.Data;
+using DocumentFormat.OpenXml.Drawing;
 
 namespace DictionaryServices.Controllers
 {
@@ -23,30 +24,34 @@ namespace DictionaryServices.Controllers
 
 
         private static string statementName_CF = "CASH FLOW STATEMENT";
-        [Route("api/dic/GetRecoveryDic")]
+        [Route("api/dic/GetRecoveryDic/{Lang}")]
         [HttpPost]
-        public List<List<string>> GetRecoveryDic([FromBody] List<Acctitle> Acctitles) // Return only value from dictionary  as list
+        //public List<List<string>> GetRecoveryDic([FromBody] List<Acctitle> Acctitles) // Return only value from dictionary  as list
+        public retData GetRecoveryDic(string Lang,[FromBody] List<Acctitle> Acctitles)
+      
         {
             var repLst = new ArrayList();
             repLst.Add(statementName_PL);
             repLst.Add(statementName_BS);
             repLst.Add(statementName_CF);
-            string strStatementName;
+            string strStatementName="";
             string KeyCLCTCD="";
             string strwCLCTCD="0000";
             string strCLCTCD="";
             int distance = 0;
             List<List<string>> recoverList = new List<List<string>>();
+            List<string> customList = new List<string>();
+            retData recoverData = new retData();
             recoverList.Clear();
-            DictionaryRepo dic = new DictionaryRepo();
+            customList.Clear();
+            DictionaryRepo dic = new DictionaryRepo(Lang);
             //Dictionary<string, List<string>> d = dic.ReadyRecoverDictionary();
             foreach (Acctitle acc in Acctitles) {
                 strStatementName = repLst[Int32.Parse(acc.pagetype) - 1].ToString();
-                dic.ConvertOCRResult(strStatementName, acc.acctitle, KeyCLCTCD, distance);
-                dic.ConvertStandard(strStatementName, acc.acctitle, strwCLCTCD,ref strCLCTCD);
+                acc.acctitle=dic.ConvertOCRResult(strStatementName, acc.acctitle, KeyCLCTCD, distance);
+                acc.accStandard=dic.ConvertStandard(strStatementName, acc.acctitle, strwCLCTCD,ref strCLCTCD);
                 acc.CLCTCD = strCLCTCD;
-                //List<string> recoverListItem = dic.initComboItemCheckSPS(acc.pagetype, acc.acctitle);
-                //recoverList.Add(recoverListItem);
+                
                 if (strCLCTCD.Length >= 2)
                 {
                     strwCLCTCD = strCLCTCD.Substring(2);
@@ -55,11 +60,20 @@ namespace DictionaryServices.Controllers
                         KeyCLCTCD = strCLCTCD;
                     }
                 }
-
+                
+                recoverData.stdValue.Add(acc.accStandard);
             }
-            recoverList = dic.initComboItemCheckSPS(Acctitles);
-           
-            return recoverList;
+         
+            recoverList=dic.initComboItemCheckSPS(Acctitles);
+            customList = dic.GetCustomDictionary(strStatementName);
+            for(int idx = 0; idx < recoverList.Count; idx++)
+            {
+         
+                recoverData.RecoverData.Add(recoverList[idx]);
+                recoverData.CustomData.Add(customList);
+            };
+           // return recoverList;
+            return recoverData; 
         }
 
        

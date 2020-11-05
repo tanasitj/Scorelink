@@ -4,7 +4,7 @@ using System.Web.Mvc;
 using System.Text;
 using System.Net;
 using System.Web.Script.Serialization;
-
+using Scorelink.BO.Repositories;
 
 namespace Scorelink.web.Controllers
 {
@@ -45,15 +45,34 @@ namespace Scorelink.web.Controllers
 
         //    return Json(resultobject,JsonRequestBehavior.AllowGet);
         //}
-        public class Acctitle
+      class Acctitle
         {
             public string pageType { get; set; }
             public string acctitle { get; set; }
         }
-        public JsonResult AssignGrid(String pagetype,String[] account_title)
+
+       class retData
         {
+            public List<string> stdValue { get; set; }
+            public List<List<string>> RecoverData { get; set; }
+            public List<List<string>> CustomData { get; set; }
+            public retData()
+            {
+                stdValue = new List<string>();
+                RecoverData = new List<List<string>>();
+                CustomData = new List<List<string>>();
+            }
+
+      
+        }
+
+        public JsonResult AssignGrid(String pagetype,int docId ,String[] account_title)
+        {
+            DocumentInfoRepo docInfoRepo = new DocumentInfoRepo();
+            var docInfo = docInfoRepo.Get(docId);
             //List<DataResult> d= JsonConvert.DeserializeObject<List<DataResult>>(jsonData);
-              List<Acctitle> input=new List<Acctitle>() ;
+            List<Acctitle> input=new List<Acctitle>() ;
+                       
             string apiUrl = "https://localhost:44378/api/dic";
             for (int i = 0; i < account_title.Length; i++)
             {
@@ -66,12 +85,19 @@ namespace Scorelink.web.Controllers
                );
             }
 
-            string inputJson = (new JavaScriptSerializer()).Serialize(input);
+
+            
+            string inputJson =  (new JavaScriptSerializer().Serialize(input));
+                
+            
+            
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
             client.Encoding = Encoding.UTF8;
-            string json = client.UploadString(apiUrl + "/GetRecoveryDic", inputJson);
-            List<List<string>> result = (new JavaScriptSerializer()).Deserialize<List<List<string>>>(json);
+            string json = client.UploadString(apiUrl + "/GetRecoveryDic/" + docInfo.Language, inputJson);
+            //List<List<retData>> result = (new JavaScriptSerializer()).Deserialize<List<List<retData>>>(json);
+          
+            retData result = (new JavaScriptSerializer()).Deserialize<retData>(json);
             //List<string> result = (new JavaScriptSerializer()).Deserialize<List<string>>(json);
             return Json(result, JsonRequestBehavior.AllowGet); 
         }
