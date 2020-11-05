@@ -52,6 +52,24 @@ var ViewModel = function () {
             row_index = $(this).parent().index();
             //var col_index = $(this).index();     
         });
+        //var PatternNo = $("#hdPatternNo").val();
+       
+        //if (PatternNo == "1") {
+        //    $(".Grid td:nth-child(7),th:nth-child(7)").hide(); //Custom Title
+        //    $(".Grid td:nth-child(9),th:nth-child(9)").hide();//Amount2
+           
+        //}
+        //else if (PatternNo == "2") {
+        //        $(".Grid td:nth-child(7),th:nth-child(7)").hide(); //Custom Title
+               
+        //}
+        //else if (PatternNo == "3") {
+        //    $(".Grid td:nth-child(7),th:nth-child(7)").hide(); //Custom Title
+           
+        //}
+        //$(".Grid td:nth-child(10),th:nth-child(10)").hide();//Amount3
+        //$(".Grid td:nth-child(11),th:nth-child(11)").hide();//Modify
+        //$(".Grid td:nth-child(12),th:nth-child(12)").hide();//CLCTCD      
         // Insert Row
         $("#BtnInsert").click(function () {
             var row = $("#tbResult2 tbody tr:last-child").clone(true);
@@ -400,8 +418,8 @@ var ViewModel = function () {
         $(".Grid td:nth-child(5),th:nth-child(5)").toggle(); //Recovered
         $(".Grid td:nth-child(6),th:nth-child(6)").toggle(); //Standard
         $(".Grid td:nth-child(7),th:nth-child(7)").toggle(); //Custom Title
-        $(".Grid td:nth-child(11),th:nth-child(11)").toggle(); //Modify
-        $(".Grid td:nth-child(12),th:nth-child(12)").toggle(); //CLCTCD
+        //$(".Grid td:nth-child(11),th:nth-child(11)").toggle(); //Modify
+        //$(".Grid td:nth-child(12),th:nth-child(12)").toggle(); //CLCTCD
 
         
         //-----------------------------------------------------
@@ -473,15 +491,20 @@ var ViewModel = function () {
     };
     function LoadData() {
         var PatternNo = $("#hdPatternNo").val();
-        if (PatternNo == "1") {
-          $(".Grid td:nth-child(7),th:nth-child(7)").hide(); //Custom Title
-          //$(".Grid td:nth-child(8),th:nth-child(8)").hide();//Amount1
-          $(".Grid td:nth-child(9),th:nth-child(9)").hide();//Amount2
-          $(".Grid td:nth-child(9),th:nth-child(10)").hide();//Amount3
-        } else if (PatternNo == "2") {
-           // $(".Grid td:nth-child(9),th:nth-child(9)").hide();//Amount3
-        }
 
+        $(".Grid td:nth-child(7),th:nth-child(7)").hide(); //Custom Title
+        if (PatternNo == "1") {
+          $(".Grid td:nth-child(9),th:nth-child(9)").hide();//Amount2
+          $(".Grid td:nth-child(10),th:nth-child(10)").hide();//Amount3
+        }
+        else if (PatternNo == "2") {
+          $(".Grid td:nth-child(10),th:nth-child(10)").hide();//Amount3    
+        }
+      
+       
+       
+        $(".Grid td:nth-child(11),th:nth-child(11)").hide();//Modify
+        $(".Grid td:nth-child(12),th:nth-child(12)").hide();//CLCTCD      
         var filter = {
             docId: $("#hddocId").val(),
             pageType: $("#hdPageType").val()
