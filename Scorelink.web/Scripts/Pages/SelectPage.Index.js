@@ -136,6 +136,7 @@ var ViewModel = function () {
         }, "POST");
     }
     $("#BtnExportAll").click(function () {
+        blockUI();
         var filter = {
             docId: $("#hdId").val()
 
@@ -150,6 +151,7 @@ var ViewModel = function () {
                 //get the file name for download
                 window.location = '/ScanResult/Download?file=' + data + '&docId=' + $("#hdId").val();
                // alert("Export data all result already");
+                window.setTimeout( unblockUI(), 5000);
             }
 
         });
