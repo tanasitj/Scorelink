@@ -53,6 +53,7 @@
     <Compile Include="DataModel\DocumentAreaModel.cs" />
     <Compile Include="DataModel\DocumentDetailModel.cs" />
     <Compile Include="DataModel\DocumentInfoModel.cs" />
+    <Compile Include="DataModel\F_DocumentDetailModel.cs" />
     <Compile Include="DataModel\OnlineUserModel.cs" />
     <Compile Include="DataModel\ResultModel.cs" />
     <Compile Include="DataModel\StatementTypeModel.cs" />
