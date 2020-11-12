@@ -1,4 +1,4 @@
-﻿function DocDetailModel(DocId, DocPageNo, FootnoteNo, PageType, PageTypeName, NoScan) {
+﻿function DocDetailModel(DocId, DocPageNo, FootnoteNo, PageType, PageTypeName, NoScan, Commited) {
     var self = this;
     self.DocId = ko.observable(DocId);
     self.DocPageNo = ko.observable(DocPageNo);
@@ -6,7 +6,7 @@
     self.PageType = ko.observable(PageType);
     self.PageTypeName = ko.observable(PageTypeName);
     self.CanEdit = ko.observable(NoScan === '0' ? true : false);
-    self.CompletedFlag = ko.observable(NoScan > '0' ? false : true);
+    self.CompletedFlag = ko.observable(Commited === 'N' ? false : true);
 }
 var ViewModel = function () {
     var self = this;
@@ -18,6 +18,7 @@ var ViewModel = function () {
     self.PageTypeName = ko.observable();
     self.CanEdit = ko.observable(false);
     self.CompletedFlag = ko.observable(false);
+    self.hasCommited = ko.observable(false);
 
     GetDoclist();
 
@@ -336,10 +337,31 @@ var ViewModel = function () {
                             data.FootnoteNo,
                             data.PageType,
                             data.PageTypeName,
-                            data.NoScan
+                            data.NoScan,
+                            data.Commited
                         )
                     );
                 });
+                CheckCommited();
+            }
+        })
+    }
+    function CheckCommited() {
+        var filter = {
+            'docId' : $("#hdId").val()
+        }
+        $.ajax({
+            url: '/SelectPage/CheckCommited',
+            cache: false,
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            data: ko.toJSON(filter),
+            success: function (data) {
+                if (data == "Ok") {
+                    $("#BtnExportAll").prop("disabled", false);
+                } else {
+                    $("#BtnExportAll").prop("disabled", true);
+                }
             }
         })
     }

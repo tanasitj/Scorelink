@@ -51,25 +51,7 @@ var ViewModel = function () {
         $('td').click(function () {
             row_index = $(this).parent().index();
             //var col_index = $(this).index();     
-        });
-        //var PatternNo = $("#hdPatternNo").val();
-       
-        //if (PatternNo == "1") {
-        //    $(".Grid td:nth-child(7),th:nth-child(7)").hide(); //Custom Title
-        //    $(".Grid td:nth-child(9),th:nth-child(9)").hide();//Amount2
-           
-        //}
-        //else if (PatternNo == "2") {
-        //        $(".Grid td:nth-child(7),th:nth-child(7)").hide(); //Custom Title
-               
-        //}
-        //else if (PatternNo == "3") {
-        //    $(".Grid td:nth-child(7),th:nth-child(7)").hide(); //Custom Title
-           
-        //}
-        //$(".Grid td:nth-child(10),th:nth-child(10)").hide();//Amount3
-        //$(".Grid td:nth-child(11),th:nth-child(11)").hide();//Modify
-        //$(".Grid td:nth-child(12),th:nth-child(12)").hide();//CLCTCD      
+        });   
         // Insert Row
         $("#BtnInsert").click(function () {
             var row = $("#tbResult2 tbody tr:last-child").clone(true);
@@ -219,6 +201,7 @@ var ViewModel = function () {
             var csv_data = exportTableToCSV(table1,table2, filename);
             var temp_data = {
                 docId: $("#hddocId").val(),
+                pageType: $("#hdPageType").val(),
                 csv_file: csv_data,
                 filenames: filename
             }

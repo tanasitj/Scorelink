@@ -82,6 +82,13 @@
             <param name="context">The HTTP context.</param>
             <param name="output">The output of the handler.</param>
         </member>
+        <member name="M:WebHelpers.Mvc5.Enum.EnumHandler.GetLoadableTypes(System.Reflection.Assembly)">
+            <summary>
+            The call to <see cref="M:System.Reflection.Assembly.GetTypes"/> sometimes throws a <see cref="T:System.Reflection.ReflectionTypeLoadException"/>
+            when one or more of the inner types reference an assembly that isn't loaded and can't be found.
+            This works around that by only finding types that are loadable at runtime.
+            </summary>
+        </member>
         <member name="M:WebHelpers.Mvc5.Enum.EnumHandler.Hash(System.String)">
             <summary>
             Calculate the SHA1 hash of the specified content.
@@ -103,6 +110,16 @@
         <member name="T:WebHelpers.Mvc5.HtmlHelperExtensions">
             <summary>
             Extensions for <see cref="T:System.Web.Mvc.HtmlHelper"/>.
+            </summary>
+        </member>
+        <member name="M:WebHelpers.Mvc5.HtmlHelperExtensions.WebHelpers``1(System.Web.Mvc.HtmlHelper{``0})">
+            <summary>
+            Constructs a new WebHelpers instance using the type of this view's model.
+            </summary>
+        </member>
+        <member name="M:WebHelpers.Mvc5.HtmlHelperExtensions.WebHelpers``1(System.Web.Mvc.HtmlHelper)">
+            <summary>
+            Constructs a new WebHelpers instance using the type specified by <typeparamref name="T"/>.
             </summary>
         </member>
         <member name="T:WebHelpers.Mvc5.HttpRequestExtensions">
@@ -133,6 +150,12 @@
             The incoming request to get the client's IP address from.
             This is typically from HttpContext.Current.Request or similar.
             </param>
+        </member>
+        <member name="T:WebHelpers.Mvc5.JqGrid.Converters.LiteralEnumConverter">
+            <summary>
+            Outputs the string value as a JavaScript function or variable without quotes in JSON.
+            e.g. VirtualScrollMode: "true" becomes VirtualScrollMode: true
+            </summary>
         </member>
         <member name="T:WebHelpers.Mvc5.JqGrid.Converters.LiteralNameConverter">
             <summary>
@@ -192,7 +215,7 @@
         <member name="P:WebHelpers.Mvc5.JqGrid.Column.IsFixedWidth">
             <summary>
             Specifies whether or not recalculation of the width of the column is allowed if the
-            TODO: ShrinkToFit option is true. The width also doesn't change if the <code>setGridWith</code>
+            <see cref="P:WebHelpers.Mvc5.JqGrid.Grid.ShouldShrinkToFit"/> option is true. The width also doesn't change if the <code>setGridWith</code>
             method is used to change the grid's with.
             </summary>
         </member>
@@ -294,6 +317,12 @@
             <summary>
             Specifies whether or not the column can be sorted.
             If false, clicking the column header has no action.
+            </summary>
+        </member>
+        <member name="P:WebHelpers.Mvc5.JqGrid.Column.SortType">
+            <summary>
+            The sort method to use for the values in the column for searching and sorting
+            when the <see cref="T:WebHelpers.Mvc5.JqGrid.DataType"/> is local.
             </summary>
         </member>
         <member name="P:WebHelpers.Mvc5.JqGrid.Column.SearchType">
@@ -534,6 +563,11 @@
             http://www.guriddo.net/documentation/guriddo/javascript/user-guide/basic-grid/#options
             </remarks>
         </member>
+        <member name="P:WebHelpers.Mvc5.JqGrid.Grid.Name">
+            <summary>
+            The name of the grid. The rendered elements will use this name as a prefix.
+            </summary>
+        </member>
         <member name="P:WebHelpers.Mvc5.JqGrid.Grid.ShouldAlternateRowStyle">
             <summary>
             Specifies whether or not to zebra stripe alternate rows.
@@ -548,7 +582,7 @@
             <summary>
             Specifies whether or not the grid's width is calculated automatically to the width
             of the parent element on initial grid creation. In order to resize the grid when the
-            parent element or window changes, use the <see cref="!:Responsive"/> parameter instead.
+            parent element or window changes, use the <see cref="P:WebHelpers.Mvc5.JqGrid.Grid.IsResponsive"/> parameter instead.
             </summary>
         </member>
         <member name="P:WebHelpers.Mvc5.JqGrid.Grid.Caption">
@@ -629,7 +663,7 @@
         <member name="P:WebHelpers.Mvc5.JqGrid.Grid.EmptyResultSetMessage">
             <summary>
             The message to display when the returned or current number of records in the grid is zero.
-            This option is only valid when TODO: viewrecords is true.
+            This option is only valid when <see cref="P:WebHelpers.Mvc5.JqGrid.Grid.ShowPagerRowCount"/> is true.
             </summary>
         </member>
         <member name="P:WebHelpers.Mvc5.JqGrid.Grid.ShouldToggleOnColumnClick">
@@ -703,8 +737,8 @@
         </member>
         <member name="P:WebHelpers.Mvc5.JqGrid.Grid.IconSet">
             <summary>
-            The icon set to use. This option is only valid when the // TODO: StyleUI is Bootstrap4.
-            The appropriate icon set CSS file must be loaded for this to work.
+            The icon set to use. This option is only valid when the <see cref="P:WebHelpers.Mvc5.JqGrid.Grid.Style"/> is
+            <see cref="F:WebHelpers.Mvc5.JqGrid.Style.Bootstrap4"/>. The appropriate icon set CSS file must be loaded for this to work.
             </summary>
         </member>
         <member name="P:WebHelpers.Mvc5.JqGrid.Grid.IdPrefix">
@@ -786,17 +820,21 @@
             The initial page number used when the request is made to retrieve data.
             </summary>
         </member>
+        <member name="P:WebHelpers.Mvc5.JqGrid.Grid.ShowPager">
+            <summary>
+            Specifies whether or not the pager bar is shown.
+            </summary>
+        </member>
         <member name="P:WebHelpers.Mvc5.JqGrid.Grid.Pager">
             <summary>
             The HTML ID reference to the pager bar used to navigate through the records.
-            This must be a valid HTML element specified by its ID (e.g. #pager).
             </summary>
         </member>
         <member name="P:WebHelpers.Mvc5.JqGrid.Grid.PagerNavigationAlign">
             <summary>
             The position of the pager navigation buttons and record selection box in the grid.
             The pager element is divided into 3 positions and only one element can be in a single
-            position. When changing this option, the <see cref="P:WebHelpers.Mvc5.JqGrid.Grid.PagerRecordAlign"/> // TODO:  must be changed as well.
+            position. When changing this option, the <see cref="P:WebHelpers.Mvc5.JqGrid.Grid.PagerRecordAlign"/> must be changed as well.
             </summary>
         </member>
         <member name="P:WebHelpers.Mvc5.JqGrid.Grid.ShowPagerButtons">
@@ -824,7 +862,7 @@
             <summary>
             The position of the record information in the pager. The pager element is divided
             into 3 positions and only one element can be in a single position.
-            When changing this option, the <see cref="P:WebHelpers.Mvc5.JqGrid.Grid.PagerNavigationAlign"/> // TODO:  must be changed as well.
+            When changing this option, the <see cref="P:WebHelpers.Mvc5.JqGrid.Grid.PagerNavigationAlign"/> must be changed as well.
             </summary>
         </member>
         <member name="P:WebHelpers.Mvc5.JqGrid.Grid.PagerRecordLabelTemplate">
@@ -833,9 +871,9 @@
             number of records is greater than zero. The default is "View {0} - {1} of {2}".
             </summary>
         </member>
-        <member name="P:WebHelpers.Mvc5.JqGrid.Grid.Localization">
+        <member name="P:WebHelpers.Mvc5.JqGrid.Grid.Locale">
             <summary>
-            The two-letter code that correponds to the localization file (grid.locale-xx.js).
+            The locale to use that corresponds to the localization file (grid.locale-xx.js).
             The language file must be loaded for this option to work.
             </summary>
         </member>
@@ -876,6 +914,109 @@
             "totalrows" is set to the server
             </summary>
         </member>
+        <member name="P:WebHelpers.Mvc5.JqGrid.Grid.VirtualScrollMode">
+            <summary>
+            Specifies whether or not to use a dynamic virtual scroll mode.
+            </summary>
+        </member>
+        <member name="P:WebHelpers.Mvc5.JqGrid.Grid.ScrollMaxRows">
+            <summary>
+            The maximum rows the grid can load when the <see cref="P:WebHelpers.Mvc5.JqGrid.Grid.VirtualScrollMode"/> is set to <see cref="F:WebHelpers.Mvc5.JqGrid.VirtualScrollMode.OnlyVisibleRows"/>.
+            It is recommended that you set this value greater than <see cref="P:WebHelpers.Mvc5.JqGrid.Grid.MaxRows"/>, otherwise it will
+            default to the <see cref="P:WebHelpers.Mvc5.JqGrid.Grid.MaxRows"/> value.
+            </summary>
+        </member>
+        <member name="P:WebHelpers.Mvc5.JqGrid.Grid.VerticalScrollbarWidth">
+            <summary>
+            The width of the vertical scrollbar.
+            </summary>
+        </member>
+        <member name="P:WebHelpers.Mvc5.JqGrid.Grid.VerticalScrollbarTopOffset">
+            <summary>
+            The top offset from the upper position of the scroll element.
+            </summary>
+        </member>
+        <member name="P:WebHelpers.Mvc5.JqGrid.Grid.ShowVirtualScrollInfoPopUp">
+            <summary>
+            Specifies whether or not a pop-up with page information is displayed when virtual scrolling is enabled.
+            The pop-up changes its position relative to the position of the scroll element.
+            </summary>
+        </member>
+        <member name="P:WebHelpers.Mvc5.JqGrid.Grid.ShouldScrollToSelectedRow">
+            <summary>
+            Specifies whether or not the grid is scrolled so that the selected row is visible when
+            a row is selected via setSelection.
+            </summary>
+        </member>
+        <member name="P:WebHelpers.Mvc5.JqGrid.Grid.ShouldShrinkToFit">
+            <summary>
+            Specifies whether or not automatic resizing takes place in proportion to each columns' width
+            to fit within the bounds of the grid's width.
+            </summary>
+        </member>
+        <member name="P:WebHelpers.Mvc5.JqGrid.Grid.CanReorderColumns">
+            <summary>
+            Specifies whether or not reordering columns by dragging and dropping them with the mouse
+            is enabled.
+            </summary>
+        </member>
+        <member name="P:WebHelpers.Mvc5.JqGrid.Grid.InitialColumnToSort">
+            <summary>
+            The column according to which the data is to be sorted when the grid is initially loaded.
+            Use in conjunction with <see cref="P:WebHelpers.Mvc5.JqGrid.Grid.InitialColumnSortOrder"/>.
+            </summary>
+        </member>
+        <member name="P:WebHelpers.Mvc5.JqGrid.Grid.InitialColumnSortOrder">
+            <summary>
+            The sort order to use when the grid is initially loaded and sorted by the <see cref="P:WebHelpers.Mvc5.JqGrid.Grid.InitialColumnToSort"/>.
+            </summary>
+        </member>
+        <member name="P:WebHelpers.Mvc5.JqGrid.Grid.ShouldStoreNavigationOptions">
+            <summary>
+            Specifies whether or not the navigation options are stored in the grid options when
+            the grid state is saved or restored.
+            </summary>
+        </member>
+        <member name="P:WebHelpers.Mvc5.JqGrid.Grid.DataUrl">
+            <summary>
+            The URL that returns the data needed to populate the grid.
+            </summary>
+        </member>
+        <member name="P:WebHelpers.Mvc5.JqGrid.Grid.UseNameForLocalSearch">
+            <summary>
+            Specifies whether or not the grid performs the search by <see cref="P:WebHelpers.Mvc5.JqGrid.Column.Name"/> instead
+            of by <see cref="P:WebHelpers.Mvc5.JqGrid.Column.Index"/> when the data type is local.
+            </summary>
+        </member>
+        <member name="P:WebHelpers.Mvc5.JqGrid.Grid.ShowPagerRowCount">
+            <summary>
+            Specifies whether or not "View X to Y out of Z" is shown in the pager bar.
+            </summary>
+        </member>
+        <member name="P:WebHelpers.Mvc5.JqGrid.Grid.Width">
+            <summary>
+            The width of the grid, in pixels. If this option is not set, the width of the grid is the sum
+            of the widths of the columns. If this option is set, the initial width of each column is set
+            according to the value of the <see cref="P:WebHelpers.Mvc5.JqGrid.Grid.ShouldShrinkToFit"/> option.
+            </summary>
+        </member>
+        <member name="M:WebHelpers.Mvc5.JqGrid.JqGridBuilder`1.Render(WebHelpers.Mvc5.JqGrid.Grid)">
+            <summary>
+            Renders the grid container.
+            </summary>
+        </member>
+        <member name="M:WebHelpers.Mvc5.JqGrid.JqGridBuilder`1.Initialize(WebHelpers.Mvc5.JqGrid.Grid)">
+            <summary>
+            Initializes the grid via JavaScript after the page has loaded.
+            jQuery must be defined before this method in your view or layout for this to work.
+            </summary>
+        </member>
+        <member name="M:WebHelpers.Mvc5.JqGrid.JqGridBuilder`1.RenderAndInitialize(WebHelpers.Mvc5.JqGrid.Grid)">
+            <summary>
+            Renders the grid container and initializes the grid all at once.
+            jQuery must be defined before this method in your view or layout for this to work.
+            </summary>
+        </member>
         <member name="F:WebHelpers.Mvc5.JqGrid.LoadIndicator.Disable">
             <summary>
             Disables the jqGrid progress indicator. This allows you to use your own indicator.
@@ -896,6 +1037,29 @@
             <remarks>
             http://www.guriddo.net/documentation/guriddo/javascript/user-guide/searching/#configuration
             </remarks>>
+        </member>
+        <member name="F:WebHelpers.Mvc5.JqGrid.VirtualScrollMode.Infinite">
+            <summary>
+            The pager buttons and select box are disabled and the vertical scrollbar is used
+            to load data. The grid will always hold all the rows from the start to the latest
+            point visited.
+            </summary>
+        </member>
+        <member name="F:WebHelpers.Mvc5.JqGrid.VirtualScrollMode.OnlyVisibleRows">
+            <summary>
+            The grid will only load the visible rows without having to care about memory leaks.
+            </summary>
+        </member>
+        <member name="T:WebHelpers.Mvc5.JsonNetResult">
+            <summary>
+            Represents a class that is used to send JSON-formatted content to the response using Json.NET.
+            </summary>
+        </member>
+        <member name="M:WebHelpers.Mvc5.JsonNetResult.#ctor(System.Object)">
+            <summary>
+            Creates a <see cref="T:WebHelpers.Mvc5.JsonNetResult"/> object that serializes the specified object to JSON.
+            </summary>
+            <param name="data">The JavaScript object graph to serialize.</param>
         </member>
         <member name="T:WebHelpers.Mvc5.UrlHelperExtensions">
             <summary>
@@ -939,6 +1103,13 @@
             The version is the number of ticks since the last write time of the file.
             </summary>
             <param name="bundle">The bundle (e.g. StyleBundle) to add the version to.</param>
+        </member>
+        <member name="T:WebHelpers.Mvc5.WebHelpers`1">
+            <summary>
+            Custom HtmlHelpers encapsulated in the WebHelpers namespace. This provides a layer
+            to group the helpers to prevent polluting the base <see cref="T:System.Web.Mvc.HtmlHelper"/> class.
+            </summary>
+            <typeparam name="TModel">The type of the model.</typeparam>
         </member>
         <member name="T:JetBrains.Annotations.CanBeNullAttribute">
             <summary>

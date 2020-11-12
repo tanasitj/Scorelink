@@ -166,16 +166,16 @@
     <member name="M:Leadtools.Pdf.PDFDocument.#ctor(System.IO.Stream,System.String)">
       <summary>Initializes a new PDFDocument from the specified stream containing a PDF file and (optional) password.</summary>
       <param name="stream">The stream containing an existing PDF file. This cannot be **null** and must support reading and seeking.</param>
-      <param name="password">The password to use if \stream\ contains an encrypted PDF file.</param>
+      <param name="password">The password to use if stream contains an encrypted PDF file.</param>
     </member>
     <member name="M:Leadtools.Pdf.PDFDocument.#ctor(System.String)">
-      <summary>Initializes a new PDFDocument form a specified PDF file.</summary>
+      <summary>Initializes a new PDFDocument from a specified PDF file.</summary>
       <param name="fileName">The name of an existing PDF file.</param>
     </member>
     <member name="M:Leadtools.Pdf.PDFDocument.#ctor(System.String,System.String)">
       <summary>Initializes a new PDFDocument form a specified PDF file and optional password.</summary>
       <param name="fileName">The name of an existing PDF file.</param>
-      <param name="password">The password to use if \fileName\ contains an encrypted PDF file.</param>
+      <param name="password">The password to use if fileName contains an encrypted PDF file; otherwise, this parameter is not used.</param>
     </member>
     <member name="M:Leadtools.Pdf.PDFDocument.DecodeImage(System.String)">
       <summary>Decodes the specified PDF image object embedded in this PDFDocument.</summary>
@@ -191,11 +191,23 @@
       <summary>Gets the status of digital signature support in the LEADTOOLS PDF toolkit.</summary>
       <returns>A RasterExceptionCode that indicates the status of digital signature support in the LEADTOOLS PDF toolkit. A value of RasterExceptionCode.Success indicates that digital signature support is available and ready to use. Any other value indicates that either the required libraries are missing, or digital signature support is not available for this platform.</returns>
     </member>
+    <member name="M:Leadtools.Pdf.PDFDocument.GetEmbeddedFileSchema(System.String)">
+      <summary>Helper method to find the schema of an embedded file.</summary>
+      <param name="key">Schema key to find.</param>
+      <returns>The matching schema if found; otherwise, **null**.</returns>
+    </member>
+    <member name="M:Leadtools.Pdf.PDFDocument.GetImageRect(Leadtools.RasterImage,System.Int32,System.Double,System.Double,Leadtools.Pdf.PDFRect)">
+      <summary>Creates an image from a PDF document page.</summary>
+    </member>
     <member name="M:Leadtools.Pdf.PDFDocument.GetPageImage(Leadtools.Codecs.RasterCodecs,System.Int32)">
       <summary>Gets a raster image of a page in the PDF file associated with this PDFDocument.</summary>
       <param name="codecs">An optional Leadtools.Codecs.RasterCodecs to use when reading the page. If you pass a **null** reference, then this method will internal create a new Leadtools.Codecs.RasterCodecs object and dispose before it returns.</param>
       <param name="pageNumber">The 1-based page number to read. Must be greater than or equal to 1 and less than or equal to the total number of pages in the document (Pages.Count). Use the special value of -1 to represent the last page in the document.</param>
       <returns>A Leadtools.RasterImage that represents the rendering of the requested page.</returns>
+    </member>
+    <member name="M:Leadtools.Pdf.PDFDocument.GetPageRasterizer(System.Int32)">
+      <summary>Returns a PDFPageRasterizer object for the specified page.</summary>
+      <returns>PDFPageRasterizer object for the specified page.</returns>
     </member>
     <member name="M:Leadtools.Pdf.PDFDocument.GetPageSvg(System.Int32,Leadtools.Codecs.CodecsLoadSvgOptions)">
       <summary>Gets the specified page as an SVG document.</summary>
@@ -250,6 +262,14 @@
       <summary>Gets the properties or metadata of this PDF document.</summary>
       <value>A PDFDocumentProperties object that contains the properties or metadata of the PDF file associated with this PDFDocument. The default value is **null**.</value>
     </member>
+    <member name="P:Leadtools.Pdf.PDFDocument.EmbeddedFiles">
+      <summary>Collection of the embedded files found in this document.</summary>
+      <value>Collection of the embedded files found in this document. The default value is an empty collection.</value>
+    </member>
+    <member name="P:Leadtools.Pdf.PDFDocument.EmbeddedFilesSchemas">
+      <summary>Collection of the embedded file schemas found in this document.</summary>
+      <value>Collection of the embedded file schemas found in this document. The default value is an empty collection.</value>
+    </member>
     <member name="P:Leadtools.Pdf.PDFDocument.FileName">
       <summary>Gets the name of the PDF file associated with this PDFDocument.</summary>
       <value>A System.String that contains the name of the PDF file associated with this PDFDocument. The default value is **null**.</value>
@@ -261,6 +281,10 @@
     <member name="P:Leadtools.Pdf.PDFDocument.Fonts">
       <summary>Gets a list of the embedded fonts of this PDFDocument.</summary>
       <value>A list of PDFFonts contained in this **PDFDocument**.</value>
+    </member>
+    <member name="P:Leadtools.Pdf.PDFDocument.HasEmbeddedFiles">
+      <summary>Indicates whether this PDF document has any embedded files (attachments).</summary>
+      <value>**true** if the PDF document has embedded files; otherwise, **false**.</value>
     </member>
     <member name="P:Leadtools.Pdf.PDFDocument.Images">
       <summary>Gets a list of the embedded images of this PDFDocument.</summary>
@@ -281,6 +305,10 @@
     <member name="P:Leadtools.Pdf.PDFDocument.IsPdfA">
       <summary>Determines if this document is PDF/A.</summary>
       <value>**true** if this document is PDF/A; otherwise, **false**.</value>
+    </member>
+    <member name="P:Leadtools.Pdf.PDFDocument.IsPortfolio">
+      <summary>Indicates whether this PDF document is a portfolio.</summary>
+      <value>**true** if the PDF document is portfolio; otherwise, **false**.</value>
     </member>
     <member name="P:Leadtools.Pdf.PDFDocument.Pages">
       <summary>Gets the collection of pages in this PDF document.</summary>
@@ -320,6 +348,9 @@
       <param name="destinationType">The coordinate system type to convert to.</param>
       <param name="rect">Coordinates to convert.</param>
       <returns>A PDFRect that contains the converted rectangle.</returns>
+    </member>
+    <member name="M:Leadtools.Pdf.PDFDocumentPage.GetRasterizer">
+      <summary>Returns a PDFPageRasterizer object for this page.</summary>
     </member>
     <member name="P:Leadtools.Pdf.PDFDocumentPage.Annotations">
       <summary>Gets a list of the annotations found on this page.</summary>
@@ -472,6 +503,48 @@
       <summary>Vertical radius of this ellipse annotation.</summary>
       <value>A System.Double that represents the horizontal radius, in PDF units (1/72 of an inch from the bottom-left), of the ellipse annotation. The default value is 0 System.Double.</value>
     </member>
+    <member name="T:Leadtools.Pdf.PDFEmbeddedFile">
+      <summary>Properties of an embedded file (attachment) in this document.</summary>
+    </member>
+    <member name="M:Leadtools.Pdf.PDFEmbeddedFile.#ctor">
+      <summary>Initializes a new instance of PDFEmbeddedFile with default parameters.</summary>
+    </member>
+    <member name="M:Leadtools.Pdf.PDFEmbeddedFile.Clone">
+      <summary>Creates an exact copy of this PDFEmbeddedFile object.</summary>
+      <returns>Copy of this PDFEmbeddedFile object.</returns>
+    </member>
+    <member name="P:Leadtools.Pdf.PDFEmbeddedFile.Created">
+      <summary>Date this file was created.</summary>
+      <value>The date this file was created.</value>
+    </member>
+    <member name="P:Leadtools.Pdf.PDFEmbeddedFile.Description">
+      <summary>Description of this embedded file.</summary>
+      <value>Description of this embedded file. This is optional and the default value is **null**.</value>
+    </member>
+    <member name="P:Leadtools.Pdf.PDFEmbeddedFile.FileName">
+      <summary>Name of the embedded file.</summary>
+      <value>Name of the embedded file.</value>
+    </member>
+    <member name="P:Leadtools.Pdf.PDFEmbeddedFile.FileNumber">
+      <summary>1-based file number of this embedded file.</summary>
+      <value>The 1-based file number of this embedded file. This value is unique.</value>
+    </member>
+    <member name="P:Leadtools.Pdf.PDFEmbeddedFile.FileSize">
+      <summary>Size of this embedded file, in bytes.</summary>
+      <value>The size of this embedded file, in bytes.</value>
+    </member>
+    <member name="P:Leadtools.Pdf.PDFEmbeddedFile.Modified">
+      <summary>Date this file was last modified.</summary>
+      <value>The date this file was last modified.</value>
+    </member>
+    <member name="P:Leadtools.Pdf.PDFEmbeddedFile.ObjectNumber">
+      <summary>PDF object number of this embedded file.</summary>
+      <value>The PDF object number of this embedded file. This is a unique value.</value>
+    </member>
+    <member name="P:Leadtools.Pdf.PDFEmbeddedFile.SchemaValues">
+      <summary>Gets the schema item values for this embedded file.</summary>
+      <value>The schema item values for this embedded file.</value>
+    </member>
     <member name="T:Leadtools.Pdf.PDFFile">
       <summary>PDF file features class. \* PDF Capability Required.</summary>
     </member>
@@ -526,11 +599,51 @@
       <param name="distillerOptions">The options to use when creating the PDF file. Cannot be **null** .</param>
       <param name="destinationFileName">Name of the destination PDF file to be created. Cannot be **null**.</param>
     </member>
+    <member name="M:Leadtools.Pdf.PDFFile.ExtractEmbeddedFile(System.IO.Stream,System.String,System.Int32,System.IO.Stream)">
+      <summary>Extracts an embedded file (attachment) from a stream containing a PDF document file, and saves it to an output stream.</summary>
+      <param name="stream">Stream containing the data of the owner PDF document.</param>
+      <param name="password">The password to use when loading this PDF file (if the file is encrypted); otherwise, use **null**.</param>
+      <param name="fileNumber">Embedded file number. This value must be between 1 and the total number of embedded files in the owner PDF document.</param>
+      <param name="outputStream">Stream that will be populated with the embedded file's binary data.</param>
+    </member>
+    <member name="M:Leadtools.Pdf.PDFFile.ExtractEmbeddedFile(System.IO.Stream,System.String,System.Int32,System.String)">
+      <summary>Extracts an embedded file (attachment) from a stream containing a PDF document file, and saves it to disk.</summary>
+      <param name="stream">Stream containing the data of the owner PDF document.</param>
+      <param name="password">The password to use when loading this PDF file (if the file is encrypted); otherwise, use **null**.</param>
+      <param name="fileNumber">Embedded file number. This value must be between 1 and the total number of embedded files in the owner PDF document.</param>
+      <param name="outputFileName">Name of the file that will contain the embedded file's binary data.</param>
+    </member>
+    <member name="M:Leadtools.Pdf.PDFFile.ExtractEmbeddedFile(System.String,System.String,System.Int32,System.IO.Stream)">
+      <summary>Extracts an embedded file (attachment) from a PDF document file, and saves it to an output stream.</summary>
+      <param name="fileName">Name of the owner PDF document file.</param>
+      <param name="password">The password to use when loading this PDF file (if the file is encrypted); otherwise, use **null**.</param>
+      <param name="fileNumber">Embedded file number. This value must be between 1 and the total number of embedded files in the owner PDF document.</param>
+      <param name="outputStream">Stream that will be populated with the embedded file binary data.</param>
+    </member>
+    <member name="M:Leadtools.Pdf.PDFFile.ExtractEmbeddedFile(System.String,System.String,System.Int32,System.String)">
+      <summary>Extracts an embedded file (attachment) from a PDF document file and saves it to disk.</summary>
+      <param name="fileName">Name of the owner PDF document file.</param>
+      <param name="password">The password to use when loading this PDF file (if the file is encrypted); otherwise, use **null**.</param>
+      <param name="fileNumber">Embedded file number. This value must be between 1 and the total number of embedded files in the owner PDF document.</param>
+      <param name="outputFileName">Name of the file that will contain the embedded file binary data.</param>
+    </member>
     <member name="M:Leadtools.Pdf.PDFFile.ExtractPages(System.Int32,System.Int32,System.String)">
       <summary>Extract one or more pages from the file associated with this PDFFile object.</summary>
       <param name="firstPageNumber">The 1-based number of the first page to be extracted. Must be a value greater than or equal to 1.</param>
       <param name="lastPageNumber">The 1-based number of the last page to be extracted. Must be a value greater than or equal to \firstPageNumber\ and less than or equal to the total number of pages in the file. Use the special value of -1 to represents "last page in the file".</param>
       <param name="destinationFileName">Name of the destination PDF file to be created. If the value of this parameter is **null** then the filename set in FileName will be updated.</param>
+    </member>
+    <member name="M:Leadtools.Pdf.PDFFile.GetEmbeddedFileCount(System.IO.Stream,System.String)">
+      <summary>Gets the total number of embedded files (attachments) in a PDF stream.</summary>
+      <param name="stream">Stream containing a PDF document.</param>
+      <param name="password">The password to use when loading this PDF file (if the file is encrypted); otherwise, use **null**.</param>
+      <returns>The total number of embedded files (attachments) in the PDF.</returns>
+    </member>
+    <member name="M:Leadtools.Pdf.PDFFile.GetEmbeddedFileCount(System.String,System.String)">
+      <summary>Gets the total number of embedded files (attachments) in a PDF file.</summary>
+      <param name="fileName">The name of the PDF file.</param>
+      <param name="password">The password to use when loading this PDF file (if the file is encrypted); otherwise, use **null**.</param>
+      <returns>The total number of embedded files (attachments) in the PDF.</returns>
     </member>
     <member name="M:Leadtools.Pdf.PDFFile.GetPageCount">
       <summary>Gets the number of pages in this PDFFile object.</summary>
@@ -570,6 +683,18 @@
       <summary>Determines if the specified file is PDF/A.</summary>
       <param name="fileName">The name of the PDF file.</param>
       <returns>This method checks whether the file claims to be PDF/A. The engine only checks if the file claims compliance with PDF/A standard and does not perform any validation.</returns>
+    </member>
+    <member name="M:Leadtools.Pdf.PDFFile.IsPortfolio(System.IO.Stream,System.String)">
+      <summary>Indicates whether the stream contains a PDF portfolio.</summary>
+      <param name="stream">Stream containing the data of a PDF document.</param>
+      <param name="password">The password to use when loading this PDF file (if the file is encrypted); otherwise, use **null**.</param>
+      <returns>A PDF file can be created as a portfolio which contains multiple files assembled into an integrated unit.</returns>
+    </member>
+    <member name="M:Leadtools.Pdf.PDFFile.IsPortfolio(System.String,System.String)">
+      <summary>Indicates whether the file is a PDF portfolio.</summary>
+      <param name="fileName">The name of the PDF file.</param>
+      <param name="password">The password to use when loading this PDF file (if the file is encrypted); otherwise, use **null**.</param>
+      <returns>A PDF file can be created as a portfolio which contains multiple files assembled into an integrated unit.</returns>
     </member>
     <member name="M:Leadtools.Pdf.PDFFile.Linearize(System.String)">
       <summary>Converts the file associated with this PDFFile object into a linearized version (one optimized for Web viewing).</summary>
@@ -1278,6 +1403,30 @@
       <summary>Gets the list of supported monochrome image formats.</summary>
       <value>An array of Leadtools.RasterImageFormat values.</value>
     </member>
+    <member name="T:Leadtools.Pdf.PDFPageRasterizer">
+      <summary>Allows resterization of a PDFDocumentPage.</summary>
+    </member>
+    <member name="M:Leadtools.Pdf.PDFPageRasterizer.ClearCache">
+      <summary>Clears the cached image.</summary>
+    </member>
+    <member name="M:Leadtools.Pdf.PDFPageRasterizer.GetImage(Leadtools.LeadRect,Leadtools.LeadSize,System.Boolean)">
+      <summary>Gets a raster image of a page.</summary>
+    </member>
+    <member name="M:Leadtools.Pdf.PDFPageRasterizer.Dispose">
+      <summary>Releases all resources used by this PDFPageRasterizer.</summary>
+    </member>
+    <member name="M:Leadtools.Pdf.PDFPageRasterizer.Dispose(System.Boolean)">
+      <summary>Releases all the resources used by this PDFPageRasterizer.</summary>
+    </member>
+    <member name="M:Leadtools.Pdf.PDFPageRasterizer.Finalize">
+      <summary>Releases all non-garbage collectible resources used by this object.</summary>
+    </member>
+    <member name="P:Leadtools.Pdf.PDFPageRasterizer.Resolution">
+      <summary>Gets the resolution, in dots per inch, of this page.</summary>
+    </member>
+    <member name="P:Leadtools.Pdf.PDFPageRasterizer.Size">
+      <summary>Gets the size, in pixels, of this page.</summary>
+    </member>
     <member name="T:Leadtools.Pdf.PDFPencilAnnotation">
       <summary>Contains information for a PDF pencil annotation.</summary>
     </member>
@@ -1428,6 +1577,47 @@
     <member name="P:Leadtools.Pdf.PDFRectangleAnnotation.Pen">
       <summary>Pen of this annotation.</summary>
       <value>A PDFPen that represents pen properties for this annotation.</value>
+    </member>
+    <member name="T:Leadtools.Pdf.PDFSchema">
+      <summary>Defines a PDF schema.</summary>
+    </member>
+    <member name="M:Leadtools.Pdf.PDFSchema.#ctor">
+      <summary>Initializes a new instance of PDFSchema with default values.</summary>
+    </member>
+    <member name="M:Leadtools.Pdf.PDFSchema.AsDate(System.String)">
+      <summary>Helper method to convert a schema value to a date object.</summary>
+      <param name="value">String containing the value to convert.</param>
+      <returns>The converted value as a date, or an empty `DateTime` if the value could not be converted.</returns>
+    </member>
+    <member name="M:Leadtools.Pdf.PDFSchema.AsNumber(System.String)">
+      <summary>Helper method to convert a schema value into a number.</summary>
+      <param name="value">String containing the value to convert.</param>
+      <returns>The converted value as an integer number, or 0 if the value could not be converted.</returns>
+    </member>
+    <member name="P:Leadtools.Pdf.PDFSchema.IsEditable">
+      <summary>Indicates that this schema should be editable in an application program by default.</summary>
+      <value>**true** if this schema should be editable in an application program by default; otherwise, **false**.</value>
+    </member>
+    <member name="P:Leadtools.Pdf.PDFSchema.IsVisible">
+      <summary>Indicates that this schema should be visible in an application program by default.</summary>
+      <value>**true** if this schema should be visible in an application program by default; otherwise, **false**.</value>
+    </member>
+    <member name="P:Leadtools.Pdf.PDFSchema.Key">
+      <summary>Identifier key for this schema.</summary>
+      <value>Unique key identifier of this schema.</value>
+    </member>
+    <member name="P:Leadtools.Pdf.PDFSchema.SchemaType">
+      <summary>Type of this schema.</summary>
+      <value>The type of this schema. This could be one of the `XYZSchemaType` constants.</value>
+    </member>
+    <member name="F:Leadtools.Pdf.PDFSchema.DateSchemaType">
+      <summary>Date schema type.</summary>
+    </member>
+    <member name="F:Leadtools.Pdf.PDFSchema.NumberSchemaType">
+      <summary>Number schema type.</summary>
+    </member>
+    <member name="F:Leadtools.Pdf.PDFSchema.TextSchemaType">
+      <summary>Text schema type.</summary>
     </member>
     <member name="T:Leadtools.Pdf.PDFSecurityOptions">
       <summary>PDF encryption options</summary>
@@ -1777,51 +1967,51 @@
       <summary>Specifies the type of PDF annotation</summary>
     </member>
     <member name="F:Leadtools.Pdf.PDFAnnotationType.Note">
-      <summary>Note annotation</summary>
+      <summary>Note annotation </summary>
       <platforms>NET, Java</platforms>
     </member>
     <member name="F:Leadtools.Pdf.PDFAnnotationType.Text">
-      <summary>Text annotation</summary>
+      <summary>Text annotation </summary>
       <platforms>NET, Java</platforms>
     </member>
     <member name="F:Leadtools.Pdf.PDFAnnotationType.Line">
-      <summary>Line annotation</summary>
+      <summary>Line annotation </summary>
       <platforms>NET, Java</platforms>
     </member>
     <member name="F:Leadtools.Pdf.PDFAnnotationType.Rectangle">
-      <summary>Rectangle annotation</summary>
+      <summary>Rectangle annotation </summary>
       <platforms>NET, Java</platforms>
     </member>
     <member name="F:Leadtools.Pdf.PDFAnnotationType.Ellipse">
-      <summary>Ellipse annotation</summary>
+      <summary>Ellipse annotation </summary>
       <platforms>NET, Java</platforms>
     </member>
     <member name="F:Leadtools.Pdf.PDFAnnotationType.Polyline">
-      <summary>Polyline annotation</summary>
+      <summary>Polyline annotation </summary>
       <platforms>NET, Java</platforms>
     </member>
     <member name="F:Leadtools.Pdf.PDFAnnotationType.Polygon">
-      <summary>Polygon annotation</summary>
+      <summary>Polygon annotation </summary>
       <platforms>NET, Java</platforms>
     </member>
     <member name="F:Leadtools.Pdf.PDFAnnotationType.Pencil">
-      <summary>Pencil annotation</summary>
+      <summary>Pencil annotation </summary>
       <platforms>NET, Java</platforms>
     </member>
     <member name="F:Leadtools.Pdf.PDFAnnotationType.Highlight">
-      <summary>Highlight annotation</summary>
+      <summary>Highlight annotation </summary>
       <platforms>NET, Java</platforms>
     </member>
     <member name="F:Leadtools.Pdf.PDFAnnotationType.Underline">
-      <summary>Underline annotation</summary>
+      <summary>Underline annotation </summary>
       <platforms>NET, Java</platforms>
     </member>
     <member name="F:Leadtools.Pdf.PDFAnnotationType.Strikeout">
-      <summary>Strikeout annotation</summary>
+      <summary>Strikeout annotation </summary>
       <platforms>NET, Java</platforms>
     </member>
     <member name="F:Leadtools.Pdf.PDFAnnotationType.Squiggly">
-      <summary>Squiggly annotation</summary>
+      <summary>Squiggly annotation </summary>
       <platforms>NET, Java</platforms>
     </member>
     <member name="T:Leadtools.Pdf.PDFAutoOptimizerMode">
@@ -2248,7 +2438,11 @@
       <platforms>NET, Java</platforms>
     </member>
     <member name="F:Leadtools.Pdf.PDFParseDocumentStructureOptions.All">
-      <summary>Parse bookmarks, internal links, images and fonts.</summary>
+      <summary>Parse bookmarks, internal links, images, fonts and embedded files.</summary>
+      <platforms>NET, Java</platforms>
+    </member>
+    <member name="F:Leadtools.Pdf.PDFParseDocumentStructureOptions.EmbeddedFiles">
+      <summary>Parse embedded files.</summary>
       <platforms>NET, Java</platforms>
     </member>
     <member name="T:Leadtools.Pdf.PDFParsePagesOptions">

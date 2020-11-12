@@ -67,6 +67,54 @@
       <summary>Gets the URI this asynchronous operation is using.</summary>
       <value>The Uri this asynchronous operation is using.</value>
     </member>
+    <member name="T:Leadtools.Codecs.CodecsAttachment">
+      <summary>Properties of a single attachment in a file.</summary>
+    </member>
+    <member name="M:Leadtools.Codecs.CodecsAttachment.#ctor">
+      <summary>Initializes a new instance of CodecsAttachment with default values.</summary>
+    </member>
+    <member name="P:Leadtools.Codecs.CodecsAttachment.AttachmentNumber">
+      <summary>1-based number of this attachment in the file.</summary>
+      <value>The 1-based number of this attachment in the file. The default value is 0.</value>
+    </member>
+    <member name="P:Leadtools.Codecs.CodecsAttachment.Description">
+      <summary>Extra description information of this attachment.</summary>
+      <value>The optional extra description information of this attachment. Default value is **null**.</value>
+    </member>
+    <member name="P:Leadtools.Codecs.CodecsAttachment.DisplayName">
+      <summary>Display name of the attachment.</summary>
+      <value>The optional display name of the attachment. May or may not be the same as FileName. The default value is **null**.</value>
+    </member>
+    <member name="P:Leadtools.Codecs.CodecsAttachment.FileLength">
+      <summary>Length of the attachment file in bytes.</summary>
+      <value>The optional length of the attachment file in bytes. Default value is 0.</value>
+    </member>
+    <member name="P:Leadtools.Codecs.CodecsAttachment.FileName">
+      <summary>File name of the attachment.</summary>
+      <value>The file name of the attachments. Default value is **null**.</value>
+    </member>
+    <member name="P:Leadtools.Codecs.CodecsAttachment.Metadata">
+      <summary>Generic dictionary containing extra properties of this attachment file.</summary>
+      <value>Optional generic dictionary containing extra properties of this attachment file. Default value is an empty dictionary.</value>
+    </member>
+    <member name="P:Leadtools.Codecs.CodecsAttachment.TimeCreated">
+      <summary>Time the attachment file was created.</summary>
+      <value>The optional time the attachment file was created. Default value is an empty `DateTime` object.</value>
+    </member>
+    <member name="P:Leadtools.Codecs.CodecsAttachment.TimeModified">
+      <summary>Time the attachment file was last modified.</summary>
+      <value>The optional time the attachment file was last modified. Default value is an empty `DateTime` object.</value>
+    </member>
+    <member name="T:Leadtools.Codecs.CodecsAttachments">
+      <summary>Represents a collection of attachments of a file.</summary>
+    </member>
+    <member name="M:Leadtools.Codecs.CodecsAttachments.#ctor">
+      <summary>Initializes a new instance of CodecsAttachments with default parameters.</summary>
+    </member>
+    <member name="P:Leadtools.Codecs.CodecsAttachments.OriginalFormat">
+      <summary>Format of the owner file passed to RasterCodecs.ReadAttachments.</summary>
+      <value>Format of the owner (parent) file passed to RasterCodecs.ReadAttachments.</value>
+    </member>
     <member name="T:Leadtools.Codecs.CodecsCsvLoadOptions">
       <summary>Options to use when loading CSV files.</summary>
     </member>
@@ -475,6 +523,10 @@
     <member name="M:Leadtools.Codecs.CodecsImageInfo.Finalize">
       <summary>This member overrides Finalize.</summary>
     </member>
+    <member name="P:Leadtools.Codecs.CodecsImageInfo.AttachmentCount">
+      <summary>The number of attachments in this file.</summary>
+      <value>Number of attachments in this file, if this file has any; otherwise, 0.</value>
+    </member>
     <member name="P:Leadtools.Codecs.CodecsImageInfo.BitsPerPixel">
       <summary>Gets the bits per pixel of the image.</summary>
       <value>The bits per pixel of the image.</value>
@@ -550,6 +602,10 @@
     <member name="P:Leadtools.Codecs.CodecsImageInfo.IsPalette8Alpha">
       <summary>Determines whether the file contains 8-bit palettized image data + alpha.</summary>
       <value>**true** if the file contains 8-bit palettized image data + alpha; **false**, otherwise.</value>
+    </member>
+    <member name="P:Leadtools.Codecs.CodecsImageInfo.IsPortfolio">
+      <summary>Determines whether the file is portfolio.</summary>
+      <value>**true** if the file is portfolio; otherwise, **false**.</value>
     </member>
     <member name="P:Leadtools.Codecs.CodecsImageInfo.IsRotated">
       <summary>Determines whether the image has a rotated view perspective.</summary>
@@ -1746,6 +1802,10 @@
     <member name="P:Leadtools.Codecs.CodecsPdfLoadOptions.EnableInterpolate">
       <summary>Gets or sets a value that indicates whether to use interpolation when loading PDF\*, PS or EPS files.</summary>
       <value>**true** to use interpolation when loading PDF, PS or EPS files, **false** otherwise. Default value is **false**.</value>
+    </member>
+    <member name="P:Leadtools.Codecs.CodecsPdfLoadOptions.EnhanceThinLines">
+      <summary>Boolean value that indicates whether to enhance thin lines when loading PDF files.</summary>
+      <value>**true** to enhance thin lines when loading PDF files; otherwise, **false**. The default value is **true**.</value>
     </member>
     <member name="P:Leadtools.Codecs.CodecsPdfLoadOptions.GraphicsAlpha">
       <summary>Gets or sets a value that indicate the type of graphics anti-aliasing to use.</summary>
@@ -3012,6 +3072,30 @@
       <param name="fileName">A String containing the input file name.</param>
       <param name="pageNumber">1-based index of the page from which to enumerate the tags.</param>
     </member>
+    <member name="M:Leadtools.Codecs.RasterCodecs.ExtractAttachment(System.IO.Stream,System.Int32,System.IO.Stream)">
+      <summary>Extracts an attachment from an owner's file stored in a stream and saves it to an output stream.</summary>
+      <param name="stream">Stream containing the date of the owner's file.</param>
+      <param name="attachmentNumber">1-based attachment number to extract. This value must be between 1 and the number of attachments in the file.</param>
+      <param name="outputtStream">Stream that will contain the attachment file data.</param>
+    </member>
+    <member name="M:Leadtools.Codecs.RasterCodecs.ExtractAttachment(System.IO.Stream,System.Int32,System.String)">
+      <summary>Extracts an attachment from an owner's file stored in a stream and saves it to an output file.</summary>
+      <param name="stream">Stream containing the date of the owner's file.</param>
+      <param name="attachmentNumber">1-based attachment number to extract. This value must be between 1 and the number of attachments in the file.</param>
+      <param name="outputFileName">File that will contain the attachment file data.</param>
+    </member>
+    <member name="M:Leadtools.Codecs.RasterCodecs.ExtractAttachment(System.String,System.Int32,System.IO.Stream)">
+      <summary>Extracts an attachment from an owner's file stored in disk and saves it to an output stream.</summary>
+      <param name="fileName">Owner's file name.</param>
+      <param name="attachmentNumber">1-based attachment number to extract. This value must be between 1 and the number of attachments in the file.</param>
+      <param name="outputStream">Stream that will contain the attachment file data.</param>
+    </member>
+    <member name="M:Leadtools.Codecs.RasterCodecs.ExtractAttachment(System.String,System.Int32,System.String)">
+      <summary>Extracts an attachment from an owner's file stored in disk and saves it to an output file.</summary>
+      <param name="fileName">Owner's file name.</param>
+      <param name="attachmentNumber">1-based attachment number to extract. This value must be between 1 and the number of attachments in the file.</param>
+      <param name="outputFileName">File that will contain the attachment file data.</param>
+    </member>
     <member name="M:Leadtools.Codecs.RasterCodecs.ExtractXMPMetadata(System.IO.Stream,System.IO.Stream)">
       <summary>Extracts all XMP metadata from the source file and saves it to the destination XML file.</summary>
       <param name="sourceStream">A Stream containing the source image file from which the metadata should be read.</param>
@@ -3195,7 +3279,7 @@
       <param name=" "></param>
       <param name=""></param>
       <param name="">For more information, refer to Using the OptimizedLoad Functions to Speed Loading Large Files.</param>
-      <returns>CodecsOptimizedLoadData object containing the current optimize load data being used by this RasterCodecs object or **null** if the the current `RasterCodecs` object is not using optimize load, or the last file format used does not support it, or the optimized load data is not compatible with the **allowUnmanagedData** parameter.</returns>
+      <returns>CodecsOptimizedLoadData object containing the current optimize load data being used by this RasterCodecs object or **null** if the current `RasterCodecs` object is not using optimize load, or the last file format used does not support it, or the optimized load data is not compatible with the **allowUnmanagedData** parameter.</returns>
     </member>
     <member name="M:Leadtools.Codecs.RasterCodecs.GetPcdResolution(System.String)">
       <summary>Examines a PhotoCD file to determine which resolutions it contains.</summary>
@@ -3698,6 +3782,16 @@
       <param name="fixedCodecs">Number of codecs that should stay loaded in memory at all times.</param>
       <param name="cachedCodecs">Number of codecs that should be loaded, but can be unloaded later to make room for other codecs.</param>
       <param name="codecs">A String containing the codecs which should be loaded.</param>
+    </member>
+    <member name="M:Leadtools.Codecs.RasterCodecs.ReadAttachments(System.IO.Stream)">
+      <summary>Reads the properties of the attachments embedded in the specified stream.</summary>
+      <param name="stream">Stream containing the owner file that may contain embedded attachments.</param>
+      <returns>Collection of CodecsAttachment with the properties of any attachments found. If the owner file does not contain nor support attachments, then an empty collection is returned.</returns>
+    </member>
+    <member name="M:Leadtools.Codecs.RasterCodecs.ReadAttachments(System.String)">
+      <summary>Reads the properties of the attachments embedded in the specified file.</summary>
+      <param name="fileName">Owner file that may contain embedded attachments.</param>
+      <returns>Collection of CodecsAttachment with the properties of any attachments found.</returns>
     </member>
     <member name="M:Leadtools.Codecs.RasterCodecs.ReadComment(System.IO.Stream,System.Int32,Leadtools.RasterCommentMetadataType)">
       <summary>Gets a comment field from a stream.</summary>

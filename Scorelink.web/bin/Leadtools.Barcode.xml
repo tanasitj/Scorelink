@@ -546,8 +546,8 @@
     </member>
     <member name="M:Leadtools.Barcode.BarcodeEngine.GetSymbologyFriendlyName(Leadtools.Barcode.BarcodeSymbology)">
       <summary>Returns the friendly name of a barcode symbology.</summary>
-      <param name="symbology">An BarcodeSymbology enumeration member.</param>
-      <returns>A String that contains the friendly name of the symbology.</returns>
+      <param name="symbology">A BarcodeSymbology enumeration member.</param>
+      <returns>A string that contains the friendly name of the symbology.</returns>
     </member>
     <member name="P:Leadtools.Barcode.BarcodeEngine.Reader">
       <summary>Gets the instance of the BarcodeReader class associated with this barcode engine that can be used to read barcodes from an image.</summary>
@@ -628,7 +628,7 @@
       <returns>This method will call GetSupportedSymbologies and checks if \symbology\ is in the array returned by that method.</returns>
     </member>
     <member name="T:Leadtools.Barcode.BarcodeReader">
-      <summary>Main class for the LEADTOOLS support for reading barcodes.</summary>
+      <summary>The main class for LEADTOOLS toolkit support for reading barcodes.</summary>
     </member>
     <member name="M:Leadtools.Barcode.BarcodeReader.GetAllDefaultOptions">
       <summary>Gets a list of all the current barcode read options.</summary>

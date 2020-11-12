@@ -124,18 +124,32 @@ namespace Scorelink.web.Controllers
             return objTempmodel;
         }     
        
-        public JsonResult Commit_file(int docId,string csv_file,string filenames)
+        public JsonResult Commit_file(int docId,string pageType,string csv_file,string filenames)
         {
-            var Info = docInfoRepo.Get(docId);
-            //Get Document Detail data.
-            String Folder_Path = Server.MapPath("..\\FileUploads\\" + Common.GenZero(Info.CreateBy, 8) + "\\" + Info.FileUID + "\\" + filenames);
-            FileInfo files = new FileInfo(Folder_Path);
-            using (var sw = new StreamWriter(files.ToString(), false, Encoding.UTF8))
+            try
             {
-                sw.WriteLine(csv_file);
+                var Info = docInfoRepo.Get(docId);
+                //Get Document Detail data.
+                String Folder_Path = Server.MapPath("..\\FileUploads\\" + Common.GenZero(Info.CreateBy, 8) + "\\" + Info.FileUID + "\\" + filenames);
+                FileInfo files = new FileInfo(Folder_Path);
+                using (var sw = new StreamWriter(files.ToString(), false, Encoding.UTF8))
+                {
+                    sw.WriteLine(csv_file);
+                }
+                DocumentDetailModel docDetail = new DocumentDetailModel();
+
+                //Update DocumentDetail
+                docDetail.DocId = docId;
+                docDetail.PageType = pageType;
+                docDetailRepo.CommitedStatus(docDetail);
             }
-            //System.IO.File.WriteAllText(files.ToString(), csv_file);
-            return Json("Success full");
+            catch (Exception ex)
+            {
+                Logger Err = new Logger();
+                Err.ErrorLog(ex.ToString());
+                return Json(ex.Message);
+            }
+            return Json("Success");
         }
         public JsonResult ExportAllResult(int docId)
         {
@@ -204,6 +218,8 @@ namespace Scorelink.web.Controllers
             }
             catch (Exception ex)
             {
+                Logger Err = new Logger();
+                Err.ErrorLog(ex.ToString());
                 return Json(ex.Message);
             }
             //return Json(new { fileName = fileName });

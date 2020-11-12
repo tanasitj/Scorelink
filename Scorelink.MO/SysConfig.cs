@@ -16,7 +16,9 @@ namespace Scorelink.MO
     {
         public int ConstId { get; set; }
         public string ConstName { get; set; }
-        public string ConstOutput { get; set; }
+        public string ConstOutputText { get; set; }
+        public Nullable<int> ConstOutputInt { get; set; }
+        public Nullable<decimal> ConstOutputDouble { get; set; }
         public string CreateBy { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
         public string UpdateBy { get; set; }

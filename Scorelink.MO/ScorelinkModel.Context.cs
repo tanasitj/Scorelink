@@ -12,6 +12,8 @@ namespace Scorelink.MO
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class ScorelinkEntities : DbContext
     {
@@ -30,9 +32,19 @@ namespace Scorelink.MO
         public virtual DbSet<DocumentDetail> DocumentDetails { get; set; }
         public virtual DbSet<DocumentInfo> DocumentInfo { get; set; }
         public virtual DbSet<OCRResult> OCRResults { get; set; }
+        public virtual DbSet<OnlineUser> OnlineUsers { get; set; }
         public virtual DbSet<StatementType> StatementTypes { get; set; }
         public virtual DbSet<SysConfig> SysConfigs { get; set; }
         public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<V_DocumentDetail> V_DocumentDetail { get; set; }
+    
+        [DbFunction("ScorelinkEntities", "F_DocumentDetail")]
+        public virtual IQueryable<F_DocumentDetail_Result> F_DocumentDetail(Nullable<int> docID)
+        {
+            var docIDParameter = docID.HasValue ?
+                new ObjectParameter("DocID", docID) :
+                new ObjectParameter("DocID", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<F_DocumentDetail_Result>("[ScorelinkEntities].[F_DocumentDetail](@DocID)", docIDParameter);
+        }
     }
 }

@@ -7,7 +7,7 @@
     <member name="T:Leadtools.Ocr.OcrAutoRecognizeJobOperationEventArgs">
       <summary>Contains data for the IOcrAutoRecognizeManager.JobOperation event.</summary>
     </member>
-    <member name="M:Leadtools.Ocr.OcrAutoRecognizeJobOperationEventArgs.#ctor(Leadtools.Ocr.IOcrAutoRecognizeJob,Leadtools.Ocr.OcrAutoRecognizeManagerJobOperation,System.Boolean,Leadtools.Ocr.IOcrDocument,Leadtools.Ocr.IOcrPage,System.Int32,System.String,Leadtools.Forms.DocumentWriters.DocumentFormat,System.String,Leadtools.Forms.DocumentWriters.DocumentWriter)">
+    <member name="M:Leadtools.Ocr.OcrAutoRecognizeJobOperationEventArgs.#ctor(Leadtools.Ocr.IOcrAutoRecognizeJob,Leadtools.Ocr.OcrAutoRecognizeManagerJobOperation,System.Boolean,Leadtools.Ocr.IOcrDocument,Leadtools.Ocr.IOcrPage,System.Int32,System.String,Leadtools.Document.Writer.DocumentFormat,System.String,Leadtools.Document.Writer.DocumentWriter)">
       <summary>Initializes a new instance of the OcrAutoRecognizeJobOperationEventArgs class with the specified values.</summary>
       <param name="job">The instance of the IOcrAutoRecognizeJob currently being run</param>
       <param name="operation">The current operation.</param>
@@ -911,17 +911,14 @@
     <member name="T:Leadtools.Ocr.OcrEngineType">
       <summary>Specifies available OCR engine types.</summary>
     </member>
-    <member name="F:Leadtools.Ocr.OcrEngineType.LEAD">
-      <summary>Specifies the LEADTOOLS OCR Module - LEAD Engine engine. Internally, the OCR library inside Leadtools.Ocr.LEADEngine.dll is used. </summary>
-      <platforms>NET, Java, Android</platforms>
+    <member name="LEAD">
+      <summary></summary>
     </member>
-    <member name="F:Leadtools.Ocr.OcrEngineType.OmniPage">
-      <summary>Specifies the LEADTOOLS OCR Module - OmniPage Engine engine. Internally, the OCR library inside Leadtools.Ocr.OmniPageEngine.dll is used </summary>
-      <platforms>NET</platforms>
+    <member name="OmniPage">
+      <summary></summary>
     </member>
-    <member name="F:Leadtools.Ocr.OcrEngineType.OmniPageArabic">
-      <summary>Specifies the LEADTOOLS OCR Module - OmniPage Engine with Additional Languages engine. Internally, the OCR library inside Leadtools.Ocr.OmniPageArabicEngine.dll is used </summary>
-      <platforms>NET</platforms>
+    <member name="OmniPageArabic">
+      <summary></summary>
     </member>
     <member name="T:Leadtools.Ocr.OcrImageSharingMode">
       <summary>Options used with IOcrEngine.CreatePage to determine the ownership of the source raster image.</summary>
@@ -1333,14 +1330,14 @@
       <param name="jobData">The job data.</param>
       <returns>An IOcrAutoRecognizeJob object that is ready to run.</returns>
     </member>
-    <member name="M:Leadtools.Ocr.IOcrAutoRecognizeManager.Run(System.IO.Stream,System.IO.Stream,Leadtools.Forms.DocumentWriters.DocumentFormat,Leadtools.Ocr.OcrProgressCallback)">
+    <member name="M:Leadtools.Ocr.IOcrAutoRecognizeManager.Run(System.IO.Stream,System.IO.Stream,Leadtools.Document.Writer.DocumentFormat,Leadtools.Ocr.OcrProgressCallback)">
       <summary>Converts an image file in an input stream to a document file in the specified document format in an output stream.</summary>
       <param name="imageStream">The stream containing the image.</param>
       <param name="documentStream">The stream that will contain the resulting document file.</param>
       <param name="format">The output document format. If this parameter is DocumentFormat.User, then the document is saved using the native engine format set in IOcrDocumentManager.EngineFormat if the engine used supports native formats; otherwise, an exception will be thrown.</param>
       <param name="callback">Optional callback to show operation progress.</param>
     </member>
-    <member name="M:Leadtools.Ocr.IOcrAutoRecognizeManager.Run(System.IO.Stream,System.String,Leadtools.Forms.DocumentWriters.DocumentFormat,System.String,Leadtools.Ocr.OcrProgressCallback)">
+    <member name="M:Leadtools.Ocr.IOcrAutoRecognizeManager.Run(System.IO.Stream,System.String,Leadtools.Document.Writer.DocumentFormat,System.String,Leadtools.Ocr.OcrProgressCallback)">
       <summary>Converts an image in a stream to a document file in the specified document format with optional multipage zone file.</summary>
       <param name="imageStream">The stream containing the image data.</param>
       <param name="documentFileName">The name of the resulting document file.</param>
@@ -1349,14 +1346,14 @@
       <param name="callback">Optional callback to show operation progress.</param>
       <param name="">    - IOcrPage.Recognize is called to get the OCR data of the page.</param>
     </member>
-    <member name="M:Leadtools.Ocr.IOcrAutoRecognizeManager.Run(System.String,System.IO.Stream,Leadtools.Forms.DocumentWriters.DocumentFormat,Leadtools.Ocr.OcrProgressCallback)">
+    <member name="M:Leadtools.Ocr.IOcrAutoRecognizeManager.Run(System.String,System.IO.Stream,Leadtools.Document.Writer.DocumentFormat,Leadtools.Ocr.OcrProgressCallback)">
       <summary>Converts an image file on disk to a document file in the specified document format in an output stream.</summary>
       <param name="imageFileName">The file containing the input image.</param>
       <param name="documentStream">The stream that will contain the resulting document file.</param>
       <param name="format">The output document format. If this parameter is DocumentFormat.User, then the document is saved using the native engine format set in IOcrDocumentManager.EngineFormat if the engine used supports native formats; otherwise, an exception will be thrown.</param>
       <param name="callback">Optional callback to show operation progress.</param>
     </member>
-    <member name="M:Leadtools.Ocr.IOcrAutoRecognizeManager.Run(System.String,System.String,Leadtools.Forms.DocumentWriters.DocumentFormat,System.String,Leadtools.Ocr.OcrProgressCallback)">
+    <member name="M:Leadtools.Ocr.IOcrAutoRecognizeManager.Run(System.String,System.String,Leadtools.Document.Writer.DocumentFormat,System.String,Leadtools.Ocr.OcrProgressCallback)">
       <summary>Converts an image file on disk to a document file in the specified document format with optional multipage zone file.</summary>
       <param name="imageFileName">The name of the file containing the image.</param>
       <param name="documentFileName">The name of the result document file.</param>
@@ -1364,7 +1361,7 @@
       <param name="zonesFileName">Optional name of prepared multipage zone file. This parameter can be a **null** (**Nothing** in VB) reference.</param>
       <param name="callback">Optional callback to show operation progress.</param>
     </member>
-    <member name="M:Leadtools.Ocr.IOcrAutoRecognizeManager.Run(System.String,System.String,IList&lt;string&gt;,Leadtools.Forms.DocumentWriters.DocumentFormat,Leadtools.Ocr.OcrProgressCallback)">
+    <member name="M:Leadtools.Ocr.IOcrAutoRecognizeManager.Run(System.String,System.String,IList&lt;string&gt;,Leadtools.Document.Writer.DocumentFormat,Leadtools.Ocr.OcrProgressCallback)">
       <summary>Converts an image file on disk to a document file in the specified document format with optional multiple single zone files.</summary>
       <param name="imageFileName">The name of the file containing the image.</param>
       <param name="documentFileName">The name of the resulting document file.</param>
@@ -1428,13 +1425,13 @@
       <summary>Load zones from a multipage zones disk file.</summary>
       <param name="fileName">The name of the file containing the zones to load.</param>
     </member>
-    <member name="M:Leadtools.Ocr.IOcrDocument.Save(System.IO.Stream,Leadtools.Forms.DocumentWriters.DocumentFormat,Leadtools.Ocr.OcrProgressCallback)">
+    <member name="M:Leadtools.Ocr.IOcrDocument.Save(System.IO.Stream,Leadtools.Document.Writer.DocumentFormat,Leadtools.Ocr.OcrProgressCallback)">
       <summary>Converts the accumulated recognition results stored in the pages of this OCR document to the final output document and stores it in a .NET stream.</summary>
       <param name="stream">The .NET stream to save the final output document to.</param>
       <param name="format">The document format to use. If this parameter is DocumentFormat.User, then the document saved using the native engine format set in IOcrDocumentManager.EngineFormat if the engine used supports native formats, otherwise an exception will be thrown. Note that saving the OCR results using the native engine formats may produce more accurate results in table and cell positions since the engine has access to extra data that is saved internally.</param>
       <param name="callback">Optional callback to show operation progress.</param>
     </member>
-    <member name="M:Leadtools.Ocr.IOcrDocument.Save(System.String,Leadtools.Forms.DocumentWriters.DocumentFormat,Leadtools.Ocr.OcrProgressCallback)">
+    <member name="M:Leadtools.Ocr.IOcrDocument.Save(System.String,Leadtools.Document.Writer.DocumentFormat,Leadtools.Ocr.OcrProgressCallback)">
       <summary>Converts the accumulated recognition results stored in the pages of this OCR document to the final output document and stores it to a disk file.</summary>
       <param name="fileName">The name of the file to save the final output document to.</param>
       <param name="format">The document format to use. If this parameter is DocumentFormat.User, then the document saved using the native engine format set in IOcrDocumentManager.EngineFormat if the engine used supports native formats, otherwise an exception will be thrown. Note that saving the OCR results using the native engine formats may produce more accurate results in table and cell positions since the engine has access to extra data that is saved internally.</param>
@@ -1602,7 +1599,7 @@
     <member name="M:Leadtools.Ocr.IOcrEngine.Shutdown">
       <summary>Shuts down the OCR engine and frees all resources and memory allocated to it.</summary>
     </member>
-    <member name="M:Leadtools.Ocr.IOcrEngine.Startup(Leadtools.Codecs.RasterCodecs,Leadtools.Forms.DocumentWriters.DocumentWriter,System.String,System.String)">
+    <member name="M:Leadtools.Ocr.IOcrEngine.Startup(Leadtools.Codecs.RasterCodecs,Leadtools.Document.Writer.DocumentWriter,System.String,System.String)">
       <summary>Starts the OCR engine.</summary>
       <param name="rasterCodecs">Optional instance of a RasterCodecs object to be used when loading image files from disk inside the engine. You can pass your own initialized instance of RasterCodecs to be used. The same object will then be used internally by the OCR engine when loading raster image files. Otherwise, pass **null** (**Nothing** in VB) and the IOcrEngine will create and use its own version of RasterCodecs when needed. Refer to RasterCodecsInstance for more information on how this parameter is used by the OCR engine during its lifetime, refer to OCR Engine and RasterCodecs/DocumentWriter Usage.</param>
       <param name="documentWriter">Optional instance of a DocumentWriter object to be used when saving OCR documents to disk inside the engine. You can pass your own initialized instance of DocumentWriter to be used. The same object will then be used internally by the OCR engine when saving OCR documents to disk. Otherwise, pass **null** (**Nothing** in VB) and the IOcrEngine will create and use its own version of DocumentWriter when needed. Refer to DocumentWriterInstance for more information on how this parameter is used by the OCR engine during its lifetime, refer to OCR Engine and RasterCodecs/DocumentWriter Usage.</param>
@@ -2697,13 +2694,13 @@
     <member name="T:Leadtools.Ocr.OcrAutoRecognizeJobData">
       <summary>Contains the data used to create an OCR Auto Recognition job.</summary>
     </member>
-    <member name="M:Leadtools.Ocr.OcrAutoRecognizeJobData.#ctor(System.IO.Stream,Leadtools.Forms.DocumentWriters.DocumentFormat,System.String)">
+    <member name="M:Leadtools.Ocr.OcrAutoRecognizeJobData.#ctor(System.IO.Stream,Leadtools.Document.Writer.DocumentFormat,System.String)">
       <summary>Initializes a new instance of OcrAutoRecognizeJobData with the specified parameters.</summary>
       <param name="imageStream">The stream containing the source image data. This can be any single or multipage image file format supported by LEADTOOLS. This member cannot be a **null** reference.</param>
       <param name="format">The output document format. This can be any of the supported DocumentFormat such as PDF, DOC and TEXT. </param>
       <param name="documentFileName">The name of the output document file. When recognition is completed, this file will be created on disk. This member cannot be a **null** reference.</param>
     </member>
-    <member name="M:Leadtools.Ocr.OcrAutoRecognizeJobData.#ctor(System.IO.Stream,System.Int32,System.Int32,Leadtools.Forms.DocumentWriters.DocumentFormat,System.String)">
+    <member name="M:Leadtools.Ocr.OcrAutoRecognizeJobData.#ctor(System.IO.Stream,System.Int32,System.Int32,Leadtools.Document.Writer.DocumentFormat,System.String)">
       <summary>Initializes a new instance of OcrAutoRecognizeJobData with the specified parameters.</summary>
       <param name="imageStream">The stream containing the source image data. This can be any single or multipage image file format supported by LEADTOOLS. This member cannot be a **null** reference.</param>
       <param name="firstPageNumber">1-based index of the first page number in \imageStream\ to recognize. You can use this and \lastPageNumber\ to recognize only a certain range of pages in the source file. This parameter must be greater than or equals to 1 (first page in the file).</param>
@@ -2711,7 +2708,7 @@
       <param name="format">The output document format. This can be any of the supported DocumentFormat such as PDF, DOC and TEXT. </param>
       <param name="documentFileName">The name of the output document file. When recognition is completed, this file will be created on disk. This member cannot be a **null** reference (**Nothing** in VB).</param>
     </member>
-    <member name="M:Leadtools.Ocr.OcrAutoRecognizeJobData.#ctor(System.IO.Stream,System.Int32,System.Int32,System.String,Leadtools.Forms.DocumentWriters.DocumentFormat,System.String)">
+    <member name="M:Leadtools.Ocr.OcrAutoRecognizeJobData.#ctor(System.IO.Stream,System.Int32,System.Int32,System.String,Leadtools.Document.Writer.DocumentFormat,System.String)">
       <summary>Initializes a new instance of OcrAutoRecognizeJobData with the specified parameters.</summary>
       <param name="imageStream">The stream containing the source image data. This can be any single or multipage image file format supported by LEADTOOLS. This member cannot be a **null** reference.</param>
       <param name="firstPageNumber">1-based index of the first page number in \imageStream\ to recognize. You can use this and \lastPageNumber\ to recognize only a certain range of pages in the source file. This parameter must be greater than or equals to 1 (first page in the file).</param>
@@ -2720,20 +2717,20 @@
       <param name="format">The output document format. This can be any of the supported DocumentFormat such as PDF, DOC and TEXT. </param>
       <param name="documentFileName">The name of the output document file. When recognition is completed, this file will be created on disk. This member cannot be a **null** reference (**Nothing** in VB).</param>
     </member>
-    <member name="M:Leadtools.Ocr.OcrAutoRecognizeJobData.#ctor(System.IO.Stream,System.String,Leadtools.Forms.DocumentWriters.DocumentFormat,System.String)">
+    <member name="M:Leadtools.Ocr.OcrAutoRecognizeJobData.#ctor(System.IO.Stream,System.String,Leadtools.Document.Writer.DocumentFormat,System.String)">
       <summary>Initializes a new instance of OcrAutoRecognizeJobData with the specified parameters.</summary>
       <param name="imageStream">The stream containing the source image data. This can be any single or multipage image file format supported by LEADTOOLS. This member cannot be a **null** reference.</param>
       <param name="zonesFileName">Optional name of prepared multipage zone file. This member can be a **null** (**Nothing** in VB) reference. When no zone file is specified, the IOcrAutoRecognizeManager will auto detect the zones for each page using IOcrPage.AutoZone.</param>
       <param name="format">The output document format. This can be any of the supported DocumentFormat such as PDF, DOC and TEXT. </param>
       <param name="documentFileName">The name of the output document file. When recognition is completed, this file will be created on disk. This member cannot be a **null** reference (**Nothing** in VB).</param>
     </member>
-    <member name="M:Leadtools.Ocr.OcrAutoRecognizeJobData.#ctor(System.String,Leadtools.Forms.DocumentWriters.DocumentFormat,System.String)">
+    <member name="M:Leadtools.Ocr.OcrAutoRecognizeJobData.#ctor(System.String,Leadtools.Document.Writer.DocumentFormat,System.String)">
       <summary>Initializes a new instance of OcrAutoRecognizeJobData with the specified parameters.</summary>
       <param name="imageFileName">The name of the file containing the source image. This can be any single or multipage image file format supported by LEADTOOLS. This member cannot be a **null** reference (**Nothing** in VB) and must contain the name of an existing file on disk.</param>
       <param name="format">The output document format. This can be any of the supported DocumentFormat such as PDF, DOC and TEXT. </param>
       <param name="documentFileName">The name of the output document file. When recognition is completed, this file will be created on disk. This member cannot be a **null** reference (**Nothing** in VB).</param>
     </member>
-    <member name="M:Leadtools.Ocr.OcrAutoRecognizeJobData.#ctor(System.String,System.Int32,System.Int32,Leadtools.Forms.DocumentWriters.DocumentFormat,System.String)">
+    <member name="M:Leadtools.Ocr.OcrAutoRecognizeJobData.#ctor(System.String,System.Int32,System.Int32,Leadtools.Document.Writer.DocumentFormat,System.String)">
       <summary>Initializes a new instance of OcrAutoRecognizeJobData with the specified parameters.</summary>
       <param name="imageFileName">The name of the file containing the source image. This can be any single or multipage image file format supported by LEADTOOLS. This member cannot be a **null** reference (**Nothing** in VB) and must contain the name of an existing file on disk.</param>
       <param name="firstPageNumber">1-based index of the first page number in \imageFileName\ to recognize. You can use this and \lastPageNumber\ to recognize only a certain range of pages in the source file. This parameter must be greater than or equals to 1 (first page in the file).</param>
@@ -2741,7 +2738,7 @@
       <param name="format">The output document format. This can be any of the supported DocumentFormat such as PDF, DOC and TEXT. </param>
       <param name="documentFileName">The name of the output document file. When recognition is completed, this file will be created on disk. This member cannot be a **null** reference (**Nothing** in VB).</param>
     </member>
-    <member name="M:Leadtools.Ocr.OcrAutoRecognizeJobData.#ctor(System.String,System.Int32,System.Int32,System.String,Leadtools.Forms.DocumentWriters.DocumentFormat,System.String)">
+    <member name="M:Leadtools.Ocr.OcrAutoRecognizeJobData.#ctor(System.String,System.Int32,System.Int32,System.String,Leadtools.Document.Writer.DocumentFormat,System.String)">
       <summary>Initializes a new instance of OcrAutoRecognizeJobData with the specified parameters.</summary>
       <param name="imageFileName">The name of the file containing the source image. This can be any single or multipage image file format supported by LEADTOOLS. This member cannot be a **null** reference (**Nothing** in VB) and must contain the name of an existing file on disk.</param>
       <param name="firstPageNumber">1-based index of the first page number in \imageFileName\ to recognize. You can use this and \lastPageNumber\ to recognize only a certain range of pages in the source file. This parameter must be greater than or equals to 1 (first page in the file).</param>
@@ -2750,7 +2747,7 @@
       <param name="format">The output document format. This can be any of the supported DocumentFormat such as PDF, DOC and TEXT. </param>
       <param name="documentFileName">The name of the output document file. When recognition is completed, this file will be created on disk. This member cannot be a **null** reference (**Nothing** in VB).</param>
     </member>
-    <member name="M:Leadtools.Ocr.OcrAutoRecognizeJobData.#ctor(System.String,System.String,Leadtools.Forms.DocumentWriters.DocumentFormat,System.String)">
+    <member name="M:Leadtools.Ocr.OcrAutoRecognizeJobData.#ctor(System.String,System.String,Leadtools.Document.Writer.DocumentFormat,System.String)">
       <summary>Initializes a new instance of OcrAutoRecognizeJobData with the specified parameters.</summary>
       <param name="imageFileName">The name of the file containing the source image. This can be any single or multipage image file format supported by LEADTOOLS. This member cannot be a **null** reference (**Nothing** in VB) and must contain the name of an existing file on disk.</param>
       <param name="zonesFileName">Optional name of prepared multipage zone file. This member can be a **null** (**Nothing** in VB) reference. When no zone file is specified, the IOcrAutoRecognizeManager will auto detect the zones for each page using IOcrPage.AutoZone.</param>
