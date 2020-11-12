@@ -82,7 +82,8 @@ namespace Scorelink.web.Controllers
                 docDetail.ScanStatus = null;
                 docDetail.PageFileName = Common.GenZero(Convert.ToString(pageType), 5);
                 docDetail.PagePath = data_detail.FilePath;
-                docDetail.Selected = null;
+                docDetail.Selected = "Y";
+                docDetail.Commited = "N";
                 docDetail.PatternNo = null;
                 docDetail.CreateBy = data_detail.CreateBy;
                 docDetail.PageUrl = data_detail.FileUrl;
@@ -210,6 +211,16 @@ namespace Scorelink.web.Controllers
             }
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult CheckCommited(int docId)
+        {
+            DocumentDetailRepo docDetRepo = new DocumentDetailRepo();
+            string Chk = "";
+            if (docDetRepo.CheckCommited(docId))
+            {
+                Chk = "Ok";
+            }
 
+            return Json(Chk, JsonRequestBehavior.AllowGet);
+        }
     }
 }

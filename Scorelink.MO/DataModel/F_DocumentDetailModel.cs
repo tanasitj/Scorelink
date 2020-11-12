@@ -17,5 +17,6 @@ namespace Scorelink.MO.DataModel
         public string PageType { get; set; }
         public string PageTypeName { get; set; }
         public string DocPageNo { get; set; }
+        public string Commited { get; set; }
     }
 }

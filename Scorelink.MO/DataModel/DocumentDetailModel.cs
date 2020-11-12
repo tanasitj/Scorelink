@@ -19,6 +19,7 @@ namespace Scorelink.MO.DataModel
         public string PagePath { get; set; }
         public string PageUrl { get; set; }
         public string Selected { get; set; }
+        public string Commited { get; set; }
         public string PatternNo { get; set; }
         public string CreateBy { get; set; }
         public string CreateDate { get; set; }
