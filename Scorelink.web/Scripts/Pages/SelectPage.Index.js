@@ -9,6 +9,7 @@
     self.CompletedFlag = ko.observable(Commited === 'N' ? false : true);
 }
 var ViewModel = function () {
+    blockUI();
     var self = this;
     self.DocDetail = ko.observableArray();
     self.DocId = ko.observable();
@@ -66,6 +67,7 @@ var ViewModel = function () {
         $('#btnBack').click(function () {
             window.location.href = '/Upload/Index';
         });
+        unblockUI();
     });
     //==================================================================================================
     //Event Button Click
