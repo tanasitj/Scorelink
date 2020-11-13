@@ -44,7 +44,7 @@ namespace Scorelink.web.Controllers
                 //Check and Update online date time.
                 OnlineUserRepo onlineRepo = new OnlineUserRepo();
                 var online = onlineRepo.Get(iUserId);
-                onlineRepo.CheckTimeOut(online);
+                onlineRepo.Update(online);
 
                 //Get Document Info data.
                 var Info = GetField.GetInfo(docId);

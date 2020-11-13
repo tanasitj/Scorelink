@@ -16,6 +16,7 @@
 }
 
 var ViewModel = function () {
+    blockUI();
     var self = this;
     self.DocumentDetail = ko.observableArray();
     var sImgPath = $("#hdPagePath").val();
@@ -39,6 +40,7 @@ var ViewModel = function () {
             width: 600,
             areas: [area1, area2, area3, area4]
         });
+        unblockUI();
     } else if (sPatternNo == "3") {
         $('img#view').selectAreas({
             allowSelect: false,
@@ -48,6 +50,7 @@ var ViewModel = function () {
             width: 800,
             areas: [area1, area2, area3, area4, area5]
         });
+        unblockUI();
     } else {
         $('img#view').selectAreas({
             allowSelect: false,
@@ -57,12 +60,14 @@ var ViewModel = function () {
             width: 800,
             areas: [area1, area2, area3]
         });
+        unblockUI();
     }
 
 
 
 
     $(document).ready(function () {
+        
         $('img#view').attr("src", sImgPath);
 
         $('#btnBack').click(function () {
@@ -138,7 +143,6 @@ var ViewModel = function () {
         });
 
         //------------//
-        
     });
 
     function areaToSave(area) {
@@ -171,6 +175,7 @@ var ViewModel = function () {
             area5 = { x: 410, y: 145, width: 60, height: 450, };
         }
     }
+
 }
 
 var viewModel = new ViewModel();

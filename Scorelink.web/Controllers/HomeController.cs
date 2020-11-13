@@ -45,7 +45,7 @@ namespace Scorelink.web.Controllers
                 //Check Online User
                 if (onlineRepo.CheckTimeOut(online))
                 {
-                    //If not expire time
+                    //If User Timeout
                     result = "Time";
                 }
                 else
