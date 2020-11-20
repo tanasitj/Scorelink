@@ -145,6 +145,8 @@ namespace Scorelink.web.Controllers
             }
             catch (Exception ex)
             {
+                Logger Err = new Logger();
+                Err.ErrorLog(ex.ToString());
                 return Json(ex.Message);
             }
 
