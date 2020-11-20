@@ -121,6 +121,8 @@ namespace Scorelink.web.Controllers
                 }
                 catch (Exception ex)
                 {
+                    Logger Err = new Logger();
+                    Err.ErrorLog(ex.ToString());
                     return Json(ex.Message);
                 }
             }
@@ -157,6 +159,8 @@ namespace Scorelink.web.Controllers
             }
             catch (Exception ex)
             {
+                Logger Err = new Logger();
+                Err.ErrorLog(ex.ToString());
                 return Json(ex.Message);
             }
 
@@ -244,6 +248,8 @@ namespace Scorelink.web.Controllers
             }
             catch (Exception ex)
             {
+                Logger Err = new Logger();
+                Err.ErrorLog(ex.ToString());
                 return false;
             }
 
@@ -252,21 +258,29 @@ namespace Scorelink.web.Controllers
 
         public static void DeleteDirectory(string target_dir)
         {
-            string[] files = Directory.GetFiles(target_dir);
-            string[] dirs = Directory.GetDirectories(target_dir);
-
-            foreach (string file in files)
+            try
             {
-                System.IO.File.SetAttributes(file, FileAttributes.Normal);
-                System.IO.File.Delete(file);
-            }
+                string[] files = Directory.GetFiles(target_dir);
+                string[] dirs = Directory.GetDirectories(target_dir);
 
-            foreach (string dir in dirs)
+                foreach (string file in files)
+                {
+                    System.IO.File.SetAttributes(file, FileAttributes.Normal);
+                    System.IO.File.Delete(file);
+                }
+
+                foreach (string dir in dirs)
+                {
+                    DeleteDirectory(dir);
+                }
+
+                Directory.Delete(target_dir, false);
+            }
+            catch (Exception ex)
             {
-                DeleteDirectory(dir);
+                Logger Err = new Logger();
+                Err.ErrorLog(ex.ToString());
             }
-
-            Directory.Delete(target_dir, false);
         }
     }
 }
