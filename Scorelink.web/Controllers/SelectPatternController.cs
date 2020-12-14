@@ -80,8 +80,8 @@ namespace Scorelink.web.Controllers
                 using (var documentConverter = new Leadtools.Document.Converter.DocumentConverter())
                 {
                     var codecs = new Leadtools.Codecs.RasterCodecs();
-                    codecs.Options.RasterizeDocument.Load.XResolution = 600;
-                    codecs.Options.RasterizeDocument.Load.YResolution = 600;
+                    codecs.Options.RasterizeDocument.Load.XResolution = 800;
+                    codecs.Options.RasterizeDocument.Load.YResolution = 800;
 
                     Leadtools.Codecs.CodecsImageInfo info = codecs.GetInformation(sPath, true);
 
