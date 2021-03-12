@@ -138,7 +138,7 @@ namespace Scorelink.BO.Repositories
 
         }
 
-        public CompanyModel Get(string compname)
+        public CompanyModel GetCompanyByName(string compname)
         {
             ScorelinkEntities db = new ScorelinkEntities();
             try
@@ -166,6 +166,70 @@ namespace Scorelink.BO.Repositories
                 Logger Err = new Logger();
                 Err.ErrorLog(ex.ToString());
                 throw ex;
+            }
+        }
+
+        public CompanyModel GetCompanyById(int compId)
+        {
+            ScorelinkEntities db = new ScorelinkEntities();
+            try
+            {
+                var data = (from comp in db.Company
+                            where comp.CompanyId == compId
+                            select new CompanyModel
+                            {
+                                CompanyId = comp.CompanyId,
+                                CompanyName = comp.CompanyName,
+                                Domain = comp.Domain,
+                                Address = comp.Address,
+                                Telephone = comp.Telephone,
+                                Status = comp.Status,
+                                CreateBy = comp.CreateBy,
+                                CreateDate = DateTime.Now.ToString(),
+                                UpdateBy = comp.UpdateBy,
+                                UpdateDate = DateTime.Now.ToString()
+                            }).FirstOrDefault();
+
+                return data;
+            }
+            catch (Exception ex)
+            {
+                Logger Err = new Logger();
+                Err.ErrorLog(ex.ToString());
+                throw ex;
+            }
+        }
+
+        public string Update(CompanyModel item)
+        {
+            using (ScorelinkEntities db = new ScorelinkEntities())
+            {
+                using (System.Data.Entity.DbContextTransaction dbTran = db.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var comp = db.Company.Where(x => x.CompanyId == item.CompanyId).First();
+                        comp.CompanyName = item.CompanyName;
+                        comp.Domain = item.Domain;
+                        comp.Address = item.Address;
+                        comp.Telephone = item.Telephone;
+                        comp.Status = item.Status;
+                        comp.UpdateBy = item.UpdateBy;
+                        comp.UpdateDate = DateTime.Now;
+
+                        db.SaveChanges();
+                        dbTran.Commit();
+
+                        return "OK";
+                    }
+                    catch (Exception ex)
+                    {
+                        dbTran.Rollback();
+                        Logger Err = new Logger();
+                        Err.ErrorLog(ex.ToString());
+                        return ex.ToString();
+                    }
+                }
             }
         }
 

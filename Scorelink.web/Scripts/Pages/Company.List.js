@@ -21,13 +21,59 @@ var ViewModel = function () {
     self.Telephone = ko.observable();
     self.Status = ko.observable(false);
 
+    self.EntryCompanyId = ko.observable();
+    self.EntryCompanyName = ko.observable();
+    self.EntryDomain = ko.observable();
+    self.EntryAddress = ko.observable();
+    self.EntryTelephone = ko.observable();
+    self.EntryStatus = ko.observable(false);
+
     GetCompanylist();
 
     self.ClickOpenAdd = function (data, event) {
+        self.EntryCompanyId(0);
+        self.EntryCompanyName('');
+        self.EntryDomain('');
+        self.EntryAddress('');
+        self.EntryTelephone('');
+        self.EntryStatus(false);
+
         $("#Modal_Page").modal('show');
     }
 
-    $("#BtnAddCompany").click(function () {
+    self.ClickOpenEdit = function (data, event) {
+        var filter = {
+            'CompanyId': data.CompanyId()
+        }
+        $.ajax({
+            url: '/Company/GetCompanyDetail',
+            cache: false,
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            data: ko.toJSON(filter),
+            success: function (data) {
+                self.EntryCompanyId(data.CompanyId);
+                self.EntryCompanyName(data.CompanyName);
+                self.EntryDomain(data.Domain);
+                self.EntryAddress(data.Address);
+                self.EntryTelephone(data.Telephone);
+                self.EntryStatus(data.Status === 'N' ? false : true);
+            }
+        });
+        
+        $("#Modal_Page").modal('show');
+    }
+
+    self.ClickRefresh = function (data, event) {
+        $('#tbCompany').DataTable().clear();
+        $('#tbCompany').DataTable().destroy();
+        GetCompanylist();
+    }
+
+    $("#BtnSaveCompany").click(function () {
+        $('#tbCompany').DataTable().clear();
+        $('#tbCompany').DataTable().destroy();
+        $("#Modal_Page").modal('hide');
         SaveCompany();
     });
 
@@ -82,6 +128,7 @@ var ViewModel = function () {
         blockUI();
 
         var arg = {
+            CompanyId: $("#CompanyId").val(),
             CompanyName: $("#CompanyName").val(),
             Domain: $("#Domain").val(),
             Address: $("#Address").val(),
@@ -96,14 +143,15 @@ var ViewModel = function () {
         };
 
         $.ajax({
-            url: '/Company/AddCompany',
+            url: '/Company/SaveCompany',
             cache: false,
             type: 'POST',
             contentType: 'application/json; charset=utf-8',
             data: ko.toJSON(data),
             success: function (data) {
                 if (data == "OK") {
-                    window.location.href = '/Company/Index';
+                    GetCompanylist();
+                    //window.location.href = '/Company/Index';
                 } else if (data == "CompanyDup") {
                     alert("Duplicate company name can't add your data.");
                 } else if (data == "DomainDup") {
