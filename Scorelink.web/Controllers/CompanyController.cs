@@ -47,30 +47,34 @@ namespace Scorelink.web.Controllers
             return Json(com, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult AddCompany(CompanyModel item)
+        public JsonResult SaveCompany(CompanyModel item)
         {
             try
             {
                 var data = "";
                 CompanyRepo compRepo = new CompanyRepo();
-
-                if (compRepo.CheckCompanyDup(item.CompanyName))
+                if (item.CompanyId.ToString() == "0")
                 {
-                    //Duplicate Username
-                    data = "CompanyDup";
-                }
-                else if (compRepo.CheckDomainDup(item.Domain))
-                {
-                    data = "DomainDup";
+                    if (compRepo.CheckCompanyDup(item.CompanyName))
+                    {
+                        //Duplicate Username
+                        data = "CompanyDup";
+                    }
+                    else if (compRepo.CheckDomainDup(item.Domain))
+                    {
+                        data = "DomainDup";
+                    }
+                    else
+                    {
+                        data = compRepo.Add(item);
+                    }
                 }
                 else
                 {
-                    /*item.CreateBy = Session["UserId"].ToString();
-                    item.UpdateBy = Session["UserId"].ToString();*/
-                    data = compRepo.Add(item);
+                    data = compRepo.Update(item);
                 }
 
-                var com = compRepo.Get(item.CompanyName);
+                var com = compRepo.GetCompanyByName(item.CompanyName);
                 string sFile = "\\ConvertStandard.xlsx";
                 string srcFile = Common.getConstTxt("Dict") + "Template" + sFile;
                 string desFolder = Common.getConstTxt("Dict") + Common.GenZero(com.CompanyId.ToString(), 5);
@@ -90,11 +94,11 @@ namespace Scorelink.web.Controllers
             }
         }
 
-        public ActionResult CompanyAddPage()
+        public JsonResult GetCompanyDetail(CompanyModel item)
         {
-
-
-            return View("CompanyAddEdit");
+            CompanyRepo compRepo = new CompanyRepo();
+            var com = compRepo.GetCompanyById(item.CompanyId);
+            return Json(com, JsonRequestBehavior.AllowGet);
         }
     }
 }
