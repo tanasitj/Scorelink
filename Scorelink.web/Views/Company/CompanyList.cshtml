@@ -1,0 +1,142 @@
+﻿
+<input type="hidden" id="hdId" value="@ViewBag.Id" />
+
+<div class="card">
+    <div class="card-header bg-gradient-info">
+        <h3 class="card-title"><b>Company List</b></h3>
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+        </div>
+    </div>
+    <div class="card-header p-2">
+        <a class="btn btn-success" href="" data-shuffle data-bind="click: $root.ClickOpenAdd">+ Add New</a>
+        <a class="btn btn-secondary" href="/Company/Index" data-shuffle><i class="fa fa-refresh" aria-hidden="true"></i></a>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+        <table id="tbCompany" class="table table-bordered table-hover">
+            <thead class="bg-gray-light">
+                <tr class="text-center">
+                    <th style="width: 10px">No.</th>
+                    <th>Company Name</th>
+                    <th>Domain Name</th>
+                    <th>Address</th>
+                    <th>Telephone</th>
+                    <th>Status</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: CompanyList">
+                <tr>
+                    <td class="text-center"><span data-bind="text: $index() + 1"></span></td>
+                    <td><span data-bind="text: CompanyName"></span></td>
+                    <td><span data-bind="text: Domain"></span></td>
+                    <td><span data-bind="text: Address"></span></td>
+                    <td><span data-bind="text: Telephone"></span></td>
+                    <td class="text-center">
+                        <label><input type="checkbox" value="" data-bind="checked: Status" disabled></label>
+                    </td>
+                    <td class="text-center">
+                        <button class="btn btn-sm bg-gradient-primary" data-bind="click: $root.ClickEdit">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                    </td>
+                    <td class="text-center">
+                        <button class="btn btn-sm bg-gradient-danger" data-bind="click: $root.ClickDelete">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    @Html.Partial("_ConfirmDeleted")
+</div>
+
+<div class="modal fade" id="Modal_Page" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Add Company</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Company Name</label>
+                    <input type="text" class="form-control" id="CompanyName" placeholder="Enter Company Name">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Domain Name</label>
+                    <input type="text" class="form-control" id="Domain" placeholder="Enter Domain Name">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Address</label>
+                    <textarea id="Address" class="form-control" rows="3" placeholder="Enter Address"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Telephone Number</label>
+                    <input type="text" class="form-control" id="Telephone" placeholder="Enter Telephone Number">
+                </div>
+                <div class="custom-control custom-checkbox">
+                    <input class="custom-control-input" type="checkbox" id="Status">
+                    <label for="Status" class="custom-control-label">Active</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="BtnAddCompany" class="btn bg-gradient-success" data-bind="click: $root.AddCompany">Add</button>
+                <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade" id="Modal_EditPage" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Add Company</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Company Name</label>
+                    <input type="text" class="form-control" id="CompanyName" placeholder="Enter Company Name">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Domain Name</label>
+                    <input type="text" class="form-control" id="Domain" placeholder="Enter Domain Name">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Address</label>
+                    <textarea id="Address" class="form-control" rows="3" placeholder="Enter Address"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Telephone Number</label>
+                    <input type="text" class="form-control" id="Telephone" placeholder="Enter Telephone Number">
+                </div>
+                <div class="custom-control custom-checkbox">
+                    <input class="custom-control-input" type="checkbox" id="Status">
+                    <label for="Status" class="custom-control-label">Active</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="BtnAddCompany" class="btn bg-gradient-info" data-bind="click: $root.EditCompany">Edit</button>
+                <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section scripts{
+    <script src="~/Scripts/Pages/Company.List.js"></script>
+}
+

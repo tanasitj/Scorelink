@@ -1,7 +1,7 @@
-﻿using System.Management;
+﻿using System;
+using System.Management;
 using System.Net;
 using System.Web.Mvc;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Text;
 using Scorelink.BO.Helper;
 using Scorelink.BO.Repositories;
 using Scorelink.MO.DataModel;
@@ -94,19 +94,29 @@ namespace Scorelink.web.Controllers
 
         public JsonResult SaveRegister(UserModel item)
         {
-            var data = "";
-            UserRepo userRepo = new UserRepo();
-
-            if (userRepo.CheckUserDup(item.UserName))
+            try
             {
-                data = "Dup";
-            }
-            else
-            {
-                data = userRepo.Add(item);
-            }
+                var data = "";
+                UserRepo userRepo = new UserRepo();
 
-            return Json(data, JsonRequestBehavior.AllowGet);
+                if (userRepo.CheckUserDup(item.UserName))
+                {
+                    //Duplicate Username
+                    data = "Dup";
+                }
+                else
+                {
+                    data = userRepo.Add(item);
+                }
+
+                return Json(data, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                Logger Err = new Logger();
+                Err.ErrorLog(ex.ToString());
+                return Json(ex.Message);
+            }
         }
 
         public static string GetIPAddress()

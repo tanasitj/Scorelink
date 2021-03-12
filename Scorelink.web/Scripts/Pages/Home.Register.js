@@ -32,6 +32,7 @@ var ViewModel = function () {
             }
         });
 
+        
 
         function SaveRegister() {
             blockUI();
@@ -75,6 +76,19 @@ var ViewModel = function () {
         }
     });
 
+    self.ClickAddCompany = function (data, event) {
+        /*self.DocId = data.DocId();
+        self.PageType = data.PageType();
+        var PageNo = data.DocPageNo(),
+            xString = PageNo.split(',');
+        array = [];
+        array = array.concat(xString);
+        $('#page_delete').empty();
+        $.each(array, function (i, p) {
+            $('#page_delete').append($('<option></option>').val(p).html(p));
+        });*/
+        $("#Modal_DeletePage").modal('show');
+    }
 }
 
 var viewModel = new ViewModel();
