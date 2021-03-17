@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ namespace Scorelink.BO.Repositories
 {
     public class UserRepo
     {
+        CultureInfo provider = CultureInfo.InvariantCulture;
         public string Add(UserModel item)
         {
             using (ScorelinkEntities db = new ScorelinkEntities())
@@ -29,11 +31,11 @@ namespace Scorelink.BO.Repositories
                             Company = item.Company,
                             Address = item.Address,
                             Telephone = item.Telephone,
-                            Status = "A",
-                            Admin = "N",
-                            RegisterDate = DateTime.Now,
-                            ExpireDate = DateTime.Now,
-                            UpdateBy = "System",
+                            Status = item.Status,
+                            Admin = item.Admin,
+                            RegisterDate = DateTime.ParseExact(item.RegisterDate, "dd/MM/yyyy", provider),
+                            ExpireDate = DateTime.ParseExact(item.ExpireDate, "dd/MM/yyyy", provider),
+                            UpdateBy = item.UpdateBy,
                             UpdateDate = DateTime.Now,
                         };
 
@@ -56,21 +58,18 @@ namespace Scorelink.BO.Repositories
                 }
             }
         }
-
         public bool CheckUserDup(string username)
         {
             using (ScorelinkEntities db = new ScorelinkEntities())
                 return db.Users.Where(x => x.UserName == username).Any();
 
         }
-
         public bool CheckLogIn(string username, string password)
         {
             using (ScorelinkEntities db = new ScorelinkEntities())
                 return db.Users.Where(x => x.UserName == username && x.Password == password).Any();
             
         }
-
         public UserModel Get(string username)
         {
             ScorelinkEntities db = new ScorelinkEntities();
@@ -106,7 +105,6 @@ namespace Scorelink.BO.Repositories
                 throw ex;
             }
         }
-
         public UserModel Get(int userid)
         {
             ScorelinkEntities db = new ScorelinkEntities();
@@ -140,6 +138,142 @@ namespace Scorelink.BO.Repositories
                 Logger Err = new Logger();
                 Err.ErrorLog(ex.ToString());
                 throw ex;
+            }
+        }
+        public IEnumerable<UserModel> GetUserList()
+        {
+            ScorelinkEntities db = new ScorelinkEntities();
+            try
+            {
+                var query = (from t1 in db.Users
+                             join t2 in db.Company on t1.Company equals t2.CompanyId into t
+                             from rt in t.DefaultIfEmpty()
+                             select new UserModel
+                             {
+                                 UserId = t1.UserId,
+                                 UserName = t1.UserName,
+                                 Name = t1.Name,
+                                 Surname = t1.Surname,
+                                 FullName = t1.Name + " " + t1.Surname,
+                                 //Password = t1.Password,
+                                 Email = t1.Email,
+                                 Company = t1.Company,
+                                 CompanyName = rt.CompanyName,
+                                 Address = t1.Address,
+                                 Telephone = t1.Telephone,
+                                 Status = t1.Status,
+                                 Admin = t1.Admin,
+                                 RegisterDate = t1.RegisterDate.ToString(),
+                                 ExpireDate = t1.ExpireDate.ToString(),
+                                 UpdateBy = t1.UpdateBy,
+                                 UpdateDate = t1.UpdateDate.ToString()
+                             });
+                return query;
+            }
+            catch (Exception ex)
+            {
+                Logger Err = new Logger();
+                Err.ErrorLog(ex.ToString());
+                throw ex;
+            }
+        }
+        public IEnumerable<CompanyModel> GetCompanyDD()
+        {
+            ScorelinkEntities db = new ScorelinkEntities();
+            try
+            {
+                var query = (from c in db.Company
+                             where c.Status == "Y"
+                             select new CompanyModel
+                             {
+                                 CompanyId = c.CompanyId,
+                                 CompanyName = c.CompanyName
+                             });
+                return query;
+            }
+            catch (Exception ex)
+            {
+                Logger Err = new Logger();
+                Err.ErrorLog(ex.ToString());
+                throw ex;
+            }
+        }
+        public UserModel GetUserById(int id)
+        {
+            ScorelinkEntities db = new ScorelinkEntities();
+            try
+            {
+                var data = (from t1 in db.Users
+                            join t2 in db.Company on t1.Company equals t2.CompanyId into t
+                            from rt in t.DefaultIfEmpty()
+                            where t1.UserId == id
+                            select new UserModel
+                            {
+                                UserId = t1.UserId,
+                                UserName = t1.UserName,
+                                Name = t1.Name,
+                                Surname = t1.Surname,
+                                FullName = t1.Name + " " + t1.Surname,
+                                Password = t1.Password,
+                                Email = t1.Email,
+                                Company = t1.Company,
+                                CompanyName = rt.CompanyName,
+                                Address = t1.Address,
+                                Telephone = t1.Telephone,
+                                Status = t1.Status,
+                                Admin = t1.Admin,
+                                RegisterDate = t1.RegisterDate.ToString(),
+                                ExpireDate = t1.ExpireDate.ToString(),
+                                UpdateBy = t1.UpdateBy,
+                                UpdateDate = t1.UpdateDate.ToString()
+                            }).FirstOrDefault();
+
+                return data;
+            }
+            catch (Exception ex)
+            {
+                Logger Err = new Logger();
+                Err.ErrorLog(ex.ToString());
+                throw ex;
+            }
+        }
+        public string Update(UserModel item)
+        {
+            using (ScorelinkEntities db = new ScorelinkEntities())
+            {
+                using (System.Data.Entity.DbContextTransaction dbTran = db.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var data = db.Users.Where(x => x.UserId == item.UserId).First();
+                        //data.UserName = item.UserName;
+                        data.Name = item.Name;
+                        data.Surname = item.Surname;
+                        //data.Password = Common.EncryptText(item.Password);
+                        data.Email = item.Email;
+                        data.Company = item.Company;
+                        data.Address = item.Address;
+                        data.Telephone = item.Telephone;
+                        data.Status = item.Status;
+                        data.Admin = item.Admin;
+                        data.RegisterDate = DateTime.ParseExact(item.RegisterDate, "dd/MM/yyyy", provider);
+                        data.ExpireDate = DateTime.ParseExact(item.ExpireDate, "dd/MM/yyyy", provider);
+                        data.UpdateBy = item.UpdateBy;
+                        data.UpdateDate = DateTime.Now;
+
+                        db.SaveChanges();
+                        dbTran.Commit();
+
+                        return "OK";
+                    }
+                    catch (Exception ex)
+                    {
+                        dbTran.Rollback();
+                        Logger Err = new Logger();
+                        Err.ErrorLog(ex.ToString());
+                        return ex.ToString();
+                    }
+                }
             }
         }
     }

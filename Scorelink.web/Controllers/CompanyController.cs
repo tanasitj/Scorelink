@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -75,14 +76,19 @@ namespace Scorelink.web.Controllers
                 }
 
                 var com = compRepo.GetCompanyByName(item.CompanyName);
-                string sFile = "\\ConvertStandard.xlsx";
-                string srcFile = Common.getConstTxt("Dict") + "Template" + sFile;
-                string desFolder = Common.getConstTxt("Dict") + Common.GenZero(com.CompanyId.ToString(), 5);
-                string desFile = desFolder + sFile;
-                //Create Folder
-                Common.CreateDocFolder(desFolder);
 
-                System.IO.File.Copy(srcFile, desFile, true);
+                string srcFolder = Common.getConstTxt("Dict") + "Template";
+                string desFolder = Common.getConstTxt("Dict") + Common.GenZero(com.CompanyId.ToString(), 5);
+
+                //Copy Template Folder
+                foreach (string dirPath in Directory.GetDirectories(srcFolder, "*",
+                    SearchOption.AllDirectories))
+                    Directory.CreateDirectory(dirPath.Replace(srcFolder, desFolder));
+
+                //Copy All File
+                foreach (string newPath in Directory.GetFiles(srcFolder, "*.*",
+                    SearchOption.AllDirectories))
+                    System.IO.File.Copy(newPath, newPath.Replace(srcFolder, desFolder), true);
 
                 return Json(data, JsonRequestBehavior.AllowGet);
             }

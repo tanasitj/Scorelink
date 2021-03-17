@@ -1,0 +1,141 @@
+﻿
+<input type="hidden" id="hdId" value="@ViewBag.Id" />
+
+<div class="card">
+    <div class="card-header bg-gradient-info">
+        <h3 class="card-title"><b>User List</b></h3>
+        <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+        </div>
+    </div>
+    <div class="card-header p-2">
+        <a class="btn btn-success" href="" data-shuffle data-bind="click: $root.ClickOpenAdd">+ Add New</a>
+        <a class="btn btn-secondary" href="" data-shuffle data-bind="click: $root.ClickRefresh"><i class="fa fa-refresh" aria-hidden="true"></i></a>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+        <table id="tbUser" class="table table-bordered table-hover">
+            <thead class="bg-gray-light">
+                <tr class="text-center">
+                    <th style="width: 10px">No.</th>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Email</th>
+                    <th>Company</th>
+                    <th>Telephone</th>
+                    <th>Status</th>
+                    <th>Admin</th>
+                    <th>Edit</th>
+                </tr>
+            </thead>
+            <tbody data-bind="foreach: UserList">
+                <tr>
+                    <td class="text-center"><span data-bind="text: $index() + 1"></span></td>
+                    <td><span data-bind="text: FullName"></span></td>
+                    <td><span data-bind="text: Address"></span></td>
+                    <td><span data-bind="text: Email"></span></td>
+                    <td><span data-bind="text: CompanyName"></span></td>
+                    <td><span data-bind="text: Telephone"></span></td>
+                    <td class="text-center">
+                        <label><input type="checkbox" value="" data-bind="checked: Status" disabled></label>
+                    </td>
+                    <td class="text-center">
+                        <label><input type="checkbox" value="" data-bind="checked: Admin" disabled></label>
+                    </td>
+                    <td class="text-center">
+                        <button class="btn btn-sm bg-gradient-primary" data-bind="click: $root.ClickOpenEdit">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="Modal_Page" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-gradient-info">
+                <h5 class="modal-title" id="ModalLongTitle">User Detail</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @*<div class="form-group" id="lbUser">
+                    <label for="">User Name</label>
+                    <input type="text" class="form-control" id="UserName" placeholder="Enter User Name" data-bind="value: EntryUserName">
+                </div>*@
+                <div class="form-group">
+                    <label for="">Name</label>
+                    <input type="text" class="form-control" id="Name" placeholder="Enter Name" data-bind="value: EntryName">
+                </div>
+                <div class="form-group">
+                    <label for="">SurName</label>
+                    <input type="text" class="form-control" id="Surname" placeholder="Enter Surname" data-bind="value: EntrySurname">
+                </div>
+                <div class="form-group">
+                    <label for="">Address</label>
+                    <textarea id="Address" class="form-control" rows="3" placeholder="Enter Address" data-bind="value: EntryAddress"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="">Email (User Name)</label>
+                    <input type="text" class="form-control" id="Email" placeholder="Enter Email" data-bind="value: EntryEmail">
+                </div>
+                @*<div class="form-group">
+                    <label for="">Password</label>
+                    <input type="password" class="form-control" id="Password" placeholder="Enter Password" data-bind="value: EntryPassword">
+                </div>
+                <div class="form-group">
+                    <label for="">Retype password</label>
+                    <input type="password" class="form-control" id="RePassword" placeholder="Retype Password" data-bind="value: EntryRePassword">
+                </div>*@
+                <div class="form-group">
+                    <label for="">Company</label>
+                    <select id="Company" class="form-control"
+                            data-bind="options: CompanyList, value: EntryCompanyId, optionsValue: 'CompanyId', optionsText: 'CompanyName', optionsCaption: '--- Select ---'"></select>
+                </div>
+                <div class="form-group">
+                    <label for="">Telephone Number</label>
+                    <input type="text" class="form-control" id="Telephone" placeholder="Enter Telephone Number" data-bind="value: EntryTelephone">
+                </div>
+                <div class="form-group">
+                    <label for="">Register Date</label>
+                    <input type="text" class="form-control" id="RegisterDate" placeholder="Enter Register Date" data-bind="value: EntryRegisterDate">
+                </div>
+                <div class="form-group">
+                    <label for="">Expire Date</label>
+                    <input type="text" class="form-control" id="ExpireDate" placeholder="Enter Expire Date" data-bind="value: EntryExpireDate">
+                </div>
+                <div class="custom-control custom-checkbox">
+                    <input class="custom-control-input" type="checkbox" id="Status" data-bind="checked: EntryStatus">
+                    <label for="Status" class="custom-control-label">Active</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                    <input class="custom-control-input" type="checkbox" id="Admin" data-bind="checked: EntryAdmin">
+                    <label for="Admin" class="custom-control-label">Admin</label>
+                </div>
+            </div>
+            <div class="modal-footer bg-gray-light">
+                <button type="button" id="BtnSaveUser" class="btn bg-gradient-success" data-bind="click: $root.SaveUser">Save</button>
+                <button type="button" class="btn bg-gradient-white" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+        <input type="hidden" id="UserId" data-bind="value: EntryUserId" value="0" />
+    </div>
+
+</div>
+
+@section scripts{
+    <script src="~/Scripts/Pages/User.List.js"></script>
+    <script>
+        $(function () {
+            $('#RegisterDate').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' });
+            $('#ExpireDate').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' });
+            //$('#ExpireDate').datepicker();
+        });
+    </script>
+}
+
