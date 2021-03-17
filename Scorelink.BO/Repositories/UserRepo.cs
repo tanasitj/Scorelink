@@ -33,8 +33,8 @@ namespace Scorelink.BO.Repositories
                             Telephone = item.Telephone,
                             Status = item.Status,
                             Admin = item.Admin,
-                            RegisterDate = DateTime.ParseExact(item.RegisterDate, "dd/MM/yyyy", provider),
-                            ExpireDate = DateTime.ParseExact(item.ExpireDate, "dd/MM/yyyy", provider),
+                            RegisterDate = DateTime.Now,
+                            ExpireDate = DateTime.Now,
                             UpdateBy = item.UpdateBy,
                             UpdateDate = DateTime.Now,
                         };
