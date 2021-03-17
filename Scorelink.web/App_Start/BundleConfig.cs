@@ -8,7 +8,7 @@ namespace Scorelink.web.App_Start
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new StyleBundle("~/Bundles/css")
-                //.Include("~/")
+                //-- Font Awesome --//
                 .Include("~/plugins/fontawesome-free/css/all.min.css")
                 .Include("~/Content/css/font-awesome.min.css")
                 //.Include("~/Content/css/bootstrap.min.css", new CssRewriteUrlTransformAbsolute())
@@ -25,7 +25,10 @@ namespace Scorelink.web.App_Start
                 .Include("~/Content/css/pnotify.custom.min.css")
                 //.Include("~/Content/css/skins/skin-blue.css")
                 //.Include("~/plugins/overlayScrollbars/css/OverlayScrollbars.min.css")
-                //.Include("~/plugins/daterangepicker/daterangepicker.css")
+
+                //-- daterange picker --//
+                .Include("~/plugins/daterangepicker/daterangepicker.css")
+
                 //.Include("~/plugins/summernote/summernote-bs4.css")
                 );
 
@@ -44,11 +47,14 @@ namespace Scorelink.web.App_Start
                 //.Include("~/Content/js/plugins/bootstrap-select/bootstrap-select.js")
                 .Include("~/plugins/datatables/jquery.dataTables.js")
                 .Include("~/plugins/datatables-bs4/js/dataTables.bootstrap4.js")
-                //.Include("~/Content/js/plugins/moment/moment.js")
-                //.Include("~/Content/js/plugins/datepicker/bootstrap-datepicker.js")
+                .Include("~/Content/js/plugins/datepicker/bootstrap-datepicker.js")
                 //.Include("~/Content/js/plugins/icheck/icheck.js")
                 //.Include("~/Content/js/plugins/validator/validator.js")
-                //.Include("~/Content/js/plugins/inputmask/jquery.inputmask.bundle.js")
+
+                //-- Input Mask --//
+                .Include("~/Content/js/plugins/moment/moment.js")
+                .Include("~/Content/js/plugins/inputmask/jquery.inputmask.bundle.js")
+
                 .Include("~/dist/js/adminlte.min.js")
                 .Include("~/Content/js/plugins/jquery.blockUI/jquery.blockUI.js")
                 //.Include("~/Content/js/init.js")

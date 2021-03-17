@@ -106,6 +106,9 @@ namespace Scorelink.web.Controllers
                 }
                 else
                 {
+                    item.Status = "N";
+                    item.Admin = "N";
+                    item.UpdateBy = "System";
                     data = userRepo.Add(item);
                 }
 
