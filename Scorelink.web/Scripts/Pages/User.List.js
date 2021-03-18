@@ -226,6 +226,12 @@ var ViewModel = function () {
             }
         })
     }
+
+    self.ClickRefresh = function (data, event) {
+        $('#tbUser').DataTable().clear();
+        $('#tbUser').DataTable().destroy();
+        GetUserlist();
+    }
 }
 
 var viewModel = new ViewModel();
