@@ -13,16 +13,20 @@ namespace DictionaryServices.Models
     }
     public class retData
     {
+        public List<string> stdValue { get; set; }
+        public List<List<string>> RecoverData { get; set; }
+        public List<List<string>> CustomData { get; set; }
+        public List<string> RowHighLight { get; set; }
+
         public retData()
         {
             stdValue = new List<string>();
             RecoverData = new List<List<string>>();
             CustomData = new List<List<string>>();
+            RowHighLight = new List<string>();
         }
         
-        public List<string> stdValue { get; set; }
-        public List<List<string>> RecoverData { get; set; }
-        public List<List<string>> CustomData { get; set; }
+      
 
     }
    

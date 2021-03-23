@@ -13,6 +13,7 @@ using HttpGetAttribute = System.Web.Http.HttpGetAttribute;
 using System.Collections;
 using System.Data;
 using DocumentFormat.OpenXml.Drawing;
+using System.Diagnostics;
 
 namespace DictionaryServices.Controllers
 {
@@ -24,10 +25,10 @@ namespace DictionaryServices.Controllers
 
 
         private static string statementName_CF = "CASH FLOW STATEMENT";
-        [Route("api/dic/GetRecoveryDic/{Lang}")]
+        [Route("api/dic/GetRecoveryDic/{uid}/{Lang}")]
         [HttpPost]
         //public List<List<string>> GetRecoveryDic([FromBody] List<Acctitle> Acctitles) // Return only value from dictionary  as list
-        public retData GetRecoveryDic(string Lang,[FromBody] List<Acctitle> Acctitles)
+        public retData GetRecoveryDic(string uid,string Lang,[FromBody] List<Acctitle> Acctitles)
       
         {
             var repLst = new ArrayList();
@@ -44,7 +45,7 @@ namespace DictionaryServices.Controllers
             retData recoverData = new retData();
             recoverList.Clear();
             customList.Clear();
-            DictionaryRepo dic = new DictionaryRepo(Lang);
+            DictionaryRepo dic = new DictionaryRepo(uid,Lang);
             //Dictionary<string, List<string>> d = dic.ReadyRecoverDictionary();
             foreach (Acctitle acc in Acctitles) {
                 strStatementName = repLst[Int32.Parse(acc.pagetype) - 1].ToString();
@@ -55,9 +56,28 @@ namespace DictionaryServices.Controllers
                 if (strCLCTCD.Length >= 2)
                 {
                     strwCLCTCD = strCLCTCD.Substring(2);
+                    Debug.WriteLine(strCLCTCD);
                     if (strCLCTCD.Substring(0, 2) == "01")
                     {
                         KeyCLCTCD = strCLCTCD;
+                        recoverData.RowHighLight.Add("");
+
+                    }
+                    else if (strCLCTCD.Substring(0, 2) == "02" && strCLCTCD.Substring(2, 2) != "03")
+                    {
+                        recoverData.RowHighLight.Add("#49FB01"); //Green
+                    }
+                    else if (strCLCTCD.Substring(0, 2) == "02" && strCLCTCD.Substring(2, 2) == "03")
+                    {
+                        recoverData.RowHighLight.Add("");
+                    }
+                    else if (strCLCTCD.Substring(0, 2) == "00")
+                    {
+                        recoverData.RowHighLight.Add("");
+                    }
+                    else if (strCLCTCD.Substring(0, 2) == "99") //
+                    {
+                        recoverData.RowHighLight.Add("#BEC1BD");
                     }
                 }
                 
@@ -65,7 +85,7 @@ namespace DictionaryServices.Controllers
             }
          
             recoverList=dic.initComboItemCheckSPS(Acctitles);
-            customList = dic.GetCustomDictionary(strStatementName);
+            //customList = dic.GetCustomDictionary(strStatementName);
             for(int idx = 0; idx < recoverList.Count; idx++)
             {
          
