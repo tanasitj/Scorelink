@@ -13,6 +13,7 @@ using DictionaryServices.Models;
 using System.IO;
 using System.Net.Http;
 using System.Web;
+using System.Configuration;
 
 namespace DictionaryServices.Controllers
 {
@@ -100,25 +101,27 @@ namespace DictionaryServices.Controllers
         private string convertOCRPath = "";
         private string convertStand = "";
         private string convertCustom = "";
-        public DictionaryRepo(string lng)
+        public DictionaryRepo(string uid,string lng)
         {
-            string dicPath="";
+            string dicLang="";
 
 
             switch (lng) 
             {
                 case "Thai":
-                    dicPath = "th";
+                    dicLang = "th";
                     break;
                 case "English":
-                    dicPath = "en";
+                    dicLang = "en";
                     break;
             }
 
-            
-            convertOCRPath =  HttpContext.Current.Server.MapPath("~/Dict/")+ dicPath + "/ConvertOCRResult.xlsx"  ;
-            convertStand = HttpContext.Current.Server.MapPath("~/Dict/") + dicPath + "/ConvertStandard.xlsx";
-            convertCustom = HttpContext.Current.Server.MapPath("~/Dict/") + dicPath +  "/TCCS_"+dicPath+".xlsx";
+            string DicPath=ConfigurationManager.AppSettings["DictPath"];
+            //convertOCRPath =  HttpContext.Current.Server.MapPath("~/Dict/")+ uid+ "/"+ dicPath + "/ConvertOCRResult.xlsx"  ;
+            convertOCRPath = DicPath+uid + "\\" + dicLang + "\\ConvertOCRResult.xlsx";
+            //convertStand = HttpContext.Current.Server.MapPath("~/Dict/") + uid + "/" + dicPath + "/ConvertStandard.xlsx";
+            convertStand = DicPath+uid + "\\" + dicLang + "\\ConvertStandard.xlsx";
+           // convertCustom = HttpContext.Current.Server.MapPath("~/Dict/") + uid + "/" + dicPath +  "/TCCS_"+dicPath+".xlsx";
 
             // convertCustom = HttpContext.Current.Server.MapPath("~/Dict/") + "TCCS.xlsx";
             ReadyRecoverDictionary();
@@ -177,8 +180,7 @@ namespace DictionaryServices.Controllers
         public Dictionary<string, List<string>> ReadyRecoverDictionary()
         {
 
-            //string DictPath = SIO.Path.Combine(FCCS.PresetValues.EnvironmentPath.Dicts, LangPath, FileName);
-           // string DictPath = "C:\\Users\\cyber\\source\\repos\\DictionaryWeb\\DictionaryWeb\\Dicts\\th\\ConvertOCRResult.xlsx";
+        
             string DictPath = convertOCRPath;
             using (var openXML = new OXml.SpreadSheets())
             {
@@ -897,7 +899,7 @@ namespace DictionaryServices.Controllers
         //    foreach (object item in ArrL)
         //        setLst.Add(item);
 
-            
+
         //    var nm = new FPWS.CellType.ComboBoxCellType();
         //    nm.Items = (string[])setLst.ToArray(typeof(string));
         //    // Ver3.2 IT不具合対応No.29
@@ -916,6 +918,198 @@ namespace DictionaryServices.Controllers
         //    // End If
         //    sps.Cells[row, col].CellType = nm;
         //}
-    }/// End Class
 
-}
+        
+
+    }/// End Class
+    //public class FinancialCollect
+    //{
+
+    //    // 定数宣言（Spread）
+    //    /// <summary>
+    //    /// 一覧表スプレッドカラム列番号
+    //    /// </summary>
+    //    /// <remarks>一覧表スプレッドカラム列番号</remarks>
+    //    public enum spdCol : int
+    //    {
+    //        /// <summary>注記</summary>
+    //        Note = 0,
+    //        /// <summary>勘定科目</summary>
+    //        Subject = 1,
+    //        /// <summary>金額</summary>
+    //        Kingaku = 2,
+    //        /// <summary>編集</summary>
+    //        Modified = 3
+    //    }
+
+        /// <summary>
+        /// チェック用一覧表スプレッドカラム列番号
+        /// </summary>
+        /// <remarks>チェック用一覧表スプレッドカラム列番号</remarks>
+        //public enum spdCol_C : int
+        //{
+        //    /// <summary>注記</summary>
+        //    Note = 0,
+        //    /// <summary>大区分科目</summary>
+        //    Division = 1,
+        //    /// <summary>勘定科目</summary>
+        //    Subject = 2,
+        //    /// <summary>リカバリー科目</summary>
+        //    ReSubject = 3,
+        //    /// <summary>中間集約科目</summary>
+        //    Standard = 4,
+        //    /// <summary>金額</summary>
+        //    Kingaku = 5,
+        //    /// <summary>編集</summary>
+        //    Modified = 6,
+        //    /// <summary>文字数</summary>
+        //    Length = 7,
+        //    /// <summary>距離</summary>
+        //    Distance = 8,
+        //    /// <summary>割合</summary>
+        //    Rate = 9,
+        //    /// <summary>科目コード</summary>
+        //    CLCTCD = 10
+        //}
+
+        /// <summary>科目置き換えハイライト処理</summary>
+        /// <param name="ZaimuSheet">スプレッドシート</param>
+        /// <param name="isExcel">Excel処理のフラグ</param>
+        /// <param name="strStatementName">決算書名</param>
+        //public static void SubjectChangeHighLight(FPWS.SheetView ZaimuSheet, bool isExcel, string strStatementName)
+        //{
+
+        //    // 共通関数
+        //    // 距離により背景色を色付け
+
+        //    // 科目ハイライト項目出力/非出力
+        //    string showFlag = FCC.GetClientConfigFile("HIGH_LIGHT_SHOW_FLAG");
+        //    int CLCTCDIdx = (int)spdCol_C.CLCTCD;
+        //    if (showFlag != "1" && isExcel == true)
+        //    {
+        //        // 科目ハイライト項目が非表示の場合、Modifyの後ろがCLCTCD
+        //        CLCTCDIdx = (int)spdCol_C.Modified + 1;
+        //    }
+
+        //    string workStatementName = strStatementName;
+        //    int wMinHldis = 0;
+        //    int wMinHlrate = 0;
+        //    string wKeyMinHldis = "MIN_HLDIS" + "_" + Strings.Replace(workStatementName, " ", "_");
+        //    string wKeyMinHlrate = "MIN_HLRATE" + "_" + Strings.Replace(workStatementName, " ", "_");
+        //    if (!string.IsNullOrEmpty(FCC.GetClientConfigFile(wKeyMinHldis)))
+        //        wMinHldis = Conversions.ToInteger(FCC.GetClientConfigFile(wKeyMinHldis));
+        //    if (!string.IsNullOrEmpty(FCC.GetClientConfigFile(wKeyMinHlrate)))
+        //        wMinHlrate = Conversions.ToInteger(FCC.GetClientConfigFile(wKeyMinHlrate));
+        //    for (int rowIdx = 0, loopTo = ZaimuSheet.Rows.Count - 1; rowIdx <= loopTo; rowIdx++)
+        //    {
+        //        // 帳表名取得
+        //        if (!string.IsNullOrEmpty(ZaimuSheet.Cells[rowIdx, (int)spdCol_C.Subject].Text) && string.IsNullOrEmpty(ZaimuSheet.Cells[rowIdx, CLCTCDIdx].Text))
+        //        {
+        //            // See All Resultの場合、帳表名が変更する必要がある
+        //            workStatementName = ZaimuSheet.Cells[rowIdx, (int)spdCol_C.Subject].Text;
+        //            wKeyMinHldis = "MIN_HLDIS" + "_" + Strings.Replace(workStatementName, " ", "_");
+        //            wKeyMinHlrate = "MIN_HLRATE" + "_" + Strings.Replace(workStatementName, " ", "_");
+        //            if (!string.IsNullOrEmpty(FCC.GetClientConfigFile(wKeyMinHldis)))
+        //                wMinHldis = Conversions.ToInteger(FCC.GetClientConfigFile(wKeyMinHldis));
+        //            if (!string.IsNullOrEmpty(FCC.GetClientConfigFile(wKeyMinHlrate)))
+        //                wMinHlrate = Conversions.ToInteger(FCC.GetClientConfigFile(wKeyMinHlrate));
+        //        }
+
+        //        if (!string.IsNullOrEmpty(ZaimuSheet.Cells[rowIdx, (int)spdCol_C.Distance].Text))
+        //        {
+        //            if (Conversions.ToInteger(ZaimuSheet.Cells[rowIdx, (int)spdCol_C.Distance].Value) > wMinHldis || Conversions.ToInteger(ZaimuSheet.Cells[rowIdx, (int)spdCol_C.Rate].Text.Replace("%", "")) > wMinHlrate)
+        //            {
+        //                ZaimuSheet.Cells[rowIdx, (int)spdCol_C.Subject].BackColor = System.Drawing.Color.Gold;
+        //                ZaimuSheet.Cells[rowIdx, (int)spdCol_C.ReSubject].BackColor = System.Drawing.Color.Gold;
+        //            }
+        //        }
+        //    }
+        //}
+
+        /// <summary>キー科目・合計科目・除外科目ハイライト、HighLight.txt参照科目ハイライト処理</summary>
+        /// <param name="ZaimuSheet">スプレッドシート</param>
+        /// <param name="isExcel">Excel処理のフラグ</param>
+        /// <param name="strStatementName">決算書名</param>
+        //public static void EmphasisHighlight(FPWS.SheetView ZaimuSheet, bool isExcel, string strStatementName)
+        //{
+
+        //    // 科目ハイライト項目出力/非出力
+        //    string showFlag = FCC.GetClientConfigFile("HIGH_LIGHT_SHOW_FLAG");
+        //    int CLCTCDIdx = (int)spdCol_C.CLCTCD;
+        //    if (showFlag != "1" && isExcel == true)
+        //    {
+        //        // 科目ハイライト項目が非表示の場合、Modifyの後ろがCLCTCD
+        //        CLCTCDIdx = (int)spdCol_C.Modified + 1;
+        //    }
+
+        //    string workStatementName = strStatementName;
+        //    for (int rowIdx = 0, loopTo = ZaimuSheet.Rows.Count - 1; rowIdx <= loopTo; rowIdx++)
+        //    {
+        //        string CLCTCDStr = ZaimuSheet.Cells[rowIdx, CLCTCDIdx].Text;
+        //        if (!string.IsNullOrEmpty(ZaimuSheet.Cells[rowIdx, (int)spdCol_C.Subject].Text) && string.IsNullOrEmpty(CLCTCDStr))
+        //        {
+        //            // See All Resultの場合、帳表名が変更する必要がある
+        //            workStatementName = ZaimuSheet.Cells[rowIdx, (int)spdCol_C.Subject].Text;
+        //        }
+
+        //        // ver3.2 IT不具合No.33
+        //        var color = System.Drawing.Color.White;
+        //        var font = new System.Drawing.Font("Segoe UI", 11.5f, System.Drawing.FontStyle.Regular);
+        //        if (CLCTCDStr.Length == 0)
+        //            continue;
+        //        switch (CLCTCDStr.Substring(0, 2) ?? "")
+        //        {
+        //            case "01":
+        //                {
+        //                    font = new System.Drawing.Font("Segoe UI", 11.5f, System.Drawing.FontStyle.Bold);
+        //                    break;
+        //                }
+
+        //            case "02":
+        //                {
+        //                    color = System.Drawing.Color.PaleGreen;
+        //                    font = new System.Drawing.Font("Segoe UI", 11.5f, System.Drawing.FontStyle.Italic);
+        //                    break;
+        //                }
+
+        //            case "99":
+        //                {
+        //                    color = System.Drawing.Color.DarkGray;
+        //                    break;
+        //                }
+
+        //            default:
+        //                {
+        //                    break;
+        //                }
+        //        }
+        //        // フォント
+        //        ZaimuSheet.Cells[rowIdx, (int)spdCol_C.Note].Font = font;
+        //        ZaimuSheet.Cells[rowIdx, (int)spdCol_C.Division].Font = font;
+        //        ZaimuSheet.Cells[rowIdx, (int)spdCol_C.Subject].Font = font;
+        //        ZaimuSheet.Cells[rowIdx, (int)spdCol_C.ReSubject].Font = font;
+        //        ZaimuSheet.Cells[rowIdx, (int)spdCol_C.Standard].Font = font;
+        //        ZaimuSheet.Cells[rowIdx, (int)spdCol_C.Kingaku].Font = font;
+        //        // 背景色
+        //        if (color != default)
+        //        {
+        //            ZaimuSheet.Cells[rowIdx, (int)spdCol_C.Note].BackColor = color;
+        //            ZaimuSheet.Cells[rowIdx, (int)spdCol_C.Division].BackColor = color;
+        //            ZaimuSheet.Cells[rowIdx, (int)spdCol_C.Subject].BackColor = color;
+        //            ZaimuSheet.Cells[rowIdx, (int)spdCol_C.ReSubject].BackColor = color;
+        //            ZaimuSheet.Cells[rowIdx, (int)spdCol_C.Standard].BackColor = color;
+        //            ZaimuSheet.Cells[rowIdx, (int)spdCol_C.Kingaku].BackColor = color;
+        //        }
+
+        //        // OCR科目とリカバリー科目に色付けをする項目を判断
+        //        if (TinyDictionary.RecoveryHighLight(workStatementName, ZaimuSheet.Cells[rowIdx, (int)spdCol_C.ReSubject].Text.ToString()) == true)
+        //        {
+        //            // Digitized Account Title
+        //            ZaimuSheet.Cells[rowIdx, (int)spdCol_C.Subject].BackColor = System.Drawing.Color.FromArgb(255, 250, 191, 143);
+        //            // Recovered Account Title
+        //            ZaimuSheet.Cells[rowIdx, (int)spdCol_C.ReSubject].BackColor = System.Drawing.Color.FromArgb(255, 250, 191, 143);
+        //        }
+        //    }
+        //}
+
+    }

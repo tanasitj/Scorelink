@@ -48,13 +48,13 @@ namespace Scorelink.web.Controllers
             return Json(com, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult SaveCompany(CompanyModel item)
+        public JsonResult SaveCompany(string mode, CompanyModel item)
         {
             try
             {
                 var data = "";
                 CompanyRepo compRepo = new CompanyRepo();
-                if (item.CompanyId.ToString() == "0")
+                if (mode == "A")
                 {
                     if (compRepo.CheckCompanyDup(item.CompanyName))
                     {
@@ -68,6 +68,21 @@ namespace Scorelink.web.Controllers
                     else
                     {
                         data = compRepo.Add(item);
+
+                        var com = compRepo.GetCompanyByName(item.CompanyName);
+
+                        string srcFolder = Common.getConstTxt("Dict") + "Template";
+                        string desFolder = Common.getConstTxt("Dict") + Common.GenZero(com.CompanyId.ToString(), 5);
+
+                        //Copy Template Folder
+                        foreach (string dirPath in Directory.GetDirectories(srcFolder, "*",
+                            SearchOption.AllDirectories))
+                            Directory.CreateDirectory(dirPath.Replace(srcFolder, desFolder));
+
+                        //Copy All File
+                        foreach (string newPath in Directory.GetFiles(srcFolder, "*.*",
+                            SearchOption.AllDirectories))
+                            System.IO.File.Copy(newPath, newPath.Replace(srcFolder, desFolder), true);
                     }
                 }
                 else
@@ -75,20 +90,7 @@ namespace Scorelink.web.Controllers
                     data = compRepo.Update(item);
                 }
 
-                var com = compRepo.GetCompanyByName(item.CompanyName);
-
-                string srcFolder = Common.getConstTxt("Dict") + "Template";
-                string desFolder = Common.getConstTxt("Dict") + Common.GenZero(com.CompanyId.ToString(), 5);
-
-                //Copy Template Folder
-                foreach (string dirPath in Directory.GetDirectories(srcFolder, "*",
-                    SearchOption.AllDirectories))
-                    Directory.CreateDirectory(dirPath.Replace(srcFolder, desFolder));
-
-                //Copy All File
-                foreach (string newPath in Directory.GetFiles(srcFolder, "*.*",
-                    SearchOption.AllDirectories))
-                    System.IO.File.Copy(newPath, newPath.Replace(srcFolder, desFolder), true);
+                
 
                 return Json(data, JsonRequestBehavior.AllowGet);
             }

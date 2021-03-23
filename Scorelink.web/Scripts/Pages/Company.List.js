@@ -12,7 +12,6 @@
 
 var ViewModel = function () {
     var self = this;
-
     self.CompanyList = ko.observableArray();
     self.CompanyId = ko.observable();
     self.CompanyName = ko.observable();
@@ -28,20 +27,23 @@ var ViewModel = function () {
     self.EntryTelephone = ko.observable();
     self.EntryStatus = ko.observable(false);
 
+    self.Mode = ko.observable();
+
     GetCompanylist();
 
     self.ClickOpenAdd = function (data, event) {
+        self.Mode('A');
         self.EntryCompanyId(0);
         self.EntryCompanyName('');
         self.EntryDomain('');
         self.EntryAddress('');
         self.EntryTelephone('');
         self.EntryStatus(false);
-
         $("#Modal_Page").modal('show');
     }
 
     self.ClickOpenEdit = function (data, event) {
+        self.Mode('E');
         var filter = {
             'CompanyId': data.CompanyId()
         }
@@ -139,6 +141,7 @@ var ViewModel = function () {
         }
 
         var data = {
+            'mode': self.Mode,
             'item': arg
         };
 
