@@ -171,5 +171,50 @@ namespace Scorelink.web.Controllers
 
             return id;
         }
+
+        public JsonResult GetMenuList(int userId)
+        {
+            UserRepo userRepo = new UserRepo();
+            var user = userRepo.Get(userId);
+
+            var txt = "";
+            if (user.Status == "Y")
+            {
+                if (user.Admin == "Y")
+                {
+                    txt += "" +
+                        //" <li class='nav-header'> Admin Menu</li> " +
+                        " <li class='nav-item'> " +
+                        " <a href='/User/Index' class='nav-link'> " +
+                        " <i class='nav-icon fas fa-users'></i> " +
+                        " <p>User List</p> " +
+                        " </a> " +
+                        " </li> " +
+                        " <li class='nav-item'> " +
+                        " <a href = '/Company/Index' class='nav-link'> " +
+                        " <i class= 'nav-icon fas fa-building'></i> " +
+                        " <p>Company List</p> " +
+                        " </a> " +
+                        " </li> ";
+                }
+                txt += "" +
+                        //" <li class='nav-header'>User Menu</li> " +
+                        " <li class='nav-item'> " +
+                        " <a href = '/Upload/Index' class='nav-link'> " +
+                        " <i class='nav-icon fas fa-file-pdf'></i> " +
+                        " <p>Scorelink</p> " +
+                        " </a> " +
+                        " </li> ";
+            }
+
+            /*txt += " <li class='nav-item'> " +
+                    " <a href='#log_out' id='alogout' class='nav-link'> " +
+                    " <i class='nav-icon fas fa-sign-out-alt'></i> " +
+                    " <p>Logout</p> " +
+                    " </a> " +
+                    " </li> ";*/
+
+            return Json(txt, JsonRequestBehavior.AllowGet);
+        }
     }
 }
