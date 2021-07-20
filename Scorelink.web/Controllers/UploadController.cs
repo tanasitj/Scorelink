@@ -12,6 +12,8 @@ using System.Threading;
 using Leadtools.Pdf;
 using System.Net;
 using System.ServiceModel.Channels;
+using Spire.Xls;
+using System.Drawing;
 
 namespace Scorelink.web.Controllers
 {
@@ -62,17 +64,17 @@ namespace Scorelink.web.Controllers
 
         public ActionResult UploadFiles(string userId, string language)
         {
+            String FileName = "";
             // Checking no of files injected in Request object  
             if (Request.Files.Count > 0)
             {
                 try
                 {
-                    string[] allKeys = Request.Files.AllKeys[0].Split('|');
+                    //string filesize = Request.Cookies.Get("filesize").Value;
+                    //string[] allKeys = Request.Files.AllKeys[0].Split('|');
                     var uploadNo = Common.GenZero(userId, 8);
-                    string sUID = Guid.NewGuid().ToString();
                     string sLanguage = language;
                     //string folder = Consts.SLUserFlie + "\\FileUploads\\" + uploadNo + "\\" + sUID;
-                    string folder = Common.getConstTxt("SLUserFlie") + uploadNo + "\\" + sUID;
 
                     //  Get all files from Request object  
                     HttpFileCollectionBase files = Request.Files;
@@ -80,6 +82,8 @@ namespace Scorelink.web.Controllers
                     {
                         HttpPostedFileBase file = files[i];
                         string fname;
+                        string sUID = Guid.NewGuid().ToString();
+                        string folder = Common.getConstTxt("SLUserFlie") + uploadNo + "\\" + sUID;
 
                         // Checking for Internet Explorer  
                         if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
@@ -95,7 +99,8 @@ namespace Scorelink.web.Controllers
                         // Get the complete folder path and store the file inside it. 
                         Common.CreateDocFolder(folder);
 
-                        FileInfo fi = new FileInfo(folder + "\\" + allKeys[0]);
+                        //FileInfo fi = new FileInfo(folder + "\\" + allKeys[i]);
+                        FileInfo fi = new FileInfo(folder + "\\" + file.FileName);
                         fname = sUID + fi.Extension;
                         fname = Path.Combine(folder + "\\", fname);
                         file.SaveAs(fname);
@@ -105,7 +110,8 @@ namespace Scorelink.web.Controllers
 
                         DocumentInfoModel doc = new DocumentInfoModel();
                         doc.FileUID = sUID;
-                        doc.FileName = allKeys[0];
+                        //doc.FileName = allKeys[i];
+                        doc.FileName = file.FileName;
                         doc.FilePath = fname;
                         doc.FileUrl = sFileUrl;
                         doc.Language = sLanguage;
@@ -115,9 +121,10 @@ namespace Scorelink.web.Controllers
                         DocumentInfoRepo documentInfoRepo = new DocumentInfoRepo();
                         documentInfoRepo.Add(doc);
 
+                        FileName = file.FileName;
                     }
                     // Returns message that successfully uploaded  
-                    return Json("OK");
+                    return Json(FileName, JsonRequestBehavior.AllowGet);
                 }
                 catch (Exception ex)
                 {
@@ -134,7 +141,7 @@ namespace Scorelink.web.Controllers
 
         public JsonResult GetDocumentList(string filterId)
         {
-            var doc = docInfoRepo.GetList(filterId).ToList();
+            var doc = docInfoRepo.GetDocStatusList(filterId).ToList();
             return Json(doc, JsonRequestBehavior.AllowGet);
         }
 
@@ -156,6 +163,56 @@ namespace Scorelink.web.Controllers
                     //Delete Folder.
                     DeleteDirectory(sPath);
                 }
+            }
+            catch (Exception ex)
+            {
+                Logger Err = new Logger();
+                Err.ErrorLog(ex.ToString());
+                return Json(ex.Message);
+            }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult DeleteAllDocumentInfo(int[] id)
+        {
+            var result = "";
+
+            try
+            {
+                for (int i = 0; i < id.Length; i++)
+                {
+                    //Get Document Info.
+                    var doc = docInfoRepo.Get(id[i]);
+                    string sPath = Server.MapPath("..\\FileUploads\\" + Common.GenZero(doc.CreateBy, 8) + "\\" + doc.FileUID + "\\");
+
+                    //Delete All Data by DocId.
+                    result = docInfoRepo.Delete(id[i].ToString());
+
+                    if (Directory.Exists(sPath))
+                    {
+                        //Delete Folder.
+                        DeleteDirectory(sPath);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger Err = new Logger();
+                Err.ErrorLog(ex.ToString());
+                return Json(ex.Message);
+            }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult EditDocumentInfo(DocumentInfoModel item)
+        {
+            var result = "";
+
+            try
+            {
+                result = docInfoRepo.Update(item);
             }
             catch (Exception ex)
             {
@@ -280,6 +337,136 @@ namespace Scorelink.web.Controllers
             {
                 Logger Err = new Logger();
                 Err.ErrorLog(ex.ToString());
+            }
+        }
+
+        public JsonResult ExportAllResult(int docId)
+        {
+            var Info = docInfoRepo.Get(docId);
+            //Get Document Detail data.
+            String FolderPath = Server.MapPath("..\\FileUploads\\" + Common.GenZero(Info.CreateBy, 8) + "\\" + Info.FileUID + "\\");
+            //String UrlPath = Common.getConstTxt("sUrl") + "/FileUploads/" + Common.GenZero(Info.CreateBy, 8) + "/" + Info.FileUID + "/";
+            String UrlPath = "~/FileUploads/" + Common.GenZero(Info.CreateBy, 8) + "/" + Info.FileUID + "/";
+            List<string> files = new List<string>();
+            string Statement = FolderPath + "Tmp001.csv";
+            string BalanceSheet = FolderPath + "Tmp002.csv";
+            string Cashflow = FolderPath + "Tmp003.csv";
+            //var fileName = "AllReSult" + ".xlsx";
+            string sDateTime = DateTime.Now.ToString("yyyyMMddHHmmssFFFF");
+            var UserFileName = "ARS" + Info.FileUID + ".xlsx";
+            var TmpFileName = "EX" + sDateTime + ".xlsx";
+
+            //Check File for insert parameter
+            try
+            {
+                if (System.IO.File.Exists(Statement))
+                {
+                    files.Add(@"Tmp001");
+                }
+                if (System.IO.File.Exists(BalanceSheet))
+                {
+                    files.Add(@"Tmp002");
+                }
+                if (System.IO.File.Exists(Cashflow))
+                {
+                    files.Add(@"Tmp003");
+                }
+                //Call Procedure create file
+                if (files.Count > 0)
+                {
+                    Create_Temp_Files(files, FolderPath);
+                    //CombineFiles(files, FolderPath, UrlPath);
+
+                    //Save the file to server temp folder
+                    //string fullPath = Path.Combine(Server.MapPath("~/temp"), fileName);
+                    string TmpPath = Path.Combine(Server.MapPath(UrlPath), TmpFileName);
+
+                    Workbook newbook = new Workbook();
+                    newbook.Version = ExcelVersion.Version2013;
+                    newbook.Worksheets.Clear();
+                    Workbook tempbook = new Workbook();
+                    if (files.Count > 0)
+                    {
+                        for (int i = 0; i < files.Count; i++)
+                        {
+                            tempbook.LoadFromFile(FolderPath + files[i] + ".xlsx");
+                            foreach (Worksheet sheet in tempbook.Worksheets)
+                            {
+                                newbook.Worksheets.AddCopy(sheet);
+                            }
+                        }
+                        //create file to save on server
+                        //newbook.SaveToFile(FolderPath + "AllReSult.xlsx", ExcelVersion.Version2013);
+                        newbook.SaveToFile(FolderPath + UserFileName, ExcelVersion.Version2013);
+                        //create file to folder temp for client download
+                        newbook.SaveToFile(TmpPath, ExcelVersion.Version2013);
+
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger Err = new Logger();
+                Err.ErrorLog(ex.ToString());
+                return Json(ex.Message);
+            }
+            //return Json(new { fileName = fileName });
+            //return Json("Success");
+            return Json(TmpFileName);
+        }
+
+        public void Create_Temp_Files(List<string> files, string FolderPath)
+        {
+            Workbook newbook = new Workbook();
+            newbook.Version = ExcelVersion.Version2013;
+            newbook.Worksheets.Clear();
+            Workbook workbook = new Workbook();
+            if (files.Count > 0)
+            {
+                for (int i = 0; i < files.Count; i++)
+                {
+                    workbook.LoadFromFile(FolderPath + files[i].ToString() + ".csv", ",", 1, 1);
+                    Worksheet sheet = workbook.Worksheets[0];
+                    int last = sheet.LastRow;
+                    sheet.Name = files[i].ToString();
+                    switch (sheet.Name)
+                    {
+                        case "Tmp001": { sheet.Name = "Income Statement"; break; }
+                        case "Tmp002": { sheet.Name = "Balance Sheet"; break; }
+                        case "Tmp003": { sheet.Name = "Cash flow"; break; }
+                    }
+
+                    sheet.Range["C2:E" + last].Style.Color = Color.Gold;
+                    sheet.Range["C2:E" + last].Style.Font.FontName = "Segoe UI";
+                    sheet.Range["C2:E" + last].Style.Font.Size = 11.5;
+                    sheet.Range["C1" + sheet.LastColumn].Style.Font.IsBold = true;
+                    sheet.SetColumnWidth(2, 15);
+                    sheet.SetColumnWidth(3, 30);
+                    sheet.SetColumnWidth(4, 30);
+                    sheet.SetColumnWidth(5, 30);
+                    sheet.SetColumnWidth(6, 20);
+                    workbook.SaveToFile(FolderPath.ToString() + files[i].ToString() + ".xlsx", ExcelVersion.Version2010);
+                }
+            }
+        }
+
+        public ActionResult Download(string file, int docId)
+        {
+            //Get the temp folder and file path in server
+            try
+            {
+                var Info = docInfoRepo.Get(docId);
+                String UrlPath = "~/FileUploads/" + Common.GenZero(Info.CreateBy, 8) + "/" + Info.FileUID + "/";
+
+                string fullPath = Path.Combine(Server.MapPath(UrlPath), file);
+                byte[] fileByteArray = System.IO.File.ReadAllBytes(fullPath);
+                System.IO.File.Delete(fullPath);
+                return File(fileByteArray, "application/vnd.ms-excel", file);
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message);
             }
         }
     }

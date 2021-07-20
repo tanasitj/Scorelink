@@ -8,6 +8,9 @@
     self.CanEdit = ko.observable(NoScan === '0' ? true : false);
     self.CompletedFlag = ko.observable(Commited === 'N' ? false : true);
 }
+
+//import { PagePart } from './plugins/Leadtools/Main/Main.Page.js';
+
 var ViewModel = function () {
     blockUI();
     var self = this;
@@ -52,9 +55,10 @@ var ViewModel = function () {
                 success: function (data) {
                     if (data == "Dup") {
                         alert("Duplicate page select, Please select new page.");
-                    } else {
-                        alert("Page "+ data +" selected already.");
                     }
+                    /*} else {
+                        alert("Page "+ data +" selected already.");
+                    }*/
                     GetDoclist();
                 },
                 error: function (err) {
@@ -67,6 +71,22 @@ var ViewModel = function () {
         $('#btnBack').click(function () {
             window.location.href = '/Upload/Index';
         });
+
+
+        $('#btnTest').click(function (e) {
+            var iValue = "3";
+            var pageNumber = $("#pageNumber").val(iValue);
+            var newPageNumber = "3";
+
+            try {
+                _this._mainApp.documentViewer.commands.run(lt.Document.Viewer.DocumentViewerCommands.pageGoto, newPageNumber);
+            } catch (ex) {
+                window.alert(ex);
+            }
+        });
+        
+        
+
         unblockUI();
     });
     //==================================================================================================

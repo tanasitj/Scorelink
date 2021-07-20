@@ -23,12 +23,27 @@
                 <label for="exampleInputFile">File input</label>
                 <div class="input-group">
                     <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="fileUpload1" accept="application/pdf" data-bind="event: { change: Upload};">
+                        <input type="file" multiple class="custom-file-input" id="fileUpload1" accept="application/pdf" data-bind="event: { change: ClickUpload};">
                         <label class="custom-file-label">Choose file</label>
                     </div>
                     <div class="input-group-append">
-                        <span class="input-group-text bg-gradient-info" id="" data-bind="click: Upload" style="cursor : pointer">Upload</span>
+                        <span class="input-group-text bg-gradient-success" id="upload_btn" data-bind="click: ClickUpload" style="cursor : pointer">Upload</span>
+                        <span class="input-group-text bg-gradient-success d-none" id="loading_btn">
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            &nbsp;Uploading...
+                        </span>
+                        @*<span class="input-group-text bg-gradient-secondary d-none" id="cancel_btn">Cancel Upload</span>*@
                     </div>
+                </div>
+
+                <div id="progress_wrapper" class="d-none">
+                    <br>
+                    <label id="progress_status">50% uploaded</label>
+                    <div class="progress mb-3">
+                        <div id="progress" class="progress-bar bg-success progress-bar-striped" role="progressbar" aria-valuenow="25" area-valuemin="0" area-valuemax="100"></div>
+                    </div>
+
+                    <div id="alert_wrapper"></div>
                 </div>
             </div>
         </div>
@@ -45,19 +60,30 @@
     </div>
     <!-- /.card-header -->
     <div class="card-body">
-        <table id="example2" class="table table-bordered table-hover">
+        <div class="row">
+            <div class="text-left">
+                <input type="button" class="btn bg-gradient-danger" id="BtnDeleteAll" name="BtnDeleteAll" value="Delete" data-bind="click: $root.ClickDeleteAll" title="Delete all selected."/>
+                <input type="button" class="btn bg-gradient-success" id="BtnRefreshAll" name="BtnRefreshAll" value="Refresh" data-bind="click: $root.ClickRefresh" title="Refresh Data."/>
+            </div>
+        </div>
+        <br/>
+        <table id="table1" class="table table-bordered table-hover">
             <thead class="bg-gray-light">
                 <tr class="text-center">
+                    <th style="width: 10px"><input type="checkbox" id="select_all" /></th>
                     <th style="width: 10px">No.</th>
                     <th>File Name</th>
                     <th>Language</th>
                     <th>Upload Date</th>
                     <th style="width: 150px">Scan</th>
+                    <th style="width: 150px">Export</th>
+                    <th style="width: 50px">Edit</th>
                     <th style="width: 50px">Delete</th>
                 </tr>
             </thead>
             <tbody data-bind="foreach: DocumentInfo">
                 <tr>
+                    <td><input class="checkbox" type="checkbox" id="chkDocId" name="check[]" data-bind="checkedValue: DocId"></td>
                     <td class="text-center"><span data-bind="text: $index() + 1"></span></td>
                     <td><span data-bind="text: FileName"></span></td>
                     <td class="text-center"><span data-bind="text: Language"></span></td>
@@ -66,29 +92,121 @@
                         <button type="button" class="btn btn-block bg-gradient-success" data-bind="click: $root.ClickScan" title="Scan">Scan</button>
                     </td>
                     <td class="text-center">
+                        <button type="button" class="btn btn-block bg-gradient-success" data-bind="enable: CanExport, click: $root.ClickExport" title="Scan">Export</button>
+                    </td>
+                    <td class="text-center">
+                        <button type="button" class="btn btn-bitbucket bg-gradient-primary" data-bind="click: $root.ClickEdit" title="Edit"><i class="fas fa-pen"></i></button>
+                    </td>
+                    <td class="text-center">
                         <button type="button" class="btn btn-bitbucket bg-gradient-danger" data-bind="click: $root.ClickDelete" title="Delete"><i class="fas fa-trash-alt"></i></button>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
-    @Html.Partial("_ConfirmDeleted")
-</div>
-@section scripts{
-    <!-- bs-custom-file-input -->
-    <script src="~/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            bsCustomFileInput.init();
-        });
-        $('#example2').DataTable({
-            "paging": true,
-            "lengthChange": false,
-            "searching": false,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false,
-        });
-    </script>
-    <script src="~/Scripts/Pages/Upload.Index.js"></script>
-}
+    <div class="modal fade" id="Modal_DeletePage" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+
+        <!-- Add .modal-dialog-centered to .modal-dialog to vertically center the modal -->
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-gradient-danger">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Delete File Selected</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-body">
+                        <dl>
+                            <dt>File Name</dt>
+                            <dd><span data-bind="text: FileName"></span></dd>
+                            <dt>Language</dt>
+                            <dd><span data-bind="text: Language"></span></dd>
+                            <dt>Upload Date</dt>
+                            <dd><span data-bind="text: CreateDate"></span></dd>
+                        </dl>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="BtnDeletePage" class="btn bg-gradient-danger" data-bind="click: $root.SubmitDeleteData">Delete</button>
+                    <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="Modal_EditPage" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+
+        <!-- Add .modal-dialog-centered to .modal-dialog to vertically center the modal -->
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-gradient-primary">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Edit File Selected</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-body">
+                        <dl>
+                            <dt>File Name</dt>
+                            <dd><span data-bind="text: FileName"></span></dd>
+                            <dt>Language</dt>
+                            <dd>
+                                <select id="lstLanguage" class="form-control" data-bind="value : Language">
+                                    <option value="English">English</option>
+                                    <option value="Thai">Thai</option>
+                                </select>
+                            </dd>
+                            <dt>Upload Date</dt>
+                            <dd><span data-bind="text: CreateDate"></span></dd>
+                        </dl>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="BtnEditPage" class="btn bg-gradient-primary" data-bind="click: $root.SubmitEditData">Edit</button>
+                    <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="Modal-DeleteAll" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-gradient-danger">
+                    <h4 class="modal-title">System Confirm</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure to delete all selected record?</p>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" data-bind="click: $root.SubmitDeleteAll">Delete</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    @section scripts{
+        <!-- bs-custom-file-input -->
+        <script src="~/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+        <script type="text/javascript">
+            @*$(document).ready(function () {
+                bsCustomFileInput.init();
+            });*@
+            @*$('#table1').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": false,
+                "info": true,
+                "autoWidth": false,
+            });*@
+
+            
+        </script>
+        <script src="~/Scripts/Pages/Upload.Index.js"></script>
+    }

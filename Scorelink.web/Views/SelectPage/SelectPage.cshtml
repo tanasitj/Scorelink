@@ -1,6 +1,6 @@
-﻿      
+﻿
 @{
-   // ViewBag.Title = "PagePreview";
+    // ViewBag.Title = "PagePreview";
 }
 <!DOCTYPE html>
 <head>
@@ -30,6 +30,7 @@
 <input type="hidden" id="hdPagePath" value="@ViewBag.PagePath" />
 <input type="hidden" id="hdPDFFile" value="@ViewBag.FileUrl" />
 <input type="hidden" id="hdCreateBy" value="@ViewBag.CreateBy" />
+<input type="text" id="txtTest" value="" />
 
 <div class="container-fluid">
     <div class="row">
@@ -104,14 +105,14 @@
                                         <span class="verticalDivider"></span>
                                         <!-- Document pages display -->
                                         @*<button id="singlePageDisplay_shortcut" title="Single page display">
-                                            <span class="icon icon-sm singleLayoutIcon"></span>
-                                        </button>*@
+                                                <span class="icon icon-sm singleLayoutIcon"></span>
+                                            </button>*@
                                         <button id="showThumbnails" class="navigationbarBtn">
                                             <span class="icon thumbnailsIcon"></span>
                                         </button>
                                         @*<button class="annotationObjectBtn" title="Rectangle" value="-3">
-                                            <span class="icon rectangleIcon"></span>
-                                        </button>*@
+                                                <span class="icon rectangleIcon"></span>
+                                            </button>*@
                                     </div>
                                 </div>
 
@@ -1891,16 +1892,16 @@
                     </div>
                     <!-- Group of default radios - option 4 -->
                     @*<div class="custom-control custom-radio">
-                        <label><input type="radio" value="FootNotes" name="Kind_of_Financial">  FootNotes</label>
-                    </div>*@
+                            <label><input type="radio" value="FootNotes" name="Kind_of_Financial">  FootNotes</label>
+                        </div>*@
                     <!-- Footnotes-->
                     <!-- Select Dropdown-->
                     <div class="card-body">
                         <!--<b>  Footnotes No. and Titile</b>
                         <div class="form-row">
                             <div class="form-group col-md-2">-->
-                                @*<label for="inputFootnote">Footnotes</label>*@
-                                <!--<input type="text" class="form-control" id="inputFootnotes" name="Footnotes" />
+                        @*<label for="inputFootnote">Footnotes</label>*@
+                        <!--<input type="text" class="form-control" id="inputFootnotes" name="Footnotes" />
                             </div>
                             <div class="form-group col-md-7">
                                 <select id="inputNotes" class="form-control">
@@ -1911,9 +1912,9 @@
                         </div>-->
                         <br />
                         @*<div class="form-row">
-                            <b class="text-success">Input Footnotes No. and Title</b>
-                            <b class="text-success">Select text from Statement image or type in</b>
-                        </div>*@
+                                <b class="text-success">Input Footnotes No. and Title</b>
+                                <b class="text-success">Select text from Statement image or type in</b>
+                            </div>*@
                         <div class="form-row">
 
                             <button type="button" id="BtnSelectPage" class="btn btn-block bg-gradient-info" style="height:60px"><b>Select this page</b></button>
@@ -1962,7 +1963,7 @@
                                     <button type="button" class="btn btn-block bg-gradient-success" data-bind="click: $root.ClickScan">Scan</button>
                                 </td>
                                 <td class="text-center">
-                                    <button type="button" class="btn btn-block bg-gradient-success" data-bind="enable: CanEdit, click: $root.ClickScan_Edit">Scan/Edit</button>
+                                    <button type="button" class="btn btn-block bg-gradient-success" data-bind="enable: CanEdit, click: $root.ClickScan_Edit" disabled>Scan/Edit</button>
                                 </td>
                                 <td class="text-center">
                                     <label><input type="checkbox" value="" data-bind="checked: CompletedFlag" disabled></label>
@@ -1976,9 +1977,10 @@
                         <div class="col-md-6">
                             <div class="text-right">
                                 @*<input type="button" class="btn btn-light" id ="BtnSeeAllResult" name="BtnSeeAllResult" value="See All Results"/>*@
-                                <input type="button" class="btn bg-gradient-success" id ="BtnExportAll" name="BtnExportAll" value="Export All Results" data-bind="enable: hasCommited"/>
+                                <input type="button" class="btn bg-gradient-success" id="BtnExportAll" name="BtnExportAll" value="Export All Results" data-bind="enable: hasCommited" />
                                 @*<button type="button" class="btn btn-light" data-bind="click: $root.ClickSaveScan">Save Scanned</button>*@
                                 <button type="button" class="btn btn-bitbucket bg-gradient-danger" id="btnBack" name="btnBack">Back</button>
+                                <button type="button" class="btn btn-bitbucket bg-gradient-danger" id="btnTest" name="btnTest">Test</button>
                             </div>
 
                         </div>
@@ -2003,10 +2005,10 @@
                 <div class="modal-body">
                     <div class="form-row">
                         <label>&nbsp<input type="radio" value="DeleteAllPages" name="TypeDelete">  Delete all pages</label>
-                    </div>                   
+                    </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label><input type="radio" value="Delete_specific_page" name="TypeDelete"checked>  Delete specific page</label>
+                            <label><input type="radio" value="Delete_specific_page" name="TypeDelete" checked>  Delete specific page</label>
                         </div>
                         <div class="form-group col-md-6">
                             <select id="page_delete" class="form-control">
@@ -2017,7 +2019,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" id ="BtnDeletePage" class="btn bg-gradient-danger" data-bind="click: $root.SubmitDelete">Delete</button>
+                    <button type="button" id="BtnDeletePage" class="btn bg-gradient-danger" data-bind="click: $root.SubmitDelete">Delete</button>
                     <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -2025,7 +2027,6 @@
     </div>
 </div>
 @section scripts{
-    <script src="~/Scripts/Pages/SelectPage.Index.js"></script>
 
     @*  Leadtools .js files*@
     <script type="text/javascript" src="~/plugins/Leadtools/Leadtools-lib/Leadtools.js"></script>
@@ -2076,4 +2077,8 @@
     <script type="text/javascript" src="~/plugins/Leadtools/DriveHelper/DriveHelper.js"></script>
     <script type="text/javascript" src="~/plugins/Leadtools/DriveHelper/SharePointService.js"></script>
     <script type="text/javascript" src="~/plugins/Leadtools/DriveHelper/SharePointPickerDlg.js"></script>
+
+    <script src="~/Scripts/Pages/SelectPage.Index.js"></script>
+
+    
 }
