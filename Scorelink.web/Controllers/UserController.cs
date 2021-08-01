@@ -46,6 +46,10 @@ namespace Scorelink.web.Controllers
             {
                 checkOnline();
                 var data = "";
+
+                //item.RegisterDate = !String.IsNullOrEmpty(item.RegisterDateStr) ? DateTime.ParseExact(item.RegisterDateStr.ToString(), "yyyy-MM-dd", null) : Convert.ToDateTime("01/01/1900");
+                //item.ExpireDate = !String.IsNullOrEmpty(item.ExpireDateStr) ? DateTime.ParseExact(item.RegisterDateStr.ToString(), "yyyy-MM-dd", null) : Convert.ToDateTime("01/01/1900");
+
                 UserRepo userRepo = new UserRepo();
                 if (item.UserId.ToString() == "0")
                 {
@@ -58,12 +62,14 @@ namespace Scorelink.web.Controllers
                     {
                         item.UserName = item.Email;
                         item.Password = "P@ssw0rd";
-                        data = userRepo.Add(item);
+                        userRepo.Add(item);
+                        data = "OK";
                     }
                 }
                 else
                 {
-                    data = userRepo.Update(item);
+                    userRepo.Update(item);
+                    data = "OK";
                 }
                 return Json(data, JsonRequestBehavior.AllowGet);
             }

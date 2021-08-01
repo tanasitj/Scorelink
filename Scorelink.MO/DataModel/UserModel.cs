@@ -21,9 +21,11 @@ namespace Scorelink.MO.DataModel
         public string Telephone { get; set; }
         public string Status { get; set; }
         public string Admin { get; set; }
-        public string RegisterDate { get; set; }
-        public string ExpireDate { get; set; }
+        public Nullable<System.DateTime> RegisterDate { get; set; }
+        public string RegisterDateStr { get; set; }
+        public Nullable<System.DateTime> ExpireDate { get; set; }
+        public string ExpireDateStr { get; set; }
         public string UpdateBy { get; set; }
-        public string UpdateDate { get; set; }
+        public Nullable<System.DateTime> UpdateDate { get; set; }
     }
 }

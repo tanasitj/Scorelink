@@ -19,6 +19,9 @@
 var ViewModel = function () {
     var self = this;
 
+    $('#RegisterDate').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' });
+    $('#ExpireDate').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' });
+
     self.UserList = ko.observableArray();
     self.CompanyList = ko.observableArray();
 
@@ -85,8 +88,8 @@ var ViewModel = function () {
                 self.EntryTelephone(data.Telephone);
                 self.EntryStatus(data.Status === 'N' ? false : true);
                 self.EntryAdmin(data.Admin === 'N' ? false : true);
-                self.EntryRegisterDate(data.RegisterDate);
-                self.EntryExpireDate(data.ExpireDate);
+                self.EntryRegisterDate(parseJsonDate(data.RegisterDate));
+                self.EntryExpireDate(parseJsonDate(data.ExpireDate));
             }
         });
 
@@ -134,29 +137,33 @@ var ViewModel = function () {
                             data.Status,
                             data.Admin,
                             data.RegisterDate,
-                            data.ExpireDate
+                            parseJsonDate(data.ExpireDate)
                         )
                     );
                 });
 
                 unblockUI();
+                //PNotification("Error", "err", "error");
+            },
+            error: function (err) {
+                unblockUI();
+                $.toaster(err.statusText, 'Error', 'danger');
             }
         })
-            .done(function () {
-                var table = $('#tbUser');
-                table.DataTable(
-                    {
-                        bDestroy: true,
-                        pageLength: 10,
-                        "order": [[0, "asc"]]
-                    }
-                );
-            })
-            .fail(
-                function (xhr, textStatus, err) {
-                    //PNotification("Error", err, "error");
-                    unblockUI();
-                });
+        .done(function () {
+            var table = $('#tbUser');
+            table.DataTable(
+                {
+                    bDestroy: true,
+                    pageLength: 10,
+                    "order": [[0, "asc"]]
+                }
+            );
+        })
+        .fail(function (xhr, textStatus, err) {
+            //PNotification("Error", err, "error");
+            unblockUI();
+        });
     }
 
     function init() {
@@ -188,24 +195,24 @@ var ViewModel = function () {
 
         var arg = {
             UserId: $("#UserId").val(),
-            UserName: $("#UserName").val(),
             Name: $("#Name").val(),
             Surname: $("#Surname").val(),
             Address: $("#Address").val(),
             Email: $("#Email").val(),
-            Password: $("#Password").val(),
             Company: $("#Company").val(),
             Telephone: $("#Telephone").val(),
-            RegisterDate: $("#RegisterDate").val(),
-            ExpireDate: $("#ExpireDate").val(),
+            RegisterDateStr: $("#RegisterDate").val(),
+            ExpireDateStr: $("#ExpireDate").val(),
             Status: $("#Status").prop('checked') ? 'Y' : 'N',
             Admin: $("#Admin").prop('checked') ? 'Y' : 'N',
             UpdateBy: $("#hdUserId").val()
         }
 
+        //alert($("#RegisterDate").val());
+
         var data = {
             'item': arg
-        };
+        }
 
         $.ajax({
             url: '/User/SaveUser',
@@ -215,16 +222,18 @@ var ViewModel = function () {
             data: ko.toJSON(data),
             success: function (data) {
                 if (data == "OK") {
-                    
+                    $.toaster('Save data complete.', 'Success', 'success');
                 } else if (data == "UserDup") {
-                    alert("Duplicate user name can't add your data.");
+                    //alert("Duplicate user name can't add your data.");
+                    $.toaster("Duplicate user name can't add your data.", 'Error', 'danger');
                 } else {
-                    alert("System can't save your data.");
+                    //alert("System can't save your data.");
+                    $.toaster("System can't save your data.", 'Error', 'danger');
                 }
                 GetUserlist();
                 unblockUI();
             }
-        })
+        });
     }
 
     self.ClickRefresh = function (data, event) {

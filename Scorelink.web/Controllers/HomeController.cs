@@ -36,6 +36,8 @@ namespace Scorelink.web.Controllers
             UserRepo userRepo = new UserRepo();
             OnlineUserRepo onlineRepo = new OnlineUserRepo();
 
+            userRepo.UpdateExpireUser();
+
             //Check User
             if (userRepo.CheckLogIn(user, Common.EncryptText(pass)))
             {
@@ -195,9 +197,16 @@ namespace Scorelink.web.Controllers
                         " <i class= 'nav-icon fas fa-building'></i> " +
                         " <p>Company List</p> " +
                         " </a> " +
+                        " <li class='nav-item'> " +
+                        " <a href = '/Upload/Index' class='nav-link'> " +
+                        " <i class='nav-icon fas fa-file-pdf'></i> " +
+                        " <p>Scorelink</p> " +
+                        " </a> " +
                         " </li> ";
                 }
-                txt += "" +
+                else if (userRepo.CheckExpireDate(userId))
+                {
+                    txt += "" +
                         //" <li class='nav-header'>User Menu</li> " +
                         " <li class='nav-item'> " +
                         " <a href = '/Upload/Index' class='nav-link'> " +
@@ -205,6 +214,7 @@ namespace Scorelink.web.Controllers
                         " <p>Scorelink</p> " +
                         " </a> " +
                         " </li> ";
+                }
             }
 
             /*txt += " <li class='nav-item'> " +

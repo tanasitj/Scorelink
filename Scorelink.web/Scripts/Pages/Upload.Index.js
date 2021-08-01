@@ -52,12 +52,14 @@ var ViewModel = function () {
     }
 
     $("#select_all").change(function () {
+        resetProgressBar();
         //alert('Test');
         //$("input[type=checkbox]").prop('checked', $(this).prop('checked'));
         $(".checkbox").prop('checked', $(this).prop("checked"));
     });
 
     $('.checkbox').change(function () {
+        resetProgressBar();
         //uncheck "select all", if one of the listed checkbox item is unchecked
         if (false == $(this).prop("checked")) { //if this item is unchecked
             $("#select_all").prop('checked', false); //change "select all" checked status to false
@@ -72,12 +74,11 @@ var ViewModel = function () {
         /*$('#chkDocId:checked').each(function () {
             docIds.push(this.value);
         });*/
-
+        resetProgressBar();
         $("#Modal-DeleteAll").modal('show');
     }
 
     self.SubmitDeleteAll = function () {
-
         $('#chkDocId:checked').each(function () {
             docIds.push(this.value);
         });
@@ -116,16 +117,17 @@ var ViewModel = function () {
     }
 
     self.ClickDelete = function (data, event) {
+        resetProgressBar();
         self.DocId(data.DocId());
         self.FileName(data.FileName());
         self.Language(data.Language());
         self.CreateDate(data.CreateDate());
         self.FilePath(data.FilePath());
-        //alert(data.FilePath());
         $("#Modal_DeletePage").modal('show');
     }
 
     self.ClickEdit = function (data, event) {
+        resetProgressBar();
         self.DocId(data.DocId());
         self.FileName(data.FileName());
         self.Language(data.Language());
@@ -150,14 +152,29 @@ var ViewModel = function () {
                 //if (!data) return PNotification("Failed", "Deleted failed", "error");
 
                 //PNotification("Successful", "Deleted completed", "success");
+                if (data == "OK") {
+                    $.toaster('Delete Complete.', 'Success', 'success');
+                } else {
+                    $.toaster('System cannot delete data.', 'Error', 'danger');
+                }
+                
+                $('#table1').DataTable().clear();
+                $('#table1').DataTable().destroy();
                 $("#Modal_DeletePage").modal('hide');
                 GetDoclist();
                 //window.location.href = '/Upload/Index';
+            },
+            error: function (err) {
+                $.toaster(err.statusText, 'Error', 'danger');
             }
+        })
+        .fail(function () {
+            $.toaster(err.statusText, 'Error', 'danger');
         });
     }
 
     self.ClickExport = function (data, event) {
+        resetProgressBar();
         var filter = {
             'docId': data.DocId()
         }
@@ -209,8 +226,18 @@ var ViewModel = function () {
             contentType: 'application/json; charset=utf-8',
             data: ko.toJSON(filter),
             success: function (data) {
+                if (data == "OK") {
+                    $.toaster('Edit data complete.', 'Success', 'success');
+                } else {
+                    $.toaster('System cannot edit data.', 'Error', 'danger');
+                }
+                $('#table1').DataTable().clear();
+                $('#table1').DataTable().destroy();
                 $("#Modal_EditPage").modal('hide');
                 GetDoclist();
+            },
+            error: function (err) {
+                $.toaster(err.statusText, 'Error', 'danger');
             }
         });
     }
@@ -248,8 +275,10 @@ var ViewModel = function () {
                     );
                 });
                 $("#fileUpload1").val(null);
-                unblockUI();
-                //PNotification("Successful", "Upload completed", "success");
+                //unblockUI();
+            },
+            error: function (err) {
+                $.toaster(err.statusText, 'Error', 'danger');
             }
         })
         .done(function () {
@@ -266,18 +295,14 @@ var ViewModel = function () {
                 }
             );
         })
-        .fail(
-            function (xhr, textStatus, err) {
-                //PNotification("Error", err, "error");
-                unblockUI();
-        });
-
+        
     }
 
     function readURL(input, event) {
         
         if (!input.value) {
-            show_alert("No file selected", "warning");
+            //show_alert("No file selected", "warning");
+            $.toaster('No file selected.', 'Warning', 'warning');
             return;
         }
 
@@ -287,14 +312,6 @@ var ViewModel = function () {
         loading_btn.classList.remove("d-none");
         //cancel_btn.classList.remove("d-none");
         progress_wrapper.classList.remove("d-none");
-
-        //var loaded = event.loaded;
-        //var total = event.total;
-        //var percentage_complete = (loaded / total) * 100;
-
-        //progress.setAttribute("style", 'width: ${Math.floor(percentage_complete)}%');
-        //progress.style.width = Math.floor(percentage_complete);
-        //progress_status.innerText = Math.floor(percentage_complete) + '% uploaded';
 
         if (input.files && input.files[0]) {
             var fileUpload = $("#fileUpload1").get(0);
@@ -347,10 +364,18 @@ var ViewModel = function () {
                 success: function (result) {
                     input.value = null;
                     input.disabled = false;
+                    if (result == "OK") {
+                        $.toaster('Upload Successful..', 'Success', 'success');
+                    } else {
+                        $.toaster('System cannot upload file.', 'Error', 'danger');
+                    }
                     loading_btn.classList.add("d-none");
                     //cancel_btn.classList.add("d-none");
                     upload_btn.classList.remove("d-none");
                     GetDoclist();
+                },
+                error: function (err) {
+                    $.toaster(err.statusText, 'Error', 'danger');
                 },
                 done: function () {
                     GetDoclist();
@@ -360,82 +385,16 @@ var ViewModel = function () {
         //}
     }
 
-    function show_alert(message, alert) {
-        alert_wrapper.innerHTML = "<div class='alert alert-" + alert + " alert-dismissible fade show' role='alert' ><span>" + message + "</span><button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close' ></button ></div >";
-    };
-
-    function input_filename() {
-        file_input_label.innerText = input.files[0].name;
-    }
-
-    function reset() {
+    function resetProgressBar() {
         input.value = null;
         input.disabled = false;
-        cancel_btn.classList.add("d-none");
+        //cancel_btn.classList.add("d-none");
         loading_btn.classList.add("d-none");
         upload_btn.classList.remove("d-none");
         progress_wrapper.classList.add("d-none");
-        pregress.setAttribute("style", "width: 0%");
-        file_input_label.innerText = "Select file";
+        //pregress.setAttribute("style", "width: 0%");
+        //file_input_label.innerText = "Select file";
     }
-
-    function abort() {
-        reset();
-        show_alert('Upload cancelled', "primary");
-    }
-
-    self.Uploadxx = function upload(url) {
-
-        
-
-        var data = new FormData();
-        var request = new XMLHttpRequest();
-        request.responseType = "json";
-        
-
-        var file = input.files[0];
-        var filename = file.name;
-        var filesize = file.size;
-
-        document.cookie = 'filesize=$(filesize)';
-        data.append("file", file);
-
-        /*request.upload.addEventListener("progress", function (e) {
-            var loaded = e.loaded;
-            var total = e.total;
-            var percentage_complete = (loaded / total) * 100;
-            progress.setAttribute("style", 'width: ${Math.floor(percentage_complete)}%');
-            progress_status.innerText = '${Math.floor(percentage_complete)}% uploaded';
-        })*/
-
-        request.addEventListener("load", function (e) {
-            if (request.status == 200) {
-                show_alert('File Uploaded', "success");
-            }
-            else {
-                show_alert('Error uploading file', "danger");
-            }
-            reset();
-        })
-
-        request.addEventListener("error", function (e) {
-            reset();
-            show_alert('Error uploading file', "danger");
-        })
-
-        
-
-        request.open("post", url);
-        request.send(data);
-
-        cancel_btn.addEventListener("click", function () {
-            request.abort();
-        })
-
-        
-
-    }
-
 }
 
 var viewModel = new ViewModel();
