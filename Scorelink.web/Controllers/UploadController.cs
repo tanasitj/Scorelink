@@ -64,6 +64,7 @@ namespace Scorelink.web.Controllers
 
         public ActionResult UploadFiles(string userId, string language)
         {
+            var result = "";
             String FileName = "";
             // Checking no of files injected in Request object  
             if (Request.Files.Count > 0)
@@ -122,9 +123,10 @@ namespace Scorelink.web.Controllers
                         documentInfoRepo.Add(doc);
 
                         FileName = file.FileName;
+                        result = "OK";
                     }
                     // Returns message that successfully uploaded  
-                    return Json(FileName, JsonRequestBehavior.AllowGet);
+                    return Json(result, JsonRequestBehavior.AllowGet);
                 }
                 catch (Exception ex)
                 {
@@ -156,13 +158,15 @@ namespace Scorelink.web.Controllers
                 string sPath = Server.MapPath("..\\FileUploads\\" + Common.GenZero(doc.CreateBy, 8) + "\\" + doc.FileUID + "\\");
 
                 //Delete All Data by DocId.
-                result = docInfoRepo.Delete(id.ToString());
+                docInfoRepo.Delete(id.ToString());
 
                 if (Directory.Exists(sPath))
                 {
                     //Delete Folder.
                     DeleteDirectory(sPath);
                 }
+
+                result = "OK";
             }
             catch (Exception ex)
             {
@@ -187,7 +191,7 @@ namespace Scorelink.web.Controllers
                     string sPath = Server.MapPath("..\\FileUploads\\" + Common.GenZero(doc.CreateBy, 8) + "\\" + doc.FileUID + "\\");
 
                     //Delete All Data by DocId.
-                    result = docInfoRepo.Delete(id[i].ToString());
+                    docInfoRepo.Delete(id[i].ToString());
 
                     if (Directory.Exists(sPath))
                     {
@@ -195,6 +199,7 @@ namespace Scorelink.web.Controllers
                         DeleteDirectory(sPath);
                     }
                 }
+                result = "OK";
             }
             catch (Exception ex)
             {
@@ -212,7 +217,8 @@ namespace Scorelink.web.Controllers
 
             try
             {
-                result = docInfoRepo.Update(item);
+                docInfoRepo.Update(item);
+                result = "OK";
             }
             catch (Exception ex)
             {

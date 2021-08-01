@@ -23,6 +23,7 @@
                     <th>Email</th>
                     <th>Company</th>
                     <th>Telephone</th>
+                    <th>Expire Date</th>
                     <th>Status</th>
                     <th>Admin</th>
                     <th>Edit</th>
@@ -36,6 +37,7 @@
                     <td><span data-bind="text: Email"></span></td>
                     <td><span data-bind="text: CompanyName"></span></td>
                     <td><span data-bind="text: Telephone"></span></td>
+                    <td><span data-bind="text: ExpireDate"></span></td>
                     <td class="text-center">
                         <label><input type="checkbox" value="" data-bind="checked: Status" disabled></label>
                     </td>
@@ -132,8 +134,8 @@
     <script src="~/Scripts/Pages/User.List.js"></script>
     <script>
         $(function () {
-            $('#RegisterDate').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' });
-            $('#ExpireDate').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' });
+            //$('#RegisterDate').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' });
+            //$('#ExpireDate').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' });
             //$('#ExpireDate').datepicker();
         });
     </script>

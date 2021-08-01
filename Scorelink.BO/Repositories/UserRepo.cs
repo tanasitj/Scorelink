@@ -90,10 +90,10 @@ namespace Scorelink.BO.Repositories
                                 Telephone = user.Telephone,
                                 Status = user.Status,
                                 Admin = user.Admin,
-                                RegisterDate = user.RegisterDate.ToString(),
-                                ExpireDate = user.ExpireDate.ToString(),
+                                RegisterDate = user.RegisterDate,
+                                ExpireDate = user.ExpireDate,
                                 UpdateBy = user.UpdateBy,
-                                UpdateDate = user.UpdateDate.ToString()
+                                UpdateDate = user.UpdateDate
                             }).FirstOrDefault();
 
                 return data;
@@ -125,10 +125,10 @@ namespace Scorelink.BO.Repositories
                                 Telephone = user.Telephone,
                                 Status = user.Status,
                                 Admin = user.Admin,
-                                RegisterDate = user.RegisterDate.ToString(),
-                                ExpireDate = user.ExpireDate.ToString(),
+                                RegisterDate = user.RegisterDate,
+                                ExpireDate = user.ExpireDate,
                                 UpdateBy = user.UpdateBy,
-                                UpdateDate = user.UpdateDate.ToString()
+                                UpdateDate = user.UpdateDate
                             }).FirstOrDefault();
 
                 return data;
@@ -163,10 +163,10 @@ namespace Scorelink.BO.Repositories
                                  Telephone = t1.Telephone,
                                  Status = t1.Status,
                                  Admin = t1.Admin,
-                                 RegisterDate = t1.RegisterDate.ToString(),
-                                 ExpireDate = t1.ExpireDate.ToString(),
+                                 RegisterDate = t1.RegisterDate,
+                                 ExpireDate = t1.ExpireDate,
                                  UpdateBy = t1.UpdateBy,
-                                 UpdateDate = t1.UpdateDate.ToString()
+                                 UpdateDate = t1.UpdateDate
                              });
                 return query;
             }
@@ -222,10 +222,10 @@ namespace Scorelink.BO.Repositories
                                 Telephone = t1.Telephone,
                                 Status = t1.Status,
                                 Admin = t1.Admin,
-                                RegisterDate = t1.RegisterDate.ToString(),
-                                ExpireDate = t1.ExpireDate.ToString(),
+                                RegisterDate = t1.RegisterDate,
+                                ExpireDate = t1.ExpireDate,
                                 UpdateBy = t1.UpdateBy,
-                                UpdateDate = t1.UpdateDate.ToString()
+                                UpdateDate = t1.UpdateDate
                             }).FirstOrDefault();
 
                 return data;
@@ -256,10 +256,48 @@ namespace Scorelink.BO.Repositories
                         data.Telephone = item.Telephone;
                         data.Status = item.Status;
                         data.Admin = item.Admin;
-                        data.RegisterDate = DateTime.ParseExact(item.RegisterDate, "dd/MM/yyyy", provider);
-                        data.ExpireDate = DateTime.ParseExact(item.ExpireDate, "dd/MM/yyyy", provider);
+                        data.RegisterDate = DateTime.ParseExact(item.RegisterDateStr, "dd/MM/yyyy", provider);
+                        //data.RegisterDate = item.RegisterDate;
+                        data.ExpireDate = DateTime.ParseExact(item.ExpireDateStr, "dd/MM/yyyy", provider);
+                        //data.ExpireDate = item.ExpireDate;
                         data.UpdateBy = item.UpdateBy;
                         data.UpdateDate = DateTime.Now;
+
+                        db.SaveChanges();
+                        dbTran.Commit();
+
+                        return "OK";
+                    }
+                    catch (Exception ex)
+                    {
+                        dbTran.Rollback();
+                        Logger Err = new Logger();
+                        Err.ErrorLog(ex.ToString());
+                        return ex.ToString();
+                    }
+                }
+            }
+        }
+        public bool CheckExpireDate(int userid)
+        {
+            using (ScorelinkEntities db = new ScorelinkEntities())
+                return db.Users.Where(x => x.UserId == userid && x.ExpireDate >= DateTime.Now).Any();
+
+        }
+        public string UpdateExpireUser()
+        {
+            using (ScorelinkEntities db = new ScorelinkEntities())
+            {
+                using (System.Data.Entity.DbContextTransaction dbTran = db.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var userDB = db.Users.Where(x => x.Admin == "N" && x.Status == "Y" && x.ExpireDate < DateTime.Now).ToList();
+
+                        foreach (User u in userDB)
+                        {
+                            u.Status = "N";
+                        }
 
                         db.SaveChanges();
                         dbTran.Commit();

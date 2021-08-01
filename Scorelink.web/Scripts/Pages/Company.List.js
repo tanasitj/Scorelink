@@ -153,14 +153,18 @@ var ViewModel = function () {
             data: ko.toJSON(data),
             success: function (data) {
                 if (data == "OK") {
+                    $.toaster('Save complete.', 'Success', 'success');
                     GetCompanylist();
                     //window.location.href = '/Company/Index';
                 } else if (data == "CompanyDup") {
-                    alert("Duplicate company name can't add your data.");
+                    //alert("Duplicate company name can't add your data.");
+                    $.toaster('Duplicate company name cannot add your data.', 'Warning', 'warning');
                 } else if (data == "DomainDup") {
-                    alert("Duplicate domain name can't add your data.");
+                    //alert("Duplicate domain name can't add your data.");
+                    $.toaster('Duplicate domain name cannot add your data.', 'Warning', 'warning');
                 } else {
-                    alert("System can't save your data.");
+                    //alert("System can't save your data.");
+                    $.toaster('System cannot save your data.', 'Error', 'danger');
                 }
                 unblockUI();
             }

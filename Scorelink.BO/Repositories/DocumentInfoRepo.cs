@@ -66,6 +66,34 @@ namespace Scorelink.BO.Repositories
                 throw ex;
             }
         }
+        public IEnumerable<DocumentInfoModel> GetDocStatusList(string id)
+        {
+            ScorelinkEntities db = new ScorelinkEntities();
+            try
+            {
+                var query = (from doc in db.SP_DOCUMENTINFO_STATUS(id)
+                             where doc.CreateBy.Contains(id)
+                             select new DocumentInfoModel
+                             {
+                                 DocId = doc.DocId,
+                                 FileUID = doc.FileUID,
+                                 FileName = doc.FileName,
+                                 FilePath = doc.FilePath,
+                                 FileUrl = doc.FileUrl,
+                                 Language = doc.Language,
+                                 CreateBy = doc.CreateBy,
+                                 CreateDate = doc.CreateDate.ToString(),
+                                 Commited = doc.Commited
+                             });
+                return query;
+            }
+            catch (Exception ex)
+            {
+                Logger Err = new Logger();
+                Err.ErrorLog(ex.ToString());
+                throw ex;
+            }
+        }
 
         public string Add(DocumentInfoModel item)
         {
@@ -105,7 +133,6 @@ namespace Scorelink.BO.Repositories
                 }
             }
         }
-
         public string Delete(string id)
         {
             using (ScorelinkEntities db = new ScorelinkEntities())
@@ -123,6 +150,35 @@ namespace Scorelink.BO.Repositories
                         //Delete Document Info.
                         var docInfo = db.DocumentInfo.Where(x => x.DocId.ToString() == id).First();
                         db.DocumentInfo.Remove(docInfo);
+
+                        db.SaveChanges();
+                        dbTran.Commit();
+
+                        return "OK";
+                    }
+                    catch (Exception ex)
+                    {
+                        dbTran.Rollback();
+                        Logger Err = new Logger();
+                        Err.ErrorLog(ex.ToString());
+                        return ex.ToString();
+                    }
+                }
+            }
+        }
+        public string Update(DocumentInfoModel item)
+        {
+            using (ScorelinkEntities db = new ScorelinkEntities())
+            {
+                using (System.Data.Entity.DbContextTransaction dbTran = db.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var doc = db.DocumentInfo.Where(x => x.DocId == item.DocId).First();
+                        doc.FileName = item.FileName;
+                        doc.Language = item.Language;
+                        doc.CreateBy = item.CreateBy;
+                        doc.CreateDate = DateTime.Now;
 
                         db.SaveChanges();
                         dbTran.Commit();

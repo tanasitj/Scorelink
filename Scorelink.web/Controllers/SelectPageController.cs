@@ -123,7 +123,8 @@ namespace Scorelink.web.Controllers
             var result = "";
             try
             {
-                result = docDetailRepo.DeleteTypes(docid, pagetype, docPageNo);
+                docDetailRepo.DeleteTypes(docid, pagetype, docPageNo);
+                result = "Ok";
 
             }
             catch (Exception ex)

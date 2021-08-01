@@ -54,15 +54,16 @@ var ViewModel = function () {
                 data: ko.toJSON(postData),
                 success: function (data) {
                     if (data == "Dup") {
-                        alert("Duplicate page select, Please select new page.");
+                        //alert("Duplicate page select, Please select new page.");
+                        $.toaster('Duplicate page select, Please select new page.', 'Warning', 'warning');
+                    } else {
+                        //alert("Page "+ data + " selected already.");
+                        $.toaster('Page ' + data + ' selected..', 'Success', 'success');
                     }
-                    /*} else {
-                        alert("Page "+ data +" selected already.");
-                    }*/
                     GetDoclist();
                 },
                 error: function (err) {
-                    return Notification('Error', err.statusText, 'error');
+                    $.toaster(err.statusText, 'Error', 'danger');
                 }
             });
 
@@ -126,6 +127,11 @@ var ViewModel = function () {
             contentType: 'application/json; charset=utf-8',
             data: ko.toJSON(filter),
             success: function (data) {
+                if (data == "Ok") {
+                    $.toaster('Delete Complete.', 'Success', 'success');
+                } else {
+                    $.toaster('System cannot delete data.', 'Error', 'danger');
+                }
                 $("#Modal_DeletePage").modal('hide');
                 GetDoclist();
             }

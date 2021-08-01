@@ -30,11 +30,28 @@
 <input type="hidden" id="hdPagePath" value="@ViewBag.PagePath" />
 <input type="hidden" id="hdPDFFile" value="@ViewBag.FileUrl" />
 <input type="hidden" id="hdCreateBy" value="@ViewBag.CreateBy" />
-<input type="text" id="txtTest" value="" />
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-lg-8">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header bg-gradient-primary">
+                    <h3 class="card-title"><b><i class="far fa-edit"></i> Select kind of financial statements</b></h3>
+                </div>
+                <div class="card-body">
+                    <!-- Group of default radios - option 1 -->
+                    <div class="custom-control custom-radio">
+                        <label><input type="radio" value="Income Statement" name="Kind_of_Financial" checked>  Income Statement</label>
+                        <label><input type="radio" value="Balance Sheet" name="Kind_of_Financial">  Balance Sheet</label>
+                        <label><input type="radio" value="Cash Flow" name="Kind_of_Financial">  Cash Flow</label>
+                        <button type="button" id="BtnSelectPage" class="btn bg-gradient-info"><b>Select this page</b></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-7">
             <div class="card">
                 <!-- Head -->
                 <div class="card-header bg-gradient-primary">
@@ -1870,66 +1887,8 @@
                 </table>
             </div>
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-5">
             <div class="card" style="height:700px">
-                <div class="card-header bg-gradient-primary">
-                    <h3 class="card-title"><b><i class="far fa-edit"></i> Select kind of financial statements</b></h3>
-                </div>
-                <div class="card-body">
-                    <!-- Group of default radios - option 1 -->
-                    <div class="custom-control custom-radio">
-                        <label><input type="radio" value="Income Statement" name="Kind_of_Financial" checked>  Income Statement</label>
-                    </div>
-
-                    <!-- Group of default radios - option 2 -->
-                    <div class="custom-control custom-radio">
-                        <label><input type="radio" value="Balance Sheet" name="Kind_of_Financial">  Balance Sheet</label>
-                    </div>
-
-                    <!-- Group of default radios - option 3 -->
-                    <div class="custom-control custom-radio">
-                        <label><input type="radio" value="Cash Flow" name="Kind_of_Financial">  Cash Flow</label>
-                    </div>
-                    <!-- Group of default radios - option 4 -->
-                    @*<div class="custom-control custom-radio">
-                            <label><input type="radio" value="FootNotes" name="Kind_of_Financial">  FootNotes</label>
-                        </div>*@
-                    <!-- Footnotes-->
-                    <!-- Select Dropdown-->
-                    <div class="card-body">
-                        <!--<b>  Footnotes No. and Titile</b>
-                        <div class="form-row">
-                            <div class="form-group col-md-2">-->
-                        @*<label for="inputFootnote">Footnotes</label>*@
-                        <!--<input type="text" class="form-control" id="inputFootnotes" name="Footnotes" />
-                            </div>
-                            <div class="form-group col-md-7">
-                                <select id="inputNotes" class="form-control">
-                                    <option selected>Choose...</option>
-                                    <option>....</option>
-                                </select>
-                            </div>
-                        </div>-->
-                        <br />
-                        @*<div class="form-row">
-                                <b class="text-success">Input Footnotes No. and Title</b>
-                                <b class="text-success">Select text from Statement image or type in</b>
-                            </div>*@
-                        <div class="form-row">
-
-                            <button type="button" id="BtnSelectPage" class="btn btn-block bg-gradient-info" style="height:60px"><b>Select this page</b></button>
-                        </div>
-                        <div class="form-row">
-                            <div class="text-success">Add the currently displayed page to a statement</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
                 <div class="card-header bg-gradient-primary">
                     <h3 class="card-title"><b> Select Page List</b></h3>
                     <div class="card-tools">
@@ -1941,29 +1900,29 @@
                     <table id="table1" class="table table-bordered table-hover">
                         <thead class="bg-gray-light">
                             <tr class="text-center">
-                                <th style="width: 120px">Page No.</th>
-                                <th style="width: 170px">Footnote No.</th>
-                                <th>Kind of Financial Statements.</th>
-                                <th style="width: 150px">Delete</th>
-                                <th style="width: 150px">Scan</th>
-                                <th style="width: 150px">Scan/Edit/Result</th>
-                                <th style="width: 150px">completed</th>
+                                <th style="width: 100px;vertical-align: middle">Page No.</th>
+                                @*<th style="width: 170px">Footnote No.</th>*@
+                                <th style="width: 250px;vertical-align: middle">FS Type</th>
+                                <th style="width: 60px;vertical-align: middle">Delete</th>
+                                <th style="width: 60px;vertical-align: middle">Scan</th>
+                                <th style="width: 60px;vertical-align: middle">Scan Edit</th>
+                                <th style="width: 60px;vertical-align: middle">Completed</th>
                             </tr>
                         </thead>
                         <tbody data-bind="foreach: DocDetail">
                             <tr>
                                 <td class="text-center"><span data-bind="text: DocPageNo"></span></td>
-                                <td class="text-center"><span data-bind="text: FootnoteNo"></span></td>
+                                @*<td class="text-center"><span data-bind="text: FootnoteNo"></span></td>*@
                                 <td class="text-center"><span data-bind="text: PageTypeName"></span></td>
 
                                 <td class="text-center">
-                                    <button type="button" class="btn btn-block bg-gradient-danger" data-bind="click: $root.ClickDelete">Delete</button>
+                                    <button type="button" class="btn bg-gradient-danger" data-bind="click: $root.ClickDelete"><i class="fas fa-trash-alt"></i></button>
                                 </td>
                                 <td class="text-center">
-                                    <button type="button" class="btn btn-block bg-gradient-success" data-bind="click: $root.ClickScan">Scan</button>
+                                    <button type="button" class="btn bg-gradient-success" data-bind="click: $root.ClickScan"><i class="fas fa-copy"></i></button>
                                 </td>
                                 <td class="text-center">
-                                    <button type="button" class="btn btn-block bg-gradient-success" data-bind="enable: CanEdit, click: $root.ClickScan_Edit" disabled>Scan/Edit</button>
+                                    <button type="button" class="btn bg-gradient-success" data-bind="enable: CanEdit, click: $root.ClickScan_Edit" disabled><i class="fas fa-pen"></i></button>
                                 </td>
                                 <td class="text-center">
                                     <label><input type="checkbox" value="" data-bind="checked: CompletedFlag" disabled></label>
@@ -1980,15 +1939,41 @@
                                 <input type="button" class="btn bg-gradient-success" id="BtnExportAll" name="BtnExportAll" value="Export All Results" data-bind="enable: hasCommited" />
                                 @*<button type="button" class="btn btn-light" data-bind="click: $root.ClickSaveScan">Save Scanned</button>*@
                                 <button type="button" class="btn btn-bitbucket bg-gradient-danger" id="btnBack" name="btnBack">Back</button>
-                                <button type="button" class="btn btn-bitbucket bg-gradient-danger" id="btnTest" name="btnTest">Test</button>
                             </div>
 
                         </div>
                     </div>
                 </div>
+                <!--<div class="card-header bg-gradient-primary">
+                    <h3 class="card-title"><b><i class="far fa-edit"></i> Select kind of financial statements</b></h3>
+                </div>
+                <div class="card-body">-->
+                            <!-- Group of default radios - option 1 -->
+                            <!--<div class="custom-control custom-radio">
+                    <label><input type="radio" value="Income Statement" name="Kind_of_Financial" checked>  Income Statement</label>
+                </div>-->
+                            <!-- Group of default radios - option 2 -->
+                            <!--<div class="custom-control custom-radio">
+                    <label><input type="radio" value="Balance Sheet" name="Kind_of_Financial">  Balance Sheet</label>
+                </div>-->
+                            <!-- Group of default radios - option 3 -->
+                            <!--<div class="custom-control custom-radio">
+                    <label><input type="radio" value="Cash Flow" name="Kind_of_Financial">  Cash Flow</label>
+                </div>-->
+                            <!-- Footnotes-->
+                            <!-- Select Dropdown-->
+                            <!--<div class="card-body">
+                        <br />
+                        <div class="form-row">
+                            <button type="button" id="BtnSelectPage" class="btn btn-block bg-gradient-info" style="height:60px"><b>Select this page</b></button>
+                        </div>
+                        <div class="form-row">
+                            <div class="text-success">Add the currently displayed page to a statement</div>
+                        </div>
+                    </div>
+                </div>-->
             </div>
         </div>
-
     </div>
     <div class="modal fade" id="Modal_DeletePage" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
          aria-hidden="true">
