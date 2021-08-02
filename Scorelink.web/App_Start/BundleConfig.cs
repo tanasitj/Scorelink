@@ -22,7 +22,7 @@ namespace Scorelink.web.App_Start
                 .Include("~/Content/css/icheck/green.min.css")
                 //.Include("~/plugins/jqvmap/jqvmap.min.css")
                 .Include("~/dist/css/adminlte.min.css")
-                .Include("~/Content/css/pnotify.custom.min.css")
+                //.Include("~/Content/css/pnotify.custom.min.css")
                 //.Include("~/Content/css/skins/skin-blue.css")
                 //.Include("~/plugins/overlayScrollbars/css/OverlayScrollbars.min.css")
 
@@ -40,7 +40,7 @@ namespace Scorelink.web.App_Start
                 //<!-- Bootstrap 4 -->
                 .Include("~/plugins/bootstrap/js/bootstrap.bundle.min.js")
                 .Include("~/plugins/sweetalert2/sweetalert2.min.js")
-                .Include("~/plugins/toastr/toastr.min.js")
+                //.Include("~/plugins/toastr/toastr.min.js")
                 //.Include("~/Content/js/plugins/bootstrap/bootstrap.js")
                 //.Include("~/Content/js/plugins/fastclick/fastclick.js")
                 //.Include("~/Content/js/plugins/slimscroll/jquery.slimscroll.js")
@@ -59,6 +59,8 @@ namespace Scorelink.web.App_Start
                 .Include("~/Content/js/plugins/jquery.blockUI/jquery.blockUI.js")
                 //.Include("~/Content/js/init.js")
                 .Include("~/Content/js/plugins/knockout/knockout-3.4.2.js")
+                .Include("~/Content/js/jquery.toaster.js")
+                .Include("~/Scripts/Support.js")
                 .Include("~/Scripts/Main.js")
                 );
 
