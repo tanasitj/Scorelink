@@ -59,12 +59,15 @@ namespace Scorelink.web.Controllers
                 ViewBag.PageType = pageType;
                 ViewBag.PageTypeName = pageTypeName;
                 ViewBag.PatternNo = Details.PatternNo;
+                ViewBag.Language = Info.Language;
             }
             return View("ScanResult", objModel);
         }
-       public List<DataResult> Grid_Row(int docId,string PageType)
+        public List<DataResult> Grid_Row(int docId,string PageType)
         {
             DocumentInfoRepo docInfoRepo = new DocumentInfoRepo();
+            AccountTitleRepo accGroupRepo = new AccountTitleRepo();
+
             var info = docInfoRepo.Get(docId);
             var details = GetField.GetDetails(docId, PageType);
             //=============================================================================
@@ -75,6 +78,17 @@ namespace Scorelink.web.Controllers
             {
                 Regex csv_file = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
                 string[] words = csv_file.Split(line);
+                var accTitle = accGroupRepo.GetAccountTitleId(words[0].Trim(new Char[] { '"' }));
+                string accGrpId = "";
+                if (accTitle == null)
+                {
+                    accGrpId = "";
+                }
+                else
+                {
+                    accGrpId = accTitle.AccGroupId.ToString();
+                }
+
                 if (details.PatternNo == "2")
                 {
                     objTempmodel.Add(new DataResult
@@ -82,13 +96,14 @@ namespace Scorelink.web.Controllers
                         Footnote_No = words[1].Trim(new Char[] { '"' }),
                         Divisions = DivisionStatus(),
                         Digitized_Account_Title = words[0].Trim(new Char[] { '"' }),
+                        AccountTitleGroupId = accGrpId,
                         Recovered = "",//RecoveredStatus(),
                         Standard_Title = "",
                         Amount1 = words[2].Trim(new Char[] { '"' }),
                         Amount2 = words[3].Trim(new Char[] { '"' }),
                         Modified = "",
                         CLCTCD = ""
-                    });
+                    }); ;
                 }else if (details.PatternNo == "3")
                 {
                     objTempmodel.Add(new DataResult
@@ -96,6 +111,7 @@ namespace Scorelink.web.Controllers
                         Footnote_No = words[1].Trim(new Char[] { '"' }),
                         Divisions = DivisionStatus(),
                         Digitized_Account_Title = words[0].Trim(new Char[] { '"' }),
+                        AccountTitleGroupId = accGrpId,
                         Recovered = "",//RecoveredStatus(),
                         Standard_Title = "",
                         Amount1 = words[2].Trim(new Char[] { '"' }),
@@ -112,6 +128,7 @@ namespace Scorelink.web.Controllers
                         Footnote_No = words[1].Trim(new Char[] { '"' }),
                         Divisions = DivisionStatus(),
                         Digitized_Account_Title = words[0].Trim(new Char[] { '"' }),
+                        AccountTitleGroupId = accGrpId,
                         Recovered = "",//RecoveredStatus(),
                         Standard_Title = "",
                         Amount1 = words[2].Trim(new Char[] { '"' }),
@@ -123,7 +140,6 @@ namespace Scorelink.web.Controllers
             }
             return objTempmodel;
         }     
-       
         public JsonResult Commit_file(int docId,string pageType,string csv_file,string filenames)
         {
             try
@@ -343,10 +359,104 @@ namespace Scorelink.web.Controllers
         }
         public JsonResult AssignGrid(int docId,string PageType)
         {
+            checkOnline();
             objModel.ScanEdit = Grid_Row(docId,PageType);
             var resultobject = objModel.ScanEdit.ToList();
             return Json(resultobject,JsonRequestBehavior.AllowGet);
         }
+        public JsonResult GetAccountTitleGroupDD(string sLanguage)
+        {
+            checkOnline();
+            AccountTitleGroupRepo accGroupRepo = new AccountTitleGroupRepo();
+            var data = accGroupRepo.GetAccountTitleGroupDD(sLanguage);
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+        public AccountTitleModel GetAccountTitleId(string stxt)
+        {
+            checkOnline();
+            AccountTitleRepo accGroupRepo = new AccountTitleRepo();
+            var data = accGroupRepo.GetAccountTitleId(stxt);
+            return data;
+        }
+        public JsonResult GetFormulaList(string userId,FormulaModel item)
+        {
+            checkOnline();
+            FormulaRepo formulaRepo = new FormulaRepo();
+            var data = formulaRepo.GetFormulaList(userId,item).ToList();
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetFormulaResult(string userId, string sQuery)
+        {
+            checkOnline();
+            FormulaRepo formulaRepo = new FormulaRepo();
+            var data = formulaRepo.GetFormulaResult(userId, sQuery);
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult SummaryScore(SummaryScoreModel[] item)
+        {
+            var result = "";
+            SummaryScoreRepo sumRepo = new SummaryScoreRepo();
+            SummaryScoreModel sumMO = new SummaryScoreModel();
 
+            try
+            {
+                checkOnline();
+                //Clear Old Data
+                sumRepo.Delete(item[0].CreateBy);
+                //Loop Object
+                for (int i = 0; i < item.Length; i++)
+                {
+                    if (item[i].AccGroupId != 0)
+                    {
+                        //Set Value
+                        sumMO.CreateBy = item[i].CreateBy;
+                        sumMO.AccGroupId = item[i].AccGroupId;
+                        sumMO.SumAmount1 = (item[i].SumAmount1 ?? "0").Replace(",", "");
+                        sumMO.SumAmount2 = (item[i].SumAmount2 ?? "0").Replace(",", "");
+                        sumMO.SumAmount3 = (item[i].SumAmount3 ?? "0").Replace(",", "");
+
+                        if (sumRepo.CheckExist(sumMO)) {
+                            sumRepo.Update(sumMO);
+                        }
+                        else
+                        {
+                            sumRepo.Add(sumMO);
+                        }
+                    }
+                }
+                result = "OK";
+            }
+            catch (Exception ex)
+            {
+                Logger Err = new Logger();
+                Err.ErrorLog(ex.ToString());
+                return Json(ex.Message);
+            }
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        private void checkOnline()
+        {
+            if (Session["UserId"] == null)
+            {
+                Response.Redirect("/Home/Index");
+            }
+            else
+            {
+                ViewBag.UserId = Session["UserId"].ToString();
+                int iUserId = 0;
+                Int32.TryParse(Session["UserId"].ToString(), out iUserId);
+
+                //Get User Info.
+                UserRepo userRepo = new UserRepo();
+                var userDB = userRepo.Get(iUserId);
+                ViewBag.Name = userDB.Name;
+                ViewBag.Surname = userDB.Surname;
+
+                //Check and Update online date time.
+                OnlineUserRepo onlineRepo = new OnlineUserRepo();
+                var online = onlineRepo.Get(iUserId);
+                onlineRepo.Update(online);
+            }
+        }
     }
 }

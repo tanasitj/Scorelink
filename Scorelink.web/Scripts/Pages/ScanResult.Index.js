@@ -1,22 +1,16 @@
-﻿function ScanEditModel(Footnote_No, Divisions, Digitized_Account_Title, Recovered, Standard_Title, Amount1, Amount2, Amount3, Modified, CLCTCD) {
-    var self = this;
-    self.Footnote_No = ko.observable(Footnote_No);
-    self.Divisions = ko.observable(Divisions);
-    self.Digitized_Account_Title = ko.observable(Digitized_Account_Title);
-    self.Recovered = ko.observable(Recovered);
-    self.Standard_Title = ko.observable(Standard_Title);
-    self.Amount1 = ko.observable(Amount1);
-    self.Amount2 = ko.observable(Amount2);
-    self.Amount3 = ko.observable(Amount3);
-    self.Modified = ko.observable(Modified);
-    self.CLCTCD = ko.observable(CLCTCD);
-}
+﻿
 var ViewModel = function () {
     var self = this;
+    //Array
     self.ScanEdit = ko.observableArray();
+    self.AccGroupList = ko.observableArray();
+    self.FormulaList = ko.observableArray();
+    self.Summary = ko.observableArray();
+
     self.Footnote_No = ko.observable();
     self.Divisions = ko.observable();
     self.Digitized_Account_Title = ko.observable();
+    self.AccountTitleGroupId = ko.observable();
     self.Recovered = ko.observable();
     self.Standard_Title = ko.observable();
     self.Amount1 = ko.observable();
@@ -24,7 +18,31 @@ var ViewModel = function () {
     self.Amount3 = ko.observable();
     self.Modified = ko.observable();
     self.CLCTCD = ko.observable();
+    self.EntryAccGroupId = ko.observable();
+
+    self.FormulaId = ko.observable();
+    self.FormulaName = ko.observable();
+    self.FormulaDesc = ko.observable();
+    self.FormulaQuery = ko.observable();
+    self.FormulaLanguage = ko.observable();
+    self.StatementTypeId = ko.observable();
+    self.FormulaResult = ko.observable();
+
+    self.CreateBy = ko.observable();
+    self.AccGroupId = ko.observable();
+    self.SumAmount1 = ko.observable();
+    self.SumAmount2 = ko.observable();
+    self.SumAmount3 = ko.observable();
+
+    //Load Account Title Group Dropdown List
+    getAccountTitleGroupDD();
+    //Load OCR Data
     LoadData();
+    //Load Formula Data
+    //LoadFormula();
+
+    var sFormulaRst;
+
     var pickedup;
     var tr;
     var row_index;
@@ -227,6 +245,12 @@ var ViewModel = function () {
             var sheetname = $("#hdPageTypeName").val();
             ExportHTMLTableToExcel(table1,table2, sheetname, filename);
         });
+
+        $("#BtnFinCheck").click(function () {
+            SummaryScore();
+            LoadFormula();
+            $.toaster('Finance Check Success..!!', 'Success', 'success');
+        });
     });
     function exportTableToCSV(table1,table2, filename) {
         var tab_text = "";
@@ -296,7 +320,6 @@ var ViewModel = function () {
         } // end if
         return tab_text;
     }
-
     function ExportHTMLTableToExcel(table1,table2,sheetName,filename) {
         var tab_text = ""
         var final_text = "";
@@ -381,7 +404,6 @@ var ViewModel = function () {
             }
         }
     }
-
     function isNullOrUndefinedWithEmpty(text) {
         if (text == undefined)
             return true;
@@ -475,6 +497,7 @@ var ViewModel = function () {
     function LoadData() {
         var PatternNo = $("#hdPatternNo").val();
 
+        //$(".Grid td:nth-child(2),th:nth-child(2)").hide(); //Footnote
         $(".Grid td:nth-child(7),th:nth-child(7)").hide(); //Custom Title
         if (PatternNo == "1") {
           $(".Grid td:nth-child(9),th:nth-child(9)").hide();//Amount2
@@ -483,11 +506,8 @@ var ViewModel = function () {
         else if (PatternNo == "2") {
           $(".Grid td:nth-child(10),th:nth-child(10)").hide();//Amount3    
         }
-      
-       
-       
-        $(".Grid td:nth-child(11),th:nth-child(11)").hide();//Modify
-        $(".Grid td:nth-child(12),th:nth-child(12)").hide();//CLCTCD      
+        //$(".Grid td:nth-child(11),th:nth-child(11)").hide();//Modify
+        //$(".Grid td:nth-child(12),th:nth-child(12)").hide();//CLCTCD      
         var filter = {
             docId: $("#hddocId").val(),
             pageType: $("#hdPageType").val()
@@ -496,7 +516,6 @@ var ViewModel = function () {
         $("#BtnInsert").attr("disabled", true);
         $("#BtnDelete").attr("disabled", true);
         $("#BtnCommit").attr("disabled", true);
-        $("#BtnExport").attr("disabled", true); 
         $("#BtnCancel").attr("disabled", true);
         $.ajax({
             url: '/ScanResult/AssignGrid',
@@ -512,16 +531,21 @@ var ViewModel = function () {
                             data.Footnote_No,
                             data.Divisions,
                             data.Digitized_Account_Title,
+                            data.AccountTitleGroupId,
                             data.Recovered,
                             data.Standard_Title,
                             data.Amount1,
                             data.Amount2,
                             data.Amount3,
                             data.Modified,
-                            data.CLCTCD
+                            data.CLCTCD,
+                            self.AccGroupList()
                         )
                     );
                 });
+                //alert(self.ScanEdit().length);
+                SummaryScore();
+                LoadFormula();
             }
         })
     }
@@ -554,6 +578,148 @@ var ViewModel = function () {
         $('#tbResult2 tbody tr').each(function (row_num) {
             $(this).children("td:eq(0)").html(row_num + 1);
         });
+    }
+    function getAccountTitleGroupDD() {
+        var filter = {
+            sLanguage: $("#hdLanguage").val()
+        }
+        $.ajax({
+            url: '/ScanResult/GetAccountTitleGroupDD',
+            cache: false,
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            data: ko.toJSON(filter),
+            success: function (data) {
+                self.AccGroupList([]);
+                self.AccGroupList(data);
+            }
+        });
+    }
+    function ScanEditModel(Footnote_No, Divisions, Digitized_Account_Title, AccountTitleGroupId, Recovered, Standard_Title, Amount1, Amount2, Amount3, Modified, CLCTCD, AccGroupList) {
+        var self = this;
+        self.AccGroupListDD = ko.observableArray(AccGroupList);
+        self.Footnote_No = ko.observable(Footnote_No);
+        self.Divisions = ko.observable(Divisions);
+        self.Digitized_Account_Title = ko.observable(Digitized_Account_Title);
+        self.EntryAccGroupId = ko.observable(AccountTitleGroupId);
+        self.Recovered = ko.observable(Recovered);
+        self.Standard_Title = ko.observable(Standard_Title);
+        self.Amount1 = ko.observable(Amount1);
+        self.Amount2 = ko.observable(Amount2);
+        self.Amount3 = ko.observable(Amount3);
+        self.Modified = ko.observable(Modified);
+        self.CLCTCD = ko.observable(CLCTCD);
+    }
+    function LoadFormula() {
+        //$('#tbFormula').DataTable().clear();
+        //$('#tbFormula').DataTable().destroy();
+        var arg = {
+            FormulaLanguage: $("#hdLanguage").val(),
+            StatementTypeId: $("#hdPageType").val()
+        }
+
+        var filter = {
+            'userId': $("#hdUserId").val(),
+            'item': arg
+        }
+
+        $.ajax({
+            url: '/ScanResult/GetFormulaList',
+            cache: false,
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            data: ko.toJSON(filter),
+            success: function (data) {
+                self.FormulaList([]);
+                ko.utils.arrayForEach(data, function (data) {
+                    self.FormulaList.push(
+                        new FormulaModel(
+                            data.FormulaId,
+                            data.FormulaName,
+                            data.FormulaDesc,
+                            data.FormulaQuery,
+                            data.FormulaResult,
+                            data.FormulaLanguage,
+                            data.StatementTypeId
+                        )
+                    );
+                });
+            },
+            error: function (err) {
+                $.toaster(err.statusText, 'Error', 'danger');
+            }
+        });
+    }
+    function FormulaModel(FormulaId, FormulaName, FormulaDesc, FormulaQuery, FormulaResult, FormulaLanguage, StatementTypeId) {
+        var self = this;
+        self.FormulaId = ko.observable(FormulaId);
+        self.FormulaName = ko.observable(FormulaName);
+        self.FormulaDesc = ko.observable(FormulaDesc);
+        self.FormulaQuery = ko.observable(FormulaQuery);
+        self.FormulaResult = ko.observable(FormulaResult);
+        self.FormulaLanguage = ko.observable(FormulaLanguage);
+        self.StatementTypeId = ko.observable(StatementTypeId);
+    }
+    function getFormulaResult(sQuery) {
+        var filter = {
+            'userId': $("#hdUserId").val(),
+            'sQuery': sQuery
+        }
+
+        $.ajax({
+            url: '/ScanResult/GetFormulaResult',
+            cache: false,
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            data: ko.toJSON(filter),
+            success: function (data) {
+                sFormulaRst = data;
+                return data;
+            },
+            error: function (err) {
+                return '';
+                $.toaster(err.statusText, 'Error', 'danger');
+            }
+        });
+    }
+    function SummaryScore() {
+        //alert(self.ScanEdit().length);
+        self.Summary = ko.observableArray();
+
+        ko.utils.arrayForEach(self.ScanEdit(), function(data){
+            self.Summary.push(
+                new SummaryScoreModel(
+                    $("#hdUserId").val(),
+                    data.EntryAccGroupId,
+                    data.Amount1(),
+                    data.Amount2(),
+                    data.Amount3()
+                )
+            )
+        });
+
+        var filter = {
+            item: self.Summary
+        }
+
+        $.ajax({
+            url: '/ScanResult/SummaryScore',
+            cache: false,
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            data: ko.toJSON(filter),
+            success: function (data) {
+                
+            },
+        });
+    }
+    function SummaryScoreModel(CreateBy, AccGroupId, SumAmount1, SumAmount2, SumAmount3) {
+        var self = this;
+        self.CreateBy = ko.observable(CreateBy);
+        self.AccGroupId = ko.observable(AccGroupId);
+        self.SumAmount1 = ko.observable(SumAmount1);
+        self.SumAmount2 = ko.observable(SumAmount2);
+        self.SumAmount3 = ko.observable(SumAmount3);
     }
 
 }
