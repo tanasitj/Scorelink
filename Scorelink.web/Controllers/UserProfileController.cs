@@ -27,10 +27,14 @@ namespace Scorelink.web.Controllers
                 UserRepo userRepo = new UserRepo();
                 var userDB = userRepo.Get(iUserId);
 
+                CompanyRepo compRepo = new CompanyRepo();
+                var compDB = compRepo.GetCompanyById(userDB.Company ?? 0);
+
                 ViewBag.Name = userDB.Name;
                 ViewBag.Surname = userDB.Surname;
                 ViewBag.Email = userDB.Email;
                 ViewBag.Company = userDB.Company;
+                ViewBag.CompanyName = compDB.CompanyName;
                 ViewBag.Address = userDB.Address;
                 ViewBag.Telephone = userDB.Telephone;
                 ViewBag.RegisterDate = userDB.RegisterDate;

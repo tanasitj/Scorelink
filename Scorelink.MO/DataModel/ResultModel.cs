@@ -16,10 +16,12 @@ namespace Scorelink.MO.DataModel
     {
         //public string Name { get; set; }
         //public string Address { get; set; }
+        public string CreateBy { get; set; }
         public string Footnote_No { get; set; }
         //public string Divisions { get; set; }
         public SelectList Divisions { get; set; }
         public string Digitized_Account_Title { get; set; }
+        public string AccountTitleGroupId { get; set; }
         //public SelectList Recovered { get; set; }
         public string Recovered { get; set; }
         public string Standard_Title {get; set;}
